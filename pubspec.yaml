@@ -10,11 +10,16 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
+  freezed_annotation: ^2.4.4
+  intl: ^0.19.0
   wo_form: ^1.2.1
+  wo_form_service: ^1.0.0
 
 dependency_overrides:
   wo_form:
     path: ../wo_form
+  wo_form_service:
+    path: ../wo_form_service
 
 dev_dependencies:
   very_good_analysis: ^6.0.0

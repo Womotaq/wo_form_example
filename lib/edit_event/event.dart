@@ -17,4 +17,8 @@ class EventModel with _$EventModel {
 
   factory EventModel.fromJson(Map<String, dynamic> json) =>
       _$EventModelFromJson(json);
+
+  // --
+
+  Duration? get duration => finish?.difference(start);
 }

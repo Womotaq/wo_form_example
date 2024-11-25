@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
-import 'package:wo_form_example/app.dart';
+import 'package:wo_form_example/utils/extensions.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 
 class FromJsonPage extends StatelessWidget {

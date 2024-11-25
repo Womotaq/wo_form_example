@@ -9,6 +9,8 @@ import 'package:wo_form_example/profile_creation/profile_creation.dart';
 import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
+import 'package:wo_form_example/utils/extensions.dart';
+import 'package:wo_form_service/wo_form_service.dart';
 
 class DarkModeCubit extends Cubit<bool> {
   DarkModeCubit() : super(true);
@@ -21,29 +23,37 @@ class WoFormExamplesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider(create: (context) => ShowCustomThemeCubit()),
-        BlocProvider(create: (context) => DarkModeCubit()),
-      ],
-      child: RepositoryProvider(
-        create: (context) => WoFormL10n(
-          submit: () => 'Envoyer',
-          next: () => 'Suivant',
-          translateError: (WoFormInputError? error) => switch (error) {
-            EmptyInputError() => 'Ce champ doit être renseigné.',
-            InvalidInputError() => 'Cette valeur est invalide.',
-            MaxBoundInputError() => 'Au dessus de la limite maximale.',
-            MinBoundInputError() => 'En dessous du minimum requis.',
-            CustomInputError(message: final message) => message,
-            null => null,
-          },
-          errors: (count) {
-            if (count == 0) return null;
-            if (count == 1) return '1 erreur';
-            return '$count erreurs';
-          },
+        RepositoryProvider(
+          create: (context) => WoFormL10n(
+            submit: () => 'Envoyer',
+            next: () => 'Suivant',
+            translateError: (WoFormInputError? error) => switch (error) {
+              EmptyInputError() => 'Ce champ doit être renseigné.',
+              InvalidInputError() => 'Cette valeur est invalide.',
+              MaxBoundInputError() => 'Au dessus de la limite maximale.',
+              MinBoundInputError() => 'En dessous du minimum requis.',
+              CustomInputError(message: final message) => message,
+              null => null,
+            },
+            errors: (count) {
+              if (count == 0) return null;
+              if (count == 1) return '1 erreur';
+              return '// erreurs';
+            },
+            days: (count) => count > 1 ? 'Jours' : 'Jour',
+            hours: (count) => count > 1 ? 'Heures' : 'Heure',
+            minutes: (count) => count > 1 ? 'Minutes' : 'Minute',
+          ),
         ),
+        RepositoryProvider(create: (context) => const DateTimeService()),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => ShowCustomThemeCubit()),
+          BlocProvider(create: (context) => DarkModeCubit()),
+        ],
         child: Builder(
           builder: (context) {
             final isDarkMode = context.watch<DarkModeCubit>().state;
@@ -51,7 +61,10 @@ class WoFormExamplesApp extends StatelessWidget {
             return WoFormTheme(
               data: context.watch<ShowCustomThemeCubit>().state
                   ? ShowCustomThemeCubit.customTheme
-                  : const WoFormThemeData(defaultPhoneCoutry: IsoCode.FR),
+                  : WoFormThemeData(
+                      defaultPhoneCoutry: IsoCode.FR,
+                      pickDate: context.read<DateTimeService>().pickDate,
+                    ),
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: 'WoForm Examples',
@@ -187,11 +200,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-extension BuildContextExt on BuildContext {
-  void pushPage(Widget page) => Navigator.push(
-        this,
-        MaterialPageRoute<void>(builder: (_) => page),
-      );
 }

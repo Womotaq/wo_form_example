@@ -70,11 +70,39 @@ class EditEventPage extends StatelessWidget {
             autofillHints: [AutofillHints.addressCity],
           ),
         ),
+        DateTimeInput(
+          id: 'start',
+          isRequired: true,
+          initialValue: FixedDateTime(date: event.start),
+          minDate: const TodayDate(),
+          maxDate: const TodayDate(addYears: 4, replaceMonths: 7),
+          uiSettings: const DateTimeInputUiSettings(
+            labelText: 'Début',
+            // labelFlex: 2,
+            dateFormat: 'EEEE d MMMM y',
+            initialDatePickerMode: DatePickerMode.year,
+          ),
+        ),
+        DurationInput(
+          id: 'duration',
+          initialValue: event.duration,
+          startDatePath: '/start',
+          uiSettings: const DurationInputUiSettings(
+            initialEditMode: DurationEditMode.dateTime,
+            labelText: 'Durée',
+            dateTimeLabelText: 'Fin',
+            dateFormat: 'd MMMM',
+          ),
+        ),
       ],
       onSubmitting: (form, values) async {
+        final start = values['/start'] as DateTime;
+        final duration = values['/duration'] as Duration?;
         final edittedEvent = event.copyWith(
           title: values['/title'] as String,
           address: values['/address'] as String,
+          start: values['/start'] as DateTime,
+          finish: duration == null ? null : start.add(duration),
         );
         eventsCubit.update(event: edittedEvent);
       },

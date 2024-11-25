@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
-import 'package:wo_form_example/app.dart';
 import 'package:wo_form_example/form_creator/num_input_node.dart';
 import 'package:wo_form_example/form_creator/select_string_input_node.dart';
 import 'package:wo_form_example/form_creator/string_input_node.dart';
+import 'package:wo_form_example/utils/extensions.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 
 class FormCreatorPage extends StatelessWidget {
@@ -113,7 +113,7 @@ class FormCreatorPage extends StatelessWidget {
           );
 
           if (context.mounted) {
-            context.pushPage(
+            await context.pushPage(
               Hero(
                 tag: 'createdForm',
                 child: WoForm.root(

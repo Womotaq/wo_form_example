@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:wo_form_example/app.dart';
 import 'package:wo_form_example/edit_event/edit_event_page.dart';
 import 'package:wo_form_example/edit_event/event.dart';
+import 'package:wo_form_example/utils/extensions.dart';
 
 class EventsCubit extends Cubit<List<EventModel>> {
   EventsCubit(super.initialState);
@@ -32,7 +32,7 @@ class EventsPage extends StatelessWidget {
           EventModel(
             id: 'apojfzmomzeofhoe',
             title: 'Finale',
-            start: DateTime(2024, 09, 12, 17, 30),
+            start: DateTime(2025, 09, 12, 17, 30),
             address: 'Stade Rennais',
           ),
         ],
