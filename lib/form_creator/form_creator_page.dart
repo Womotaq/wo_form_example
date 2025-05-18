@@ -227,11 +227,11 @@ class _JsonClipboarderState extends State<JsonClipboarder> {
           ),
         ),
         ListTile(
-          onTap: () {
-            Clipboard.setData(
+          onTap: () async {
+            await Clipboard.setData(
               ClipboardData(
                 text: jsonEncode(
-                  root.exportToMap(
+                  await root.exportToMap(
                     values: context.read<WoFormValuesCubit>().state,
                     context: context,
                   ),
