@@ -27,12 +27,14 @@ class EventsPage extends StatelessWidget {
             id: 'ziunvoeifzubuize',
             title: 'Demi-finale',
             start: DateTime(2024, 08, 12, 17, 30),
+            finish: DateTime(2024, 08, 12, 19, 30),
             address: 'Stade Rennais',
           ),
           EventModel(
             id: 'apojfzmomzeofhoe',
             title: 'Finale',
             start: DateTime(2025, 09, 12, 17, 30),
+            finish: DateTime(2025, 09, 12, 19, 30),
             address: 'Stade Rennais',
           ),
         ],
@@ -80,6 +82,7 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat.MMMMEEEEd();
+    final timeFormat = DateFormat.Hm();
 
     return Card.outlined(
       margin: const EdgeInsets.all(8),
@@ -116,6 +119,10 @@ class EventCard extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.calendar_today),
                   title: Text(dateFormat.format(event.start)),
+                  trailing: Text(
+                    '${timeFormat.format(event.start)}\n'
+                    '${timeFormat.format(event.finish)}',
+                  ),
                 ),
                 if ((event.address ?? '').isNotEmpty)
                   ListTile(

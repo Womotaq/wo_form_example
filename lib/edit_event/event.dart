@@ -4,12 +4,12 @@ part 'event.freezed.dart';
 part 'event.g.dart';
 
 @freezed
-class EventModel with _$EventModel {
+abstract class EventModel with _$EventModel {
   const factory EventModel({
     required String id,
     required String title,
     required DateTime start,
-    DateTime? finish,
+    required DateTime finish,
     String? address,
   }) = _EventModel;
 
@@ -20,5 +20,5 @@ class EventModel with _$EventModel {
 
   // --
 
-  Duration? get duration => finish?.difference(start);
+  Duration get duration => finish.difference(start);
 }

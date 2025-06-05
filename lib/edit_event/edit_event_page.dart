@@ -16,9 +16,10 @@ class EditEventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final rootKey = RootKey();
     return WoForm(
+      rootKey: rootKey,
       uiSettings: WoFormUiSettings(
-        titleText: "Édition d'un événement",
         submitMode: const StandardSubmitMode(
           submitText: 'Enregistrer',
           disableSubmitMode: DisableSubmitButton.whenInitialOrSubmitSuccess,
@@ -48,6 +49,7 @@ class EditEventPage extends StatelessWidget {
               ),
       ),
       children: [
+        WidgetNode(builder: (_) => const SizedBox(height: 32)),
         StringInput(
           id: 'title',
           initialValue: event.title,
@@ -66,42 +68,48 @@ class EditEventPage extends StatelessWidget {
           uiSettings: const StringInputUiSettings(
             labelText: 'Adresse',
             keyboardType: TextInputType.streetAddress,
-            autofillHints: [AutofillHints.addressCity],
           ),
         ),
+        WidgetNode(builder: (_) => const SizedBox(height: 32)),
         DateTimeInput(
           id: 'start',
           isRequired: true,
           initialValue: FixedDateTime(date: event.start),
-          minDate: const TodayDate(),
-          maxDate: const TodayDate(addYears: 4, replaceMonths: 7),
           uiSettings: const DateTimeInputUiSettings(
-            labelText: 'Début',
-            // labelFlex: 2,
-            dateFormat: 'EEEE d MMMM y',
+            dateFormat: 'E, MMMM d, y',
             initialDatePickerMode: DatePickerMode.year,
           ),
         ),
-        DurationInput(
-          id: 'duration',
-          initialValue: event.duration,
-          startDatePath: '/start',
-          uiSettings: const DurationInputUiSettings(
-            initialEditMode: DurationEditMode.dateTime,
-            labelText: 'Durée',
-            dateTimeLabelText: 'Fin',
-            dateFormat: 'd MMMM',
+        DateTimeInput(
+          id: 'finish',
+          isRequired: true,
+          initialValue: FixedDateTime(date: event.finish),
+          getCustomError: (value, path) {
+            if (value == null) return EmptyInputError(path: path);
+            final start = rootKey.values?['/start'];
+            if (start is! DateTime) return null;
+
+            if (value.isBefore(start)) {
+              return CustomInputError(
+                path: path,
+                message: 'The finish date must be after the start date.',
+              );
+            }
+
+            return null;
+          },
+          uiSettings: const DateTimeInputUiSettings(
+            dateFormat: 'E, MMMM d, y',
+            initialDatePickerMode: DatePickerMode.year,
           ),
         ),
       ],
       onSubmitting: (form, values) async {
-        final start = values['/start'] as DateTime;
-        final duration = values['/duration'] as Duration?;
         final edittedEvent = event.copyWith(
           title: values['/title'] as String,
           address: values['/address'] as String,
           start: values['/start'] as DateTime,
-          finish: duration == null ? null : start.add(duration),
+          finish: values['/finish'] as DateTime,
         );
         eventsCubit.update(event: edittedEvent);
       },
