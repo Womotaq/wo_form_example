@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 
@@ -67,21 +66,16 @@ class ReportPage extends StatelessWidget {
         ),
         WidgetNode(builder: (_) => const SizedBox(height: 64)),
       ],
-      onSubmitting: (_, __) async {
-        await Future<void>.delayed(const Duration(seconds: 3));
-      },
-      onSubmitSuccess: (context) async {
-        final root = context.read<RootNode>();
-        final values = context.read<WoFormValuesCubit>().state;
-
+      onSubmitting: (root, values) async {
         final json = await root.exportToMap(values: values, context: context);
 
+        if (!context.mounted) throw Exception("Context isn't mounted anymore");
+
         await showDialog<void>(
-          // ignore: use_build_context_synchronously
           context: context,
           builder: (BuildContext dialogContext) {
             return AlertDialog(
-              title: const Text("Ce json vient d'être envoyé."),
+              title: const Text('This JSON will be sent.'),
               content: Text(readableJson(json)),
               actions: [
                 FilledButton.tonalIcon(

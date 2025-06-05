@@ -83,23 +83,7 @@ class WoFormExamplesApp extends StatelessWidget {
                           : Colors.white
                       : null,
                 ),
-                home: Scaffold(
-                  appBar: AppBar(
-                    actions: [
-                      IconButton(
-                        onPressed: context.read<DarkModeCubit>().toggle,
-                        icon: BlocBuilder<DarkModeCubit, bool>(
-                          builder: (context, isDarkMode) {
-                            return Icon(
-                              isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  body: const HomePage(),
-                ),
+                home: const HomePage(),
               ),
             );
           },
@@ -122,13 +106,59 @@ class HomePage extends StatelessWidget {
             ?.copyWith(fontWeight: FontWeight.bold),
       ),
       child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(top: 4),
+                width: 32,
+                child: Image.asset(
+                  'assets/${Theme.of(context).brightness.name}.png',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'wo_form',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          centerTitle: false,
+          actions: [
+            IconButton(
+              onPressed: context.read<DarkModeCubit>().toggle,
+              icon: BlocBuilder<DarkModeCubit, bool>(
+                builder: (context, isDarkMode) {
+                  return Icon(
+                    isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
         body: ListView(
           children: [
             const SizedBox(height: 32),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                "Exemples d'utilisation du package wo_form",
+                'Design once, render anywhere.\nJSON-based form builder.',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 96),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                "Exemples d'utilisation",
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge

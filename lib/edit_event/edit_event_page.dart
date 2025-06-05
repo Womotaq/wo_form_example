@@ -24,8 +24,7 @@ class EditEventPage extends StatelessWidget {
           disableSubmitMode: DisableSubmitButton.whenInitialOrSubmitSuccess,
           buttonPosition: SubmitButtonPosition.appBar,
         ),
-        canQuit: (context) async => context.read<WoFormStatusCubit>().state
-                    is InitialStatus ||
+        canQuit: (context) async => context.read<WoFormValuesCubit>().isPure ||
                 context.read<WoFormStatusCubit>().state is SubmitSuccessStatus
             ? true
             : showDialog<bool>(

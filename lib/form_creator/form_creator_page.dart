@@ -16,7 +16,7 @@ class FormCreatorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WoForm(
-      showInitialErrors: true,
+      showErrors: ShowErrors.always,
       children: [
         const InputsNode(
           id: 'uiSettings',
@@ -80,8 +80,7 @@ class FormCreatorPage extends StatelessWidget {
           onPressed: data.onPressed,
           child: const Text('Exporter'),
         ),
-        canQuit: (context) async => context.read<WoFormStatusCubit>().state
-                    is InitialStatus ||
+        canQuit: (context) async => context.read<WoFormValuesCubit>().isPure ||
                 context.read<WoFormStatusCubit>().state is SubmitSuccessStatus
             ? true
             : showDialog<bool>(
