@@ -28,9 +28,6 @@ mixin _$EventModel {
   $EventModelCopyWith<EventModel> get copyWith =>
       _$EventModelCopyWithImpl<EventModel>(this as EventModel, _$identity);
 
-  /// Serializes this EventModel to a JSON map.
-  Map<String, dynamic> toJson();
-
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -43,7 +40,6 @@ mixin _$EventModel {
             (identical(other.address, address) || other.address == address));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, title, start, finish, address);
@@ -112,17 +108,14 @@ class _$EventModelCopyWithImpl<$Res> implements $EventModelCopyWith<$Res> {
 }
 
 /// @nodoc
-@JsonSerializable()
-class _EventModel extends EventModel {
+
+class _EventModel implements EventModel {
   const _EventModel(
       {required this.id,
       required this.title,
       required this.start,
       required this.finish,
-      this.address})
-      : super._();
-  factory _EventModel.fromJson(Map<String, dynamic> json) =>
-      _$EventModelFromJson(json);
+      this.address});
 
   @override
   final String id;
@@ -144,13 +137,6 @@ class _EventModel extends EventModel {
       __$EventModelCopyWithImpl<_EventModel>(this, _$identity);
 
   @override
-  Map<String, dynamic> toJson() {
-    return _$EventModelToJson(
-      this,
-    );
-  }
-
-  @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
@@ -162,7 +148,6 @@ class _EventModel extends EventModel {
             (identical(other.address, address) || other.address == address));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, title, start, finish, address);
@@ -228,6 +213,192 @@ class __$EventModelCopyWithImpl<$Res> implements _$EventModelCopyWith<$Res> {
           ? _self.address
           : address // ignore: cast_nullable_to_non_nullable
               as String?,
+    ));
+  }
+}
+
+/// @nodoc
+mixin _$AddressModel {
+  String get name;
+  String get geohash;
+  double get latitude;
+  double get longitude;
+
+  /// Create a copy of AddressModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AddressModelCopyWith<AddressModel> get copyWith =>
+      _$AddressModelCopyWithImpl<AddressModel>(
+          this as AddressModel, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is AddressModel &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.geohash, geohash) || other.geohash == geohash) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, name, geohash, latitude, longitude);
+
+  @override
+  String toString() {
+    return 'AddressModel(name: $name, geohash: $geohash, latitude: $latitude, longitude: $longitude)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $AddressModelCopyWith<$Res> {
+  factory $AddressModelCopyWith(
+          AddressModel value, $Res Function(AddressModel) _then) =
+      _$AddressModelCopyWithImpl;
+  @useResult
+  $Res call({String name, String geohash, double latitude, double longitude});
+}
+
+/// @nodoc
+class _$AddressModelCopyWithImpl<$Res> implements $AddressModelCopyWith<$Res> {
+  _$AddressModelCopyWithImpl(this._self, this._then);
+
+  final AddressModel _self;
+  final $Res Function(AddressModel) _then;
+
+  /// Create a copy of AddressModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? geohash = null,
+    Object? latitude = null,
+    Object? longitude = null,
+  }) {
+    return _then(_self.copyWith(
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      geohash: null == geohash
+          ? _self.geohash
+          : geohash // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _self.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _self.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _AddressModel implements AddressModel {
+  _AddressModel(
+      {required this.name,
+      required this.geohash,
+      required this.latitude,
+      required this.longitude})
+      : assert(latitude >= -90 && latitude <= 90, 'invalid latitude'),
+        assert(longitude >= -180 && longitude <= 180, 'invalid longitude');
+
+  @override
+  final String name;
+  @override
+  final String geohash;
+  @override
+  final double latitude;
+  @override
+  final double longitude;
+
+  /// Create a copy of AddressModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$AddressModelCopyWith<_AddressModel> get copyWith =>
+      __$AddressModelCopyWithImpl<_AddressModel>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _AddressModel &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.geohash, geohash) || other.geohash == geohash) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, name, geohash, latitude, longitude);
+
+  @override
+  String toString() {
+    return 'AddressModel(name: $name, geohash: $geohash, latitude: $latitude, longitude: $longitude)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$AddressModelCopyWith<$Res>
+    implements $AddressModelCopyWith<$Res> {
+  factory _$AddressModelCopyWith(
+          _AddressModel value, $Res Function(_AddressModel) _then) =
+      __$AddressModelCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String name, String geohash, double latitude, double longitude});
+}
+
+/// @nodoc
+class __$AddressModelCopyWithImpl<$Res>
+    implements _$AddressModelCopyWith<$Res> {
+  __$AddressModelCopyWithImpl(this._self, this._then);
+
+  final _AddressModel _self;
+  final $Res Function(_AddressModel) _then;
+
+  /// Create a copy of AddressModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? name = null,
+    Object? geohash = null,
+    Object? latitude = null,
+    Object? longitude = null,
+  }) {
+    return _then(_AddressModel(
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      geohash: null == geohash
+          ? _self.geohash
+          : geohash // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _self.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _self.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }

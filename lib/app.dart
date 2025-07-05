@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
@@ -8,6 +9,7 @@ import 'package:wo_form_example/from_json/from_json_page.dart';
 import 'package:wo_form_example/profile_creation/profile_creation.dart';
 import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
+import 'package:wo_form_example/secrets.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
 import 'package:wo_form_example/utils/extensions.dart';
 import 'package:wo_form_service/wo_form_service.dart';
@@ -27,23 +29,23 @@ class WoFormExamplesApp extends StatelessWidget {
       providers: [
         RepositoryProvider(
           create: (context) => WoFormL10n(
-            submit: () => 'Envoyer',
-            next: () => 'Suivant',
+            submit: () => 'Save',
+            next: () => 'Next',
             translateError: (WoFormInputError? error) => switch (error) {
-              EmptyInputError() => 'Ce champ doit être renseigné.',
-              InvalidInputError() => 'Cette valeur est invalide.',
-              MaxBoundInputError() => 'Au dessus de la limite maximale.',
-              MinBoundInputError() => 'En dessous du minimum requis.',
+              EmptyInputError() => 'This field is required.',
+              InvalidInputError() => 'This field is invalid.',
+              MaxBoundInputError() => 'Above the maximum allowed.',
+              MinBoundInputError() => 'Below the minimum allowed.',
               CustomInputError(message: final message) => message,
               null => null,
             },
             errors: (count) {
               if (count == 0) return null;
-              if (count == 1) return '1 erreur';
-              return '// erreurs';
+              if (count == 1) return '1 error';
+              return '// errors';
             },
-            days: (count) => count > 1 ? 'Jours' : 'Jour',
-            hours: (count) => count > 1 ? 'Heures' : 'Heure',
+            days: (count) => count > 1 ? 'Days' : 'Day',
+            hours: (count) => count > 1 ? 'Hours' : 'Hour',
             minutes: (count) => count > 1 ? 'Minutes' : 'Minute',
           ),
         ),
@@ -64,6 +66,8 @@ class WoFormExamplesApp extends StatelessWidget {
                   : WoFormThemeData(
                       defaultPhoneCoutry: IsoCode.FR,
                       pickDate: context.read<DateTimeService>().pickDate,
+                      googleAPIKey:
+                          kDebugMode ? googleApiKeyWebDebug : googleApiKeyWeb,
                     ),
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,

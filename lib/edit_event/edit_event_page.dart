@@ -21,7 +21,7 @@ class EditEventPage extends StatelessWidget {
       rootKey: rootKey,
       uiSettings: WoFormUiSettings(
         submitMode: const StandardSubmitMode(
-          submitText: 'Enregistrer',
+          submitText: 'Save',
           disableSubmitMode: DisableSubmitButton.whenInitialOrSubmitSuccess,
           buttonPosition: SubmitButtonPosition.appBar,
         ),
@@ -55,7 +55,7 @@ class EditEventPage extends StatelessWidget {
           initialValue: event.title,
           isRequired: true,
           uiSettings: StringInputUiSettings(
-            labelText: 'Titre',
+            labelText: 'Title',
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
@@ -66,8 +66,10 @@ class EditEventPage extends StatelessWidget {
           id: 'address',
           initialValue: event.address,
           uiSettings: const StringInputUiSettings(
-            labelText: 'Adresse',
+            labelText: 'Address',
             keyboardType: TextInputType.streetAddress,
+            addressAutocompleteCountries: ['fr'],
+            action: StringFieldAction.clear,
           ),
         ),
         WidgetNode(builder: (_) => const SizedBox(height: 32)),

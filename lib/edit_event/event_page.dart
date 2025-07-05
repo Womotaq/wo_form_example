@@ -25,17 +25,21 @@ class EventsPage extends StatelessWidget {
         [
           EventModel(
             id: 'ziunvoeifzubuize',
-            title: 'Demi-finale',
+            title: 'Semi-final',
             start: DateTime(2024, 08, 12, 17, 30),
             finish: DateTime(2024, 08, 12, 19, 30),
-            address: 'Stade Rennais',
+            address: '24 Rue du Commandant Guilbaud, 75016 Paris',
           ),
           EventModel(
             id: 'apojfzmomzeofhoe',
-            title: 'Finale',
+            title: 'Final',
             start: DateTime(2025, 09, 12, 17, 30),
             finish: DateTime(2025, 09, 12, 19, 30),
-            address: 'Stade Rennais',
+            address:
+                // AddressModel(
+                //   name:
+                '24 Rue du Commandant Guilbaud, 75016 Paris',
+            // ),
           ),
         ],
       ),

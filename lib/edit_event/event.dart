@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'event.freezed.dart';
-part 'event.g.dart';
 
 @freezed
 abstract class EventModel with _$EventModel {
@@ -12,13 +11,16 @@ abstract class EventModel with _$EventModel {
     required DateTime finish,
     String? address,
   }) = _EventModel;
+}
 
-  const EventModel._();
-
-  factory EventModel.fromJson(Map<String, dynamic> json) =>
-      _$EventModelFromJson(json);
-
-  // --
-
-  Duration get duration => finish.difference(start);
+@freezed
+abstract class AddressModel with _$AddressModel {
+  @Assert('latitude >= -90 && latitude <= 90', 'invalid latitude')
+  @Assert('longitude >= -180 && longitude <= 180', 'invalid longitude')
+  factory AddressModel({
+    required String name,
+    required String geohash,
+    required double latitude,
+    required double longitude,
+  }) = _AddressModel;
 }

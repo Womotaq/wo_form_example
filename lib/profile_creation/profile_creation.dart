@@ -12,7 +12,7 @@ class ProfileCreationPage extends StatelessWidget {
     return WoForm(
       uiSettings: WoFormUiSettings(
         submitMode: const PageByPageSubmitMode(
-          submitText: 'Enregistrer',
+          submitText: 'Save',
           showProgressIndicator: false,
         ),
         canQuit: (context) async => context.read<WoFormValuesCubit>().isPure ||
