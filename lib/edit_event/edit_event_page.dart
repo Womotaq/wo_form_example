@@ -109,7 +109,7 @@ class EditEventPage extends StatelessWidget {
       onSubmitting: (form, values) async {
         final edittedEvent = event.copyWith(
           title: values['/title'] as String,
-          address: values['/address'] as String,
+          address: values['/address'] as String?,
           start: values['/start'] as DateTime,
           finish: values['/finish'] as DateTime,
         );
