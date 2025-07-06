@@ -1,0 +1,84 @@
+name: Build and Deploy to wo-form.womotaq.com
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      APP_DOTENV_FILE: .env # Adjust if needed
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "stable"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Copy dotenv file
+        run: cp $APP_DOTENV_FILE assets/dotenv
+
+      - name: Build Flutter Web
+        run: flutter build web
+
+      - name: Set up Firebase CLI
+        uses: w9jds/firebase-action@v2.2.0
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Create Git tag for release
+        id: tag_step
+        run: |
+          VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v$VERSION" -m "Release v$VERSION"
+          git push origin "v$VERSION"
+
+# stages:
+#   - build
+#   - deploy
+
+# build_app:
+#   image: "ghcr.io/cirruslabs/flutter:stable"
+#   stage: build
+#   before_script:
+#     - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
+#     - eval $(ssh-agent -s)
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - ssh-add <(echo "$SSH_PRIVATE_KEY")
+#     - echo "HOST *" > ~/.ssh/config
+#     - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+#     - cp ${APP_DOTENV_FILE} assets/dotenv
+#     - flutter pub get
+#   script:
+#     - flutter build web
+#   artifacts:
+#     untracked: true
+
+# deploy_app:
+#   image: "debian:12-slim"
+#   stage: deploy
+#   dependencies:
+#     - build_app
+#   only:
+#     refs:
+#       - main
+#   before_script:
+#     - apt-get -y update; apt-get -y install curl sudo
+#     - curl -sL https://firebase.tools | bash
+#     - firebase use $FIREBASE_PROJECT_ID
+#   script:
+#     - firebase deploy --only hosting:wo-form-example

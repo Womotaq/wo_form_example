@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/dynamic_form/dynamic_form_page.dart';
 import 'package:wo_form_example/edit_event/event_page.dart';
@@ -9,7 +10,6 @@ import 'package:wo_form_example/from_json/from_json_page.dart';
 import 'package:wo_form_example/profile_creation/profile_creation.dart';
 import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
-import 'package:wo_form_example/secrets.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
 import 'package:wo_form_example/utils/extensions.dart';
 import 'package:wo_form_service/wo_form_service.dart';
@@ -66,8 +66,9 @@ class WoFormExamplesApp extends StatelessWidget {
                   : WoFormThemeData(
                       defaultPhoneCoutry: IsoCode.FR,
                       pickDate: context.read<DateTimeService>().pickDate,
-                      googleAPIKey:
-                          kDebugMode ? googleApiKeyWebDebug : googleApiKeyWeb,
+                      googleAPIKey: kDebugMode
+                          ? dotenv.env['GOOGLE_API_KEY_WEB_DEBUG']
+                          : dotenv.env['GOOGLE_API_KEY_WEB'],
                     ),
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,

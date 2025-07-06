@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.0
+  flutter_dotenv: ^5.2.1
   flutter_launcher_icons: ^0.14.3
   freezed_annotation: ^3.0.0
   intl: ^0.20.0
@@ -18,6 +19,8 @@ dependencies:
   wo_form_service: ^1.0.0
 
 dependency_overrides:
+  google_places_flutter:
+    path: ../google_places_flutter
   wo_form:
     path: ../wo_form
   wo_form_service:
