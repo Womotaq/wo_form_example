@@ -41,7 +41,7 @@ class WoFormExamplesApp extends StatelessWidget {
             errors: (count) {
               if (count == 0) return null;
               if (count == 1) return '1 error';
-              return '// errors';
+              return '$count errors';
             },
             days: (count) => count > 1 ? 'Days' : 'Day',
             hours: (count) => count > 1 ? 'Hours' : 'Hour',
@@ -63,11 +63,6 @@ class WoFormExamplesApp extends StatelessWidget {
               data: context.watch<ShowCustomThemeCubit>().state
                   ? ShowCustomThemeCubit.customTheme
                   : WoFormThemeData(
-                      onSubmitError: (context, status) =>
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('${status.error}'))),
-                      defaultPhoneCoutry: IsoCode.FR,
-                      // pickDate: DateTimeService.materialPickDate,
                       googleAPIKey: kDebugMode
                           ? dotenv.env['GOOGLE_API_KEY_WEB_DEBUG']
                           : dotenv.env['GOOGLE_API_KEY_WEB'],

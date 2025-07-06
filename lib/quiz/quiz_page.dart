@@ -8,19 +8,19 @@ class QuizPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Theme(
-      data: Theme.of(context).copyWith(
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
+      data: theme.copyWith(
+        progressIndicatorTheme: ProgressIndicatorThemeData(
           linearTrackColor: Colors.transparent,
+          color: theme.colorScheme.primaryContainer,
         ),
       ),
       child: WoForm(
         uiSettings: WoFormUiSettings(
-          titleText: 'Quiz du jour',
+          titleText: 'Daily quiz',
           showAsteriskIfRequired: false,
-          submitMode: const PageByPageSubmitMode(
-            submitText: 'Terminer',
-          ),
+          submitMode: const PageByPageSubmitMode(submitText: 'Done'),
           canModifySubmittedValues: false,
           submitButtonBuilder: (data) => Builder(
             builder: (context) {
@@ -38,7 +38,7 @@ class QuizPage extends StatelessWidget {
                       .call(
                       data.pageIndex == root.children.length - 1
                           ? data
-                          : data.copyWith(text: 'Suivant'),
+                          : data.copyWith(text: 'Next'),
                     );
             },
           ),
@@ -46,12 +46,10 @@ class QuizPage extends StatelessWidget {
         children: [
           InputsNode(
             id: 'q1-page',
-            exportSettings: const ExportSettings(
-              type: ExportType.mergeWithParent,
-            ),
+            exportSettings:
+                const ExportSettings(type: ExportType.mergeWithParent),
             children: [
               WidgetNode(
-                id: 'header',
                 builder: (_) =>
                     const QuizQuestion('De quelle couleur est le soleil ?'),
               ),
@@ -102,11 +100,7 @@ class QuizPage extends StatelessWidget {
                 id: 'q2',
                 maxCount: 1,
                 minCount: 1,
-                availibleValues: [
-                  'A',
-                  'B',
-                  'C',
-                ],
+                availibleValues: ['A', 'B', 'C'],
                 submitFormOnSelect: true,
                 uiSettings: SelectInputUiSettings(
                   childrenVisibility: ChildrenVisibility.always,
@@ -250,7 +244,10 @@ class QuizPage extends StatelessWidget {
             },
           ),
         ],
-        onSubmitSuccess: showJsonDialog,
+        onSubmitSuccess: (context) async {
+          await showJsonDialog(context);
+          if (context.mounted) Navigator.of(context).pop();
+        },
       ),
     );
   }
