@@ -67,8 +67,8 @@ class EditEventPage extends StatelessWidget {
           initialValue: event.address,
           uiSettings: const StringInputUiSettings(
             labelText: 'Address',
-            keyboardType: TextInputType.streetAddress,
-            addressAutocompleteCountries: ['fr'],
+            placeAutocompleteType: PlaceType.address,
+            placeAutocompleteCountries: ['fr'],
             action: StringFieldAction.clear,
           ),
         ),

@@ -19,8 +19,6 @@ dependencies:
   wo_form_service: ^1.0.0
 
 dependency_overrides:
-  google_places_flutter:
-    path: ../google_places_flutter
   wo_form:
     path: ../wo_form
   wo_form_service:

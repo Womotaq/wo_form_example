@@ -64,6 +64,9 @@ class WoFormExamplesApp extends StatelessWidget {
               data: context.watch<ShowCustomThemeCubit>().state
                   ? ShowCustomThemeCubit.customTheme
                   : WoFormThemeData(
+                      onSubmitError: (context, status) =>
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('${status.error}'))),
                       defaultPhoneCoutry: IsoCode.FR,
                       pickDate: context.read<DateTimeService>().pickDate,
                       googleAPIKey: kDebugMode
