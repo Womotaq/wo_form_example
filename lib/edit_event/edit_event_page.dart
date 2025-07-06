@@ -79,7 +79,6 @@ class EditEventPage extends StatelessWidget {
           initialValue: FixedDateTime(date: event.start),
           uiSettings: const DateTimeInputUiSettings(
             dateFormat: 'E, MMMM d, y',
-            initialDatePickerMode: DatePickerMode.year,
           ),
         ),
         DateTimeInput(
@@ -102,7 +101,6 @@ class EditEventPage extends StatelessWidget {
           },
           uiSettings: const DateTimeInputUiSettings(
             dateFormat: 'E, MMMM d, y',
-            initialDatePickerMode: DatePickerMode.year,
           ),
         ),
       ],

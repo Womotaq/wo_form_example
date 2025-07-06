@@ -16,13 +16,10 @@ dependencies:
   intl: ^0.20.0
   json_annotation: ^4.9.0
   wo_form: ^1.2.1
-  wo_form_service: ^1.0.0
 
 dependency_overrides:
   wo_form:
     path: ../wo_form
-  wo_form_service:
-    path: ../wo_form_service
 
 dev_dependencies:
   build_runner: ^2.4.13

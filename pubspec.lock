@@ -996,13 +996,6 @@ packages:
       relative: true
     source: path
     version: "1.3.2"
-  wo_form_service:
-    dependency: "direct main"
-    description:
-      path: "../wo_form_service"
-      relative: true
-    source: path
-    version: "1.0.2"
   xdg_directories:
     dependency: transitive
     description:

@@ -12,7 +12,6 @@ import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
 import 'package:wo_form_example/utils/extensions.dart';
-import 'package:wo_form_service/wo_form_service.dart';
 
 class DarkModeCubit extends Cubit<bool> {
   DarkModeCubit() : super(true);
@@ -68,7 +67,7 @@ class WoFormExamplesApp extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('${status.error}'))),
                       defaultPhoneCoutry: IsoCode.FR,
-                      pickDate: context.read<DateTimeService>().pickDate,
+                      // pickDate: DateTimeService.materialPickDate,
                       googleAPIKey: kDebugMode
                           ? dotenv.env['GOOGLE_API_KEY_WEB_DEBUG']
                           : dotenv.env['GOOGLE_API_KEY_WEB'],
