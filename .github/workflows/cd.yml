@@ -59,12 +59,23 @@ jobs:
       - name: Build Flutter Web
         run: flutter build web
 
-      - name: Set up Firebase CLI
-        uses: w9jds/firebase-action@v2.2.0
-        with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      # - name: Authenticate with Firebase
+      #   run: firebase login:ci
+      #   env:
+      #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Deploy to Firebase Hosting
+        run: firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
+
+      # - name: Set up Firebase CLI
+      #   uses: w9jds/firebase-action@v2.2.0
+      #   with:
+      #     args: deploy --only hosting
+      #   env:
+      #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
       - name: Extract version from pubspec.yaml
         id: extract_version
