@@ -53,6 +53,9 @@ jobs:
       - name: Create .env file
         run: echo "${{ secrets.DOTENV_FILE }}" > assets/.env
 
+      - name: Update wo_form version file
+        run: dart lib/wo_form_version/generate_version.dart
+
       - name: Build Flutter Web
         run: flutter build web
 

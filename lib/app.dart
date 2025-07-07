@@ -12,6 +12,7 @@ import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
 import 'package:wo_form_example/utils/extensions.dart';
+import 'package:wo_form_example/wo_form_version/generated_version.dart';
 
 class DarkModeCubit extends Cubit<bool> {
   DarkModeCubit() : super(true);
@@ -132,6 +133,16 @@ class HomePage extends StatelessWidget {
                     .textTheme
                     .titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 12),
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Text(
+                  woFormVersion,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                ),
               ),
             ],
           ),
