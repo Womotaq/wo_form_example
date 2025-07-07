@@ -24,6 +24,9 @@ jobs:
           version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
           echo "VERSION=$version" >> $GITHUB_ENV
 
+      - name: Fetch Tags
+        run: git fetch --tags
+
       - name: Check if Tag Exists
         id: check_tag
         run: |
