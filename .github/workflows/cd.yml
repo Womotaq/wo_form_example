@@ -68,7 +68,9 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
       - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting
+        run: |
+          firebase experiments:enable webframeworks
+          firebase deploy --only hosting
 
       # - name: Set up Firebase CLI
       #   uses: w9jds/firebase-action@v2.2.0
