@@ -24,6 +24,13 @@ class WoFormExamplesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (dotenv.env['GOOGLE_API_KEY_WEB']?.isEmpty ?? true) {
+      print(
+        'Warning: GOOGLE_API_KEY is not set. '
+        'Some features may not work correctly.',
+      );
+    }
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
