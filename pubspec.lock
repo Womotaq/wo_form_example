@@ -995,7 +995,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: "8c719c6eb7e73471e137a28d529412d651c97b4a"
-      url: "git@github.com:Womotaq/wo_form.git"
+      url: "https://github.com/Womotaq/wo_form.git"
     source: git
     version: "1.4.0"
   xdg_directories:
