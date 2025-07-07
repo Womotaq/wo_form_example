@@ -20,7 +20,7 @@ dependencies:
 
 dependency_overrides:
   wo_form:
-    git: git@github.com:Womotaq/wo_form.git
+    git: https://github.com/Womotaq/wo_form.git
     # path: ../wo_form
 
 dev_dependencies:
