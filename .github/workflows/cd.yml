@@ -10,9 +10,8 @@ on:
 
 # https://medium.com/@colonal/automating-flutter-builds-and-releases-with-github-actions-77ccf4a1ccdd
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    # runs-on: macos-latest # ensures an ios build possibility
+  build:
+    runs-on: ubuntu-latest # macos-latest if needing an ios build
 
     steps:
       - name: Checkout repository
@@ -42,6 +41,23 @@ jobs:
 
       - name: Build Flutter Web
         run: flutter build web
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: build/web
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push'
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: build/web
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0

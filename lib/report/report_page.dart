@@ -16,9 +16,9 @@ class ReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WoForm(
       uiSettings: const WoFormUiSettings(
-        titleText: 'Signaler un utilisateur',
+        titleText: 'Report a player',
         submitMode: StandardSubmitMode(
-          submitText: 'Envoyer',
+          submitText: 'Send',
           disableSubmitMode: DisableSubmitButton.whenInvalid,
           buttonPosition: SubmitButtonPosition.floating,
         ),
@@ -39,11 +39,11 @@ class ReportPage extends StatelessWidget {
             labelText: 'Motif',
             valueBuilder: (type) => Text(
               switch (type) {
-                null => 'Sélectionnez un motif',
-                ReportType.cheating => 'Triche',
+                null => 'Select a reason',
+                ReportType.cheating => 'Cheating',
                 ReportType.fairPlay => 'Fair play',
-                ReportType.verbalAbuse => 'Violence verbale',
-                ReportType.other => 'Autre',
+                ReportType.verbalAbuse => 'Verbal abuse',
+                ReportType.other => 'Other',
               },
             ),
           ),
@@ -51,7 +51,7 @@ class ReportPage extends StatelessWidget {
         const StringInput(
           id: 'message',
           uiSettings: StringInputUiSettings(
-            hintText: 'Dites-en plus !',
+            hintText: 'Tell us more !',
             textCapitalization: TextCapitalization.sentences,
             maxLines: 5,
           ),
@@ -59,7 +59,7 @@ class ReportPage extends StatelessWidget {
         const BooleanInput(
           id: 'block',
           uiSettings: BooleanInputUiSettings(
-            labelText: 'Bloquer cette raclure ?',
+            labelText: 'Do you want to block this player ?',
             controlType: BooleanFieldControlType.checkbox,
             controlAffinity: ListTileControlAffinity.leading,
           ),
