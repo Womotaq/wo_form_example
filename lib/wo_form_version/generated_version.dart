@@ -1,1 +1,1 @@
-const woFormVersion = 'v1.2.0';
+const woFormVersion = 'v1.2.3';

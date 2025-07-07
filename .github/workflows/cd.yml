@@ -35,7 +35,9 @@ jobs:
         run: flutter pub get
 
       - name: Create dotenv file
-        run: echo "${{ secrets.DOTENV_FILE }}" > dotenv
+        run: |
+          echo "${{ secrets.DOTENV_FILE }}" > dotenv
+          echo "${{ secrets.DOTENV_FILE }}" > assets/dotenv
 
       - name: Update wo_form version file
         run: dart lib/wo_form_version/generate_version.dart
