@@ -15,6 +15,9 @@ jobs:
     # runs-on: macos-latest # ensures an ios build possibility
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Check if Tag Exists
         id: check_tag
         run: |
