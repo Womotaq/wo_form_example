@@ -8,6 +8,7 @@ on:
     branches:
       - main
 
+# https://medium.com/@colonal/automating-flutter-builds-and-releases-with-github-actions-77ccf4a1ccdd
 # jobs:
 #   build:
 #     name: Build
@@ -62,15 +63,45 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
-      - name: Create Git tag for release
-        id: tag_step
+      - name: Extract version from pubspec.yaml
+        id: extract_version
         run: |
-          VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+          echo "VERSION=$version" >> $GITHUB_ENV
+
+      - name: Check if Tag Exists
+        id: check_tag
+        run: |
+          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
+
+      - name: Modify Tag
+        if: env.TAG_EXISTS == 'true'
+        id: modify_tag
+        run: |
+          new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
+          echo "VERSION=$new_version" >> $GITHUB_ENV
+
+      - name: Create Git tag
+        id: create_tag
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "v$VERSION" -m "Release v$VERSION"
-          git push origin "v$VERSION"
+          git tag -a "v${VERSION}" -m "Release v${VERSION}"
+          git push origin "v${VERSION}"
+
+      # - name: Create Git tag for release
+      #   id: tag_step
+      #   run: |
+      #     version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+      #     echo "VERSION=$version" >> $GITHUB_ENV
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     git tag -a "v$version" -m "Release v$version"
+      #     git push origin "v$version"
 
 # stages:
 #   - build
