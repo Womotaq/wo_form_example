@@ -1,0 +1,7 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    uses: Womotaq/github-actions/flutter_deploy_web.yaml@refs/tags/v1.0.0

@@ -1,0 +1,104 @@
+# name: CI / CD
+
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#   push: # TODO : disallow push to main
+#     branches:
+#       - main
+
+# # https://medium.com/@colonal/automating-flutter-builds-and-releases-with-github-actions-77ccf4a1ccdd
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest # macos-latest if needing an ios build
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       # For android builds
+#       # Duration: ~3 minutes
+#       # - name: Set Up Java
+#       #   uses: actions/setup-java@v3.12.0
+#       #   with:
+#       #     distribution: "oracle"
+#       #     java-version: "17"
+
+#       - name: Set up Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           channel: "stable"
+
+#       - name: Install dependencies
+#         run: flutter pub get
+
+#       - name: Create dotenv file
+#         run: echo "${{ secrets.DOTENV_FILE }}" > dotenv
+
+#       - name: Update wo_form version file
+#         run: dart lib/wo_form_version/generate_version.dart
+
+#       - name: Build Flutter Web
+#         run: flutter build web
+
+#       - name: Upload build artifacts
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: web-build
+#           path: build/web
+
+#   deploy:
+#     runs-on: ubuntu-latest
+#     needs: build
+#     if: github.event_name == 'push'
+#     steps:
+#       - name: Download build artifacts
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: web-build
+#           path: build/web
+
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Deploy to Firebase Hosting
+#         uses: FirebaseExtended/action-hosting-deploy@v0
+#         with:
+#           repoToken: "${{ secrets.GITHUB_TOKEN }}"
+#           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+#           channelId: live
+#           projectId: "${{ env.FIREBASE_PROJECT_ID }}"
+#         env:
+#           FIREBASE_CLI_EXPERIMENTS: webframeworks
+
+#       - name: Extract version from pubspec.yaml
+#         id: extract_version
+#         run: |
+#           version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+#           echo "VERSION=$version" >> $GITHUB_ENV
+
+#       - name: Check if Tag Exists
+#         id: check_tag
+#         run: |
+#           git fetch --tags
+#           if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+#             echo "exists=true" >> $GITHUB_OUTPUT
+#           else
+#             echo "exists=false" >> $GITHUB_OUTPUT
+#           fi
+
+#       - name: Modify Tag
+#         if: steps.check_tag.outputs.exists == 'true'
+#         id: modify_tag
+#         run: |
+#           new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
+#           echo "VERSION=$new_version" >> $GITHUB_ENV
+
+#       - name: Create Git tag
+#         id: create_tag
+#         run: |
+#           git config user.name "github-actions[bot]"
+#           git config user.email "github-actions[bot]@users.noreply.github.com"
+#           git tag -a "v${VERSION}" -m "Release v${VERSION}"
+#           git push origin "v${VERSION}"

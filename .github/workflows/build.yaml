@@ -1,0 +1,7 @@
+name: Build
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  deploy:
+    uses: Womotaq/github-actions/flutter_checks.yaml@refs/tags/v1.0.0
