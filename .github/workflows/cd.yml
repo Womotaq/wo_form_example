@@ -1,4 +1,4 @@
-name: Build and Deploy to wo-form.womotaq.com
+name: CI / CD
 
 on:
   pull_request:
@@ -58,6 +58,9 @@ jobs:
         with:
           name: web-build
           path: build/web
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
