@@ -28,6 +28,19 @@ class WoFormExamplesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   theme: ThemeData(
+    //     primarySwatch: Colors.blue,
+    //   ),
+    //   home: Scaffold(
+    //     appBar: AppBar(
+    //       title: Text('Crop Your Image Demo'),
+    //     ),
+    //     body: CropSample(),
+    //   ),
+    // );
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
