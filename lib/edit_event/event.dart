@@ -9,7 +9,7 @@ abstract class EventModel with _$EventModel {
     required String title,
     required DateTime start,
     required DateTime finish,
-    String? address,
+    AddressModel? address,
   }) = _EventModel;
 }
 
@@ -19,7 +19,6 @@ abstract class AddressModel with _$AddressModel {
   @Assert('longitude >= -180 && longitude <= 180', 'invalid longitude')
   factory AddressModel({
     required String name,
-    required String geohash,
     required double latitude,
     required double longitude,
   }) = _AddressModel;

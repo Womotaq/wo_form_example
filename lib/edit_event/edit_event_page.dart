@@ -64,11 +64,14 @@ class EditEventPage extends StatelessWidget {
         ),
         StringInput(
           id: 'address',
-          initialValue: event.address,
+          initialValue: event.address?.name,
+          placeAutocompleteSettings: const PlaceAutocompleteSettings(
+            type: PlaceType.address,
+            countries: [IsoCode.FR],
+            includeLatLng: false,
+          ),
           uiSettings: const StringInputUiSettings(
             labelText: 'Address',
-            placeAutocompleteType: PlaceType.address,
-            placeAutocompleteCountries: ['fr'],
             action: StringFieldAction.clear,
           ),
         ),
@@ -105,14 +108,35 @@ class EditEventPage extends StatelessWidget {
         ),
       ],
       onSubmitting: (form, values) async {
+        final addressName = values['/address'] as String?;
+        final AddressModel? address;
+        if (addressName == event.address?.name) {
+          address = event.address;
+        } else if (addressName == null) {
+          address = null;
+        } else {
+          final latitude = values['/address+latitude'] as double?;
+          final longitude = values['/address+longitude'] as double?;
+          if (latitude == null || longitude == null) {
+            throw Exception('The coordinates of the address are unknown');
+          }
+          address = AddressModel(
+            name: addressName,
+            latitude: latitude,
+            longitude: longitude,
+          );
+          print(address);
+        }
+
         final edittedEvent = event.copyWith(
           title: values['/title'] as String,
-          address: values['/address'] as String?,
+          address: address,
           start: values['/start'] as DateTime,
           finish: values['/finish'] as DateTime,
         );
         eventsCubit.update(event: edittedEvent);
       },
+      // onSubmitSuccess: showJsonDialog,
       onSubmitSuccess: (context) => Navigator.of(context).pop(),
     );
   }

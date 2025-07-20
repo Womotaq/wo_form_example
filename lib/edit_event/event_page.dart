@@ -28,18 +28,22 @@ class EventsPage extends StatelessWidget {
             title: 'Semi-final',
             start: DateTime(2024, 08, 12, 17, 30),
             finish: DateTime(2024, 08, 12, 19, 30),
-            address: '24 Rue du Commandant Guilbaud, 75016 Paris',
+            address: AddressModel(
+              name: 'Champs-Élysées, Paris, France',
+              latitude: 48.8696375,
+              longitude: 2.3083137,
+            ),
           ),
           EventModel(
             id: 'apojfzmomzeofhoe',
             title: 'Final',
             start: DateTime(2025, 09, 12, 17, 30),
             finish: DateTime(2025, 09, 12, 19, 30),
-            address:
-                // AddressModel(
-                //   name:
-                '24 Rue du Commandant Guilbaud, 75016 Paris',
-            // ),
+            address: AddressModel(
+              name: 'Champs-Élysées, Paris, France',
+              latitude: 48.8696375,
+              longitude: 2.3083137,
+            ),
           ),
         ],
       ),
@@ -128,10 +132,10 @@ class EventCard extends StatelessWidget {
                     '${timeFormat.format(event.finish)}',
                   ),
                 ),
-                if ((event.address ?? '').isNotEmpty)
+                if (event.address != null)
                   ListTile(
                     leading: const Icon(Icons.location_on),
-                    title: Text(event.address!),
+                    title: Text(event.address!.name),
                   ),
               ],
             ),
