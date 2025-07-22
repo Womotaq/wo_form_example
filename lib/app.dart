@@ -1,7 +1,7 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/dynamic_form/dynamic_form_page.dart';
 import 'package:wo_form_example/edit_event/event_page.dart';
@@ -28,19 +28,6 @@ class WoFormExamplesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   debugShowCheckedModeBanner: false,
-    //   theme: ThemeData(
-    //     primarySwatch: Colors.blue,
-    //   ),
-    //   home: Scaffold(
-    //     appBar: AppBar(
-    //       title: Text('Crop Your Image Demo'),
-    //     ),
-    //     body: CropSample(),
-    //   ),
-    // );
-
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
@@ -74,6 +61,9 @@ class WoFormExamplesApp extends StatelessWidget {
             permissionService: context.read(),
           ),
         ),
+        RepositoryProvider<PlaceRepository>(
+          create: (context) => PlaceRepositoryImpl(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -87,11 +77,7 @@ class WoFormExamplesApp extends StatelessWidget {
             return WoFormTheme(
               data: context.watch<ShowCustomThemeCubit>().state
                   ? ShowCustomThemeCubit.customTheme
-                  : WoFormThemeData(
-                      googleAPIKey: kDebugMode
-                          ? dotenv.env['GOOGLE_API_KEY_WEB_DEBUG']
-                          : dotenv.env['GOOGLE_API_KEY_WEB'],
-                    ),
+                  : const WoFormThemeData(),
               child: MaterialApp(
                 navigatorKey: App.navigatorKey,
                 debugShowCheckedModeBanner: false,
@@ -280,4 +266,25 @@ class HomePage extends StatelessWidget {
 class App {
   static final navigatorKey = GlobalKey<NavigatorState>();
   static BuildContext get context => navigatorKey.currentContext!;
+}
+
+class PlaceRepositoryImpl extends PlaceRepository {
+  PlaceRepositoryImpl() {
+    if (kDebugMode) _callable.useFunctionsEmulator('localhost', 5001);
+  }
+  final FirebaseFunctions _callable =
+      FirebaseFunctions.instanceFor(region: 'europe-west1');
+
+  @override
+  Future<PlacesAutocompleteResponse> getPlacePredictions(String input) =>
+      _callable
+          .httpsCallable('requestedPlacePredictions')
+          .call<Map<String, dynamic>>({'input': input}).then(
+              (response) => PlacesAutocompleteResponse.fromJson(response.data));
+
+  @override
+  Future<PlaceDetailsResponse> getPlaceDetails(String placeId) => _callable
+      .httpsCallable('requestedPlaceDetails')
+      .call<Map<String, dynamic>>({'placeId': placeId}).then(
+          (response) => PlaceDetailsResponse.fromJson(response.data));
 }

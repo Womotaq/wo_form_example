@@ -68,7 +68,7 @@ class EditEventPage extends StatelessWidget {
           placeAutocompleteSettings: const PlaceAutocompleteSettings(
             type: PlaceType.address,
             countries: [IsoCode.FR],
-            includeLatLng: false,
+            // includeDetails: false,
           ),
           uiSettings: const StringInputUiSettings(
             labelText: 'Address',
@@ -115,8 +115,9 @@ class EditEventPage extends StatelessWidget {
         } else if (addressName == null) {
           address = null;
         } else {
-          final latitude = values['/address+latitude'] as double?;
-          final longitude = values['/address+longitude'] as double?;
+          final details = values['/address+details'] as PlaceDetails?;
+          final latitude = details?.latitude;
+          final longitude = details?.longitude;
           if (latitude == null || longitude == null) {
             throw Exception('The coordinates of the address are unknown');
           }

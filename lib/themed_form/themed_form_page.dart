@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wo_form/wo_form.dart';
 
 // TODO : upgrade
@@ -25,9 +23,6 @@ class ShowCustomThemeCubit extends Cubit<bool> {
         content: Text(status.error.toString()),
       ),
     ),
-    googleAPIKey: kDebugMode
-        ? dotenv.env['GOOGLE_API_KEY_WEB_DEBUG']
-        : dotenv.env['GOOGLE_API_KEY_WEB'],
   );
 }
 
