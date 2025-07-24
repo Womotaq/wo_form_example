@@ -1,9 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wo_form_example/app.dart';
+import 'package:wo_form_example/firebase_options.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: 'dotenv');
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const WoFormExamplesApp());
 }

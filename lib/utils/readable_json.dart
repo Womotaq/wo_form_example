@@ -34,7 +34,15 @@ String readableJson(dynamic json, {int indentStep = 4}) {
   var insideString = false;
   var lastChar = '';
 
-  for (final char in jsonEncode(json).characters) {
+  for (final char in jsonEncode(
+    json,
+    toEncodable: (nonEncodable) {
+      if (nonEncodable is DateTime) {
+        return nonEncodable.toIso8601String();
+      }
+      throw UnsupportedError('Cannot convert to JSON: $nonEncodable');
+    },
+  ).characters) {
     if (!insideString && (char == '}' || char == ']')) {
       indent -= indentStep;
       buffer.write('\n${' ' * indent}');

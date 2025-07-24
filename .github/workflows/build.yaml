@@ -1,0 +1,11 @@
+name: Build
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    uses: Womotaq/github_actions/.github/workflows/flutter_checks.yaml@main
+    secrets:
+      FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}

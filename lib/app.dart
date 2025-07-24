@@ -1,12 +1,15 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/dynamic_form/dynamic_form_page.dart';
 import 'package:wo_form_example/edit_event/event_page.dart';
 import 'package:wo_form_example/form_creator/form_creator_page.dart';
 import 'package:wo_form_example/from_json/from_json_page.dart';
+import 'package:wo_form_example/medias_form/media_service_impl.dart';
+import 'package:wo_form_example/medias_form/medias_form_page.dart';
+import 'package:wo_form_example/medias_form/permission_service_impl.dart';
 import 'package:wo_form_example/profile_creation/profile_creation.dart';
 import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
@@ -25,13 +28,6 @@ class WoFormExamplesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (dotenv.env['GOOGLE_API_KEY_WEB']?.isEmpty ?? true) {
-      print(
-        'Warning: GOOGLE_API_KEY is not set. '
-        'Some features may not work correctly.',
-      );
-    }
-
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
@@ -57,6 +53,17 @@ class WoFormExamplesApp extends StatelessWidget {
           ),
         ),
         RepositoryProvider(create: (context) => const DateTimeService()),
+        RepositoryProvider<PermissionService>(
+          create: (context) => const PermissionServiceImpl(),
+        ),
+        RepositoryProvider<MediaService>(
+          create: (context) => MediaServiceImpl(
+            permissionService: context.read(),
+          ),
+        ),
+        RepositoryProvider<PlaceRepository>(
+          create: (context) => PlaceRepositoryImpl(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -70,12 +77,9 @@ class WoFormExamplesApp extends StatelessWidget {
             return WoFormTheme(
               data: context.watch<ShowCustomThemeCubit>().state
                   ? ShowCustomThemeCubit.customTheme
-                  : WoFormThemeData(
-                      googleAPIKey: kDebugMode
-                          ? dotenv.env['GOOGLE_API_KEY_WEB_DEBUG']
-                          : dotenv.env['GOOGLE_API_KEY_WEB'],
-                    ),
+                  : const WoFormThemeData(),
               child: MaterialApp(
+                navigatorKey: App.navigatorKey,
                 debugShowCheckedModeBanner: false,
                 title: 'WoForm Examples',
                 theme: ThemeData(
@@ -235,6 +239,13 @@ class HomePage extends StatelessWidget {
               subtitle: const Text('Via un fichier JSON'),
               trailing: const Icon(Icons.chevron_right),
             ),
+            ListTile(
+              onTap: () => context.pushPage(const MediasFormPage()),
+              leading: const Icon(Icons.image),
+              title: const Text('Upload images'),
+              subtitle: const Text('Customizable & easy'),
+              trailing: const Icon(Icons.chevron_right),
+            ),
             const SizedBox(height: 32),
             BlocBuilder<ShowCustomThemeCubit, bool>(
               builder: (context, showCustomTheme) {
@@ -250,4 +261,30 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+class App {
+  static final navigatorKey = GlobalKey<NavigatorState>();
+  static BuildContext get context => navigatorKey.currentContext!;
+}
+
+class PlaceRepositoryImpl extends PlaceRepository {
+  PlaceRepositoryImpl() {
+    if (kDebugMode) _callable.useFunctionsEmulator('localhost', 5001);
+  }
+  final FirebaseFunctions _callable =
+      FirebaseFunctions.instanceFor(region: 'europe-west1');
+
+  @override
+  Future<PlacesAutocompleteResponse> getPlacePredictions(String input) =>
+      _callable
+          .httpsCallable('requestedPlacePredictions')
+          .call<Map<String, dynamic>>({'input': input}).then(
+              (response) => PlacesAutocompleteResponse.fromJson(response.data));
+
+  @override
+  Future<PlaceDetailsResponse> getPlaceDetails(String placeId) => _callable
+      .httpsCallable('requestedPlaceDetails')
+      .call<Map<String, dynamic>>({'placeId': placeId}).then(
+          (response) => PlaceDetailsResponse.fromJson(response.data));
 }

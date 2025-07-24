@@ -1,6 +1,5 @@
-// dart format width=80
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -19,7 +18,7 @@ mixin _$EventModel {
   String get title;
   DateTime get start;
   DateTime get finish;
-  String? get address;
+  AddressModel? get address;
 
   /// Create a copy of EventModel
   /// with the given fields replaced by the non-null parameter values.
@@ -61,7 +60,9 @@ abstract mixin class $EventModelCopyWith<$Res> {
       String title,
       DateTime start,
       DateTime finish,
-      String? address});
+      AddressModel? address});
+
+  $AddressModelCopyWith<$Res>? get address;
 }
 
 /// @nodoc
@@ -102,8 +103,188 @@ class _$EventModelCopyWithImpl<$Res> implements $EventModelCopyWith<$Res> {
       address: freezed == address
           ? _self.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as AddressModel?,
     ));
+  }
+
+  /// Create a copy of EventModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressModelCopyWith<$Res>? get address {
+    if (_self.address == null) {
+      return null;
+    }
+
+    return $AddressModelCopyWith<$Res>(_self.address!, (value) {
+      return _then(_self.copyWith(address: value));
+    });
+  }
+}
+
+/// Adds pattern-matching-related methods to [EventModel].
+extension EventModelPatterns on EventModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_EventModel value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _EventModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_EventModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _EventModel():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_EventModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _EventModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String id, String title, DateTime start, DateTime finish,
+            AddressModel? address)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _EventModel() when $default != null:
+        return $default(
+            _that.id, _that.title, _that.start, _that.finish, _that.address);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String id, String title, DateTime start, DateTime finish,
+            AddressModel? address)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _EventModel():
+        return $default(
+            _that.id, _that.title, _that.start, _that.finish, _that.address);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(String id, String title, DateTime start, DateTime finish,
+            AddressModel? address)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _EventModel() when $default != null:
+        return $default(
+            _that.id, _that.title, _that.start, _that.finish, _that.address);
+      case _:
+        return null;
+    }
   }
 }
 
@@ -126,7 +307,7 @@ class _EventModel implements EventModel {
   @override
   final DateTime finish;
   @override
-  final String? address;
+  final AddressModel? address;
 
   /// Create a copy of EventModel
   /// with the given fields replaced by the non-null parameter values.
@@ -171,7 +352,10 @@ abstract mixin class _$EventModelCopyWith<$Res>
       String title,
       DateTime start,
       DateTime finish,
-      String? address});
+      AddressModel? address});
+
+  @override
+  $AddressModelCopyWith<$Res>? get address;
 }
 
 /// @nodoc
@@ -212,15 +396,28 @@ class __$EventModelCopyWithImpl<$Res> implements _$EventModelCopyWith<$Res> {
       address: freezed == address
           ? _self.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as AddressModel?,
     ));
+  }
+
+  /// Create a copy of EventModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressModelCopyWith<$Res>? get address {
+    if (_self.address == null) {
+      return null;
+    }
+
+    return $AddressModelCopyWith<$Res>(_self.address!, (value) {
+      return _then(_self.copyWith(address: value));
+    });
   }
 }
 
 /// @nodoc
 mixin _$AddressModel {
   String get name;
-  String get geohash;
   double get latitude;
   double get longitude;
 
@@ -238,7 +435,6 @@ mixin _$AddressModel {
         (other.runtimeType == runtimeType &&
             other is AddressModel &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.geohash, geohash) || other.geohash == geohash) &&
             (identical(other.latitude, latitude) ||
                 other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
@@ -246,12 +442,11 @@ mixin _$AddressModel {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, geohash, latitude, longitude);
+  int get hashCode => Object.hash(runtimeType, name, latitude, longitude);
 
   @override
   String toString() {
-    return 'AddressModel(name: $name, geohash: $geohash, latitude: $latitude, longitude: $longitude)';
+    return 'AddressModel(name: $name, latitude: $latitude, longitude: $longitude)';
   }
 }
 
@@ -261,7 +456,7 @@ abstract mixin class $AddressModelCopyWith<$Res> {
           AddressModel value, $Res Function(AddressModel) _then) =
       _$AddressModelCopyWithImpl;
   @useResult
-  $Res call({String name, String geohash, double latitude, double longitude});
+  $Res call({String name, double latitude, double longitude});
 }
 
 /// @nodoc
@@ -277,7 +472,6 @@ class _$AddressModelCopyWithImpl<$Res> implements $AddressModelCopyWith<$Res> {
   @override
   $Res call({
     Object? name = null,
-    Object? geohash = null,
     Object? latitude = null,
     Object? longitude = null,
   }) {
@@ -285,10 +479,6 @@ class _$AddressModelCopyWithImpl<$Res> implements $AddressModelCopyWith<$Res> {
       name: null == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      geohash: null == geohash
-          ? _self.geohash
-          : geohash // ignore: cast_nullable_to_non_nullable
               as String,
       latitude: null == latitude
           ? _self.latitude
@@ -302,21 +492,174 @@ class _$AddressModelCopyWithImpl<$Res> implements $AddressModelCopyWith<$Res> {
   }
 }
 
+/// Adds pattern-matching-related methods to [AddressModel].
+extension AddressModelPatterns on AddressModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_AddressModel value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _AddressModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_AddressModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _AddressModel():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_AddressModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _AddressModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String name, double latitude, double longitude)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _AddressModel() when $default != null:
+        return $default(_that.name, _that.latitude, _that.longitude);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String name, double latitude, double longitude) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _AddressModel():
+        return $default(_that.name, _that.latitude, _that.longitude);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(String name, double latitude, double longitude)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _AddressModel() when $default != null:
+        return $default(_that.name, _that.latitude, _that.longitude);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
 class _AddressModel implements AddressModel {
   _AddressModel(
-      {required this.name,
-      required this.geohash,
-      required this.latitude,
-      required this.longitude})
+      {required this.name, required this.latitude, required this.longitude})
       : assert(latitude >= -90 && latitude <= 90, 'invalid latitude'),
         assert(longitude >= -180 && longitude <= 180, 'invalid longitude');
 
   @override
   final String name;
-  @override
-  final String geohash;
   @override
   final double latitude;
   @override
@@ -336,7 +679,6 @@ class _AddressModel implements AddressModel {
         (other.runtimeType == runtimeType &&
             other is _AddressModel &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.geohash, geohash) || other.geohash == geohash) &&
             (identical(other.latitude, latitude) ||
                 other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
@@ -344,12 +686,11 @@ class _AddressModel implements AddressModel {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, geohash, latitude, longitude);
+  int get hashCode => Object.hash(runtimeType, name, latitude, longitude);
 
   @override
   String toString() {
-    return 'AddressModel(name: $name, geohash: $geohash, latitude: $latitude, longitude: $longitude)';
+    return 'AddressModel(name: $name, latitude: $latitude, longitude: $longitude)';
   }
 }
 
@@ -361,7 +702,7 @@ abstract mixin class _$AddressModelCopyWith<$Res>
       __$AddressModelCopyWithImpl;
   @override
   @useResult
-  $Res call({String name, String geohash, double latitude, double longitude});
+  $Res call({String name, double latitude, double longitude});
 }
 
 /// @nodoc
@@ -378,7 +719,6 @@ class __$AddressModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? name = null,
-    Object? geohash = null,
     Object? latitude = null,
     Object? longitude = null,
   }) {
@@ -386,10 +726,6 @@ class __$AddressModelCopyWithImpl<$Res>
       name: null == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      geohash: null == geohash
-          ? _self.geohash
-          : geohash // ignore: cast_nullable_to_non_nullable
               as String,
       latitude: null == latitude
           ? _self.latitude

@@ -48,6 +48,8 @@ app.*.map.json
 **/firebase_options.dart
 .firebase/
 firebase-service-account.json
+GoogleService-Info.plist
+google-services.json
 
 # Secrets
 .env
