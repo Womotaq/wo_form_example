@@ -4,4 +4,4 @@ on:
     branches: [main]
 jobs:
   deploy:
-    uses: Womotaq/github_actions/.github/workflows/flutter_checks.yaml@main
+    uses: Womotaq/github_actions/.github/workflows/flutter_checks.yaml@refs/tags/v1.0.0
