@@ -4,11 +4,6 @@ on:
     branches: [main]
 jobs:
   deploy:
-    # uses: Womotaq/github_actions/.github/workflows/flutter_checks.yaml@main
-    # secrets:
-    #   FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
-    runs-on: ubuntu-latest # macos-latest if needing an ios build
-
-    steps:
-      - name: Debug Secret Length
-        run: echo "Secret is ${{ secrets.FIREBASE_OPTIONS_DART }}"
+    uses: Womotaq/github_actions/.github/workflows/flutter_checks.yaml@main
+    secrets:
+      FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
