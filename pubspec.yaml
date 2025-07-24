@@ -38,4 +38,3 @@ flutter:
   generate: true
   assets:
     - assets/
-    - dotenv

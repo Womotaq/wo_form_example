@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: analyzer
-      sha256: b1ade5707ab7a90dfd519eaac78a7184341d19adb6096c68d499b59c7c6cf880
+      sha256: "974859dc0ff5f37bc4313244b3218c791810d03ab3470a579580279ba971a48d"
       url: "https://pub.dev"
     source: hosted
-    version: "7.7.0"
+    version: "7.7.1"
   archive:
     dependency: transitive
     description:
@@ -1277,9 +1277,11 @@ packages:
   wo_form:
     dependency: "direct main"
     description:
-      path: "../wo_form"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: e017a2f08ce321d9411da482dabe53bd94f36e0d
+      url: "https://github.com/Womotaq/wo_form.git"
+    source: git
     version: "1.4.0"
   xdg_directories:
     dependency: transitive
