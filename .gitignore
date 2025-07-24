@@ -49,6 +49,7 @@ app.*.map.json
 .firebase/
 firebase-service-account.json
 GoogleService-Info.plist
+google-services.json
 
 # Secrets
 .env
