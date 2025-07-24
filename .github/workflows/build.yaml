@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build_using_flutter_checks:
+  build:
     uses: Womotaq/github_actions/.github/workflows/flutter_checks.yaml@main
     secrets:
       FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
