@@ -7,3 +7,6 @@ jobs:
     uses: Womotaq/github_actions/.github/workflows/flutter_checks.yaml@main
     secrets:
       FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+    steps:
+      - name: Debug Secret Length
+        run: echo "Secret length is ${{ secrets.FIREBASE_OPTIONS_DART | length }}"
