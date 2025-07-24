@@ -9,4 +9,4 @@ jobs:
     #   FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
     steps:
       - name: Debug Secret Length
-        run: echo "Secret length is ${{ secrets.FIREBASE_OPTIONS_DART | length }}"
+        run: echo "Secret is ${{ secrets.FIREBASE_OPTIONS_DART }}"
