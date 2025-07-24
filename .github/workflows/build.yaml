@@ -1,7 +1,9 @@
 name: Build
+
 on:
   pull_request:
     branches: [main]
+
 jobs:
   deploy:
     uses: Womotaq/github_actions/.github/workflows/flutter_checks.yaml@main
