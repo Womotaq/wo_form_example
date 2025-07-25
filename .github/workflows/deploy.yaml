@@ -7,4 +7,6 @@ on:
 jobs:
   deploy:
     uses: Womotaq/github_actions/.github/workflows/flutter_deploy_web.yaml@main
+    with:
+      pre_build_command: "dart lib/wo_form_version/generate_version.dart"
     secrets: inherit
