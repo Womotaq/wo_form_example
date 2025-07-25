@@ -1,12 +1,10 @@
 name: Deploy
 
 on:
-  pull_requests:
+  pull_request:
     branches: [main]
 
 jobs:
   deploy:
     uses: Womotaq/github_actions/.github/workflows/flutter_deploy_web.yaml@main
-    secrets:
-      FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
-      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+    secrets: inherit
