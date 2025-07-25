@@ -1277,11 +1277,9 @@ packages:
   wo_form:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: e017a2f08ce321d9411da482dabe53bd94f36e0d
-      url: "https://github.com/Womotaq/wo_form.git"
-    source: git
+      path: "../wo_form"
+      relative: true
+    source: path
     version: "1.4.0"
   xdg_directories:
     dependency: transitive
