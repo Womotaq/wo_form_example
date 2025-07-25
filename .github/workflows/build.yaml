@@ -5,7 +5,9 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    uses: Womotaq/github_actions/.github/workflows/flutter_checks.yaml@v1.0.0
+  call-flutter_build:
+    uses: Womotaq/github_actions/.github/workflows/flutter_build.yaml@v1.0.0
+    with:
+      pre_build_command: "dart lib/wo_form_version/generate_version.dart"
     secrets:
       FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
