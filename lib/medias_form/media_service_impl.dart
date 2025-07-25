@@ -37,9 +37,6 @@ class MediaServiceImpl extends MediaService {
   }
 
   @override
-  BuildContext getAppContext() => App.context;
-
-  @override
   CropLocalizations getCropLocalizations(BuildContext context) => (
         title: 'Cropping',
         cancel: 'Cancel',
@@ -57,7 +54,7 @@ class MediaServiceImpl extends MediaService {
     if (methods.length == 1) return methods.first;
 
     return _tilesDialog<MediaImportMethod>(
-      context: getAppContext(),
+      context: App.context,
       tiles: (context) => methods
           .map(
             (importMethod) => ListTile(
