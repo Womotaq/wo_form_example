@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wo_form/wo_form.dart';
-import 'package:wo_form_example/app.dart';
 import 'package:wo_form_example/medias_form/media_viewer.dart';
+import 'package:wo_form_example/utils/app.dart';
 
 class MediaServiceImpl extends MediaService {
   const MediaServiceImpl({required super.permissionService});
@@ -68,20 +68,20 @@ class MediaServiceImpl extends MediaService {
                   MediaImportMethodUrl() => 'Type an url',
                   MediaImportMethodPickMedias(source: final source) => switch (
                         source) {
-                      MediaPickSource.gallery => 'Library',
-                      MediaPickSource.camera
+                      ImageSource.gallery => 'Library',
+                      ImageSource.camera
                           when importSettings.preferFrontCamera =>
                         'Take a selfie',
-                      MediaPickSource.camera
+                      ImageSource.camera
                           when importSettings.type != MediaType.imageOrVideo =>
                         'Camera',
-                      MediaPickSource.camera
+                      ImageSource.camera
                           when importMethod.type == MediaType.image =>
                         'Take a photo',
-                      MediaPickSource.camera
+                      ImageSource.camera
                           when importMethod.type == MediaType.video =>
                         'Take a video',
-                      MediaPickSource.camera => 'Camera',
+                      ImageSource.camera => 'Camera',
                     },
                 },
               ),

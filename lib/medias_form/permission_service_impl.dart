@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wo_form/wo_form.dart';
-import 'package:wo_form_example/app.dart';
+import 'package:wo_form_example/utils/app.dart';
 
 class PermissionServiceImpl extends PermissionService {
   const PermissionServiceImpl();
