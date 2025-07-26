@@ -53,8 +53,8 @@ class WoFormExamplesApp extends StatelessWidget {
           ),
         ),
         RepositoryProvider(create: (context) => const DateTimeService()),
-        RepositoryProvider<PermissionService>(
-          create: (context) => const PermissionServiceImpl(),
+        RepositoryProvider<PermissionServiceMixin>(
+          create: (context) => const PermissionService(),
         ),
         RepositoryProvider<MediaService>(
           create: (context) => MediaServiceImpl(

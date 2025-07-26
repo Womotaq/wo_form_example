@@ -1,50 +1,89 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/utils/app.dart';
 
-class PermissionServiceImpl extends PermissionService {
-  const PermissionServiceImpl();
+class PermissionService with PermissionServiceMixin {
+  const PermissionService();
 
-  @override
-  Future<bool> requirePhotos() async {
-    switch (await Permission.photos.request()) {
-      case PermissionStatus.denied: // The user just denied the permission
-      case PermissionStatus.restricted: // The OS denies the permission
+  Future<bool> _requirePermission(Permission permission) async {
+    ///
+    if (kIsWeb && permission == Permission.photos) return true;
+
+    var status = await permission.status;
+
+    if (status.isDenied) {
+      status = await permission.request();
+    }
+
+    switch (status) {
+      /// The user declined again the permission
+      case PermissionStatus.denied:
         return false;
+
+      /// The user granted full or partial permission
       case PermissionStatus.granted:
       case PermissionStatus.limited:
       case PermissionStatus.provisional:
         return true;
+
+      /// The user strongly denied or the os denied permission
       case PermissionStatus.permanentlyDenied:
-        // The user already denied the permission
-        showInsufficientPermissionSnackBar(
-          title: "Veuillez acccorder l'accès à vos photos.",
-        );
+      case PermissionStatus.restricted:
+        showInsufficientPermissionDialog(permission);
         return false;
     }
   }
 
   @override
-  Future<bool> requireCamera() async {
-    switch (await Permission.camera.request()) {
-      case PermissionStatus.denied: // The user just denied the permission
-      case PermissionStatus.restricted: // The OS denies the permission
-        return false;
-      case PermissionStatus.granted:
-      case PermissionStatus.limited:
-      case PermissionStatus.provisional:
-        return true;
-      case PermissionStatus.permanentlyDenied:
-        // The user already denied the permission
-        showInsufficientPermissionSnackBar(
-          title: "Veuillez acccorder l'accès à votre appareil photo.",
-        );
-        return false;
-    }
-  }
+  Future<bool> requirePhotos() => _requirePermission(Permission.photos);
 
-  void showInsufficientPermissionSnackBar({required String title}) =>
-      ScaffoldMessenger.of(App.context)
-          .showSnackBar(SnackBar(content: Text(title)));
+  @override
+  Future<bool> requireCamera() => _requirePermission(Permission.camera);
+
+  /// Show this dialog when a permission has to be modified
+  /// from the app settings
+  // void showInsufficientPermissionDialog(Permission permission) =>
+  //     ScaffoldMessenger.of(App.context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(
+  //           switch (permission) {
+  //             Permission.camera =>
+  //               "Veuillez acccorder l'accès à votre appareil photo.",
+  //             Permission.photos => "Veuillez acccorder l'accès à vos photos.",
+  //             _ => 'Veuillez accorder cette permission.',
+  //           },
+  //         ),
+  //       ),
+  //     );
 }
+
+void showInsufficientPermissionDialog(Permission permission) =>
+    showDialog<void>(
+      context: App.context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Permission Required'),
+          content: const Text(
+            'To use this feature, permission access is required. '
+            'Please enable it in your app settings.',
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Open Settings'),
+              onPressed: () {
+                openAppSettings(); // Opens app settings for the user
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
