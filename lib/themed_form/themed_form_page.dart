@@ -274,16 +274,14 @@ class CustomInputsNodeExpander extends StatelessWidget {
                     style: theme.textTheme.labelMedium,
                   )
                 : null,
-        children: data.input.children
-            .map(
-              (i) => Padding(
-                padding: EdgeInsets.only(
-                  bottom: WoFormTheme.of(context)?.verticalSpacing ?? 0,
-                ),
-                child: i.toWidget(parentPath: data.path),
-              ),
-            )
-            .toList(),
+        children: [
+          Column(
+            spacing: WoFormTheme.of(context)?.verticalSpacing ?? 0,
+            children: data.input.children
+                .map((i) => i.toWidget(parentPath: data.path))
+                .toList(),
+          ),
+        ],
       ),
     );
   }

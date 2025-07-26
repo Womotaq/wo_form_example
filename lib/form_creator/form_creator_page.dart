@@ -237,10 +237,11 @@ class _JsonClipboarderState extends State<JsonClipboarder> {
                 ),
               ),
             );
+            if (!context.mounted) return;
             setState(() => copied = true);
             Future.delayed(
               const Duration(seconds: 4),
-              () => setState(() => copied = false),
+              () => context.mounted ? setState(() => copied = false) : null,
             );
           },
           leading: copied ? const Icon(Icons.check) : const Icon(Icons.copy),

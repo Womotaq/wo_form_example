@@ -1,5 +1,3 @@
-import 'package:cloud_functions/cloud_functions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
@@ -14,7 +12,9 @@ import 'package:wo_form_example/profile_creation/profile_creation.dart';
 import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
+import 'package:wo_form_example/utils/app.dart';
 import 'package:wo_form_example/utils/extensions.dart';
+import 'package:wo_form_example/utils/place_repository_impl.dart';
 import 'package:wo_form_example/wo_form_version/generated_version.dart';
 
 class DarkModeCubit extends Cubit<bool> {
@@ -53,8 +53,8 @@ class WoFormExamplesApp extends StatelessWidget {
           ),
         ),
         RepositoryProvider(create: (context) => const DateTimeService()),
-        RepositoryProvider<PermissionService>(
-          create: (context) => const PermissionServiceImpl(),
+        RepositoryProvider<PermissionServiceMixin>(
+          create: (context) => const PermissionService(),
         ),
         RepositoryProvider<MediaService>(
           create: (context) => MediaServiceImpl(
@@ -261,30 +261,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-class App {
-  static final navigatorKey = GlobalKey<NavigatorState>();
-  static BuildContext get context => navigatorKey.currentContext!;
-}
-
-class PlaceRepositoryImpl extends PlaceRepository {
-  PlaceRepositoryImpl() {
-    if (kDebugMode) _callable.useFunctionsEmulator('localhost', 5001);
-  }
-  final FirebaseFunctions _callable =
-      FirebaseFunctions.instanceFor(region: 'europe-west1');
-
-  @override
-  Future<PlacesAutocompleteResponse> getPlacePredictions(String input) =>
-      _callable
-          .httpsCallable('requestedPlacePredictions')
-          .call<Map<String, dynamic>>({'input': input}).then(
-              (response) => PlacesAutocompleteResponse.fromJson(response.data));
-
-  @override
-  Future<PlaceDetailsResponse> getPlaceDetails(String placeId) => _callable
-      .httpsCallable('requestedPlaceDetails')
-      .call<Map<String, dynamic>>({'placeId': placeId}).then(
-          (response) => PlaceDetailsResponse.fromJson(response.data));
 }

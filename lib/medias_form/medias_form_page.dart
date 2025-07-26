@@ -60,12 +60,8 @@ class MediasFormPage extends StatelessWidget {
           importSettings: MediaImportSettings(
             type: MediaType.image,
             methods: [
-              MediaImportMethodPickMedias(
-                source: MediaPickSource.gallery,
-              ),
-              MediaImportMethodPickMedias(
-                source: MediaPickSource.camera,
-              ),
+              MediaImportMethodPickMedias(source: ImageSource.gallery),
+              MediaImportMethodPickMedias(source: ImageSource.camera),
             ],
           ),
           maxCount: null,
