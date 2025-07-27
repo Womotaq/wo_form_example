@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/utils/discard_changes_dialog.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
@@ -11,10 +12,10 @@ class ProfileCreationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WoForm(
       uiSettings: const WoFormUiSettings(
-        submitMode: PageByPageSubmitMode(
+        submitMode: MultiStepSubmitMode(
           submitText: 'Save my profile',
           nextText: 'Next page',
-          showProgressIndicator: false,
+          progressIndicatorBuilder: StepProgressIndicator.new,
         ),
         canQuit: showDiscardChangesDialogIfWoFormUnsaved,
       ),
@@ -139,6 +140,131 @@ class ProfileCreationPage extends StatelessWidget {
         }
       },
       onSubmitSuccess: showJsonDialog,
+    );
+  }
+}
+
+class StepProgressIndicator extends StatelessWidget {
+  const StepProgressIndicator({
+    required this.index,
+    required this.maxIndex,
+    super.key,
+  });
+
+  final int index;
+  final int maxIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // spacing: 16,
+        children: List.generate(
+          maxIndex * 2 + 1,
+          (i) {
+            final i2 = (i / 2).ceil();
+            final past = i2 < index;
+            final current = i2 == index;
+            final future = i2 > index;
+
+            return i.isEven
+                ? SizedBox(
+                    width: 100,
+                    child: Column(
+                      children: [
+                        AnimatedContainer(
+                          duration: WoFormMultiStepPage.TRANSITION_DURATION,
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: current
+                                ? colorScheme.primary
+                                : past
+                                    ? colorScheme.primaryContainer
+                                    : null,
+                            border: future
+                                ? Border.all(
+                                    color: colorScheme.onSurface.withAlpha(128),
+                                  )
+                                : null,
+                          ),
+                          child: Center(
+                            child: past
+                                ? Icon(
+                                    Icons.check,
+                                    color: colorScheme.onPrimaryContainer,
+                                    size: 16,
+                                  )
+                                : Text(
+                                    (i2 + 1).toString(),
+                                    style: TextStyle(
+                                      color: current
+                                          ? colorScheme.onPrimary
+                                          : colorScheme.onSurface
+                                              .withAlpha(128),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          switch (i2) {
+                            0 => 'Nom prénom',
+                            1 => 'Adresse',
+                            _ => 'Contact',
+                          },
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  )
+                : Expanded(
+                    child: WoOverflowBox(
+                      horizontalOverflow: 20,
+                      child: AnimatedContainer(
+                        duration: WoFormMultiStepPage.TRANSITION_DURATION,
+                        margin: const EdgeInsets.only(top: (32 - 4) / 2),
+                        height: 2,
+                        color: current
+                            ? colorScheme.primary
+                            : future
+                                ? colorScheme.onSurface.withAlpha(128)
+                                : colorScheme.primaryContainer,
+                      ),
+                    ),
+                  );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class WoOverflowBox extends StatelessWidget {
+  const WoOverflowBox({
+    required this.child,
+    required this.horizontalOverflow,
+    super.key,
+  });
+
+  final Widget child;
+  final double horizontalOverflow;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return OverflowBox(
+          maxWidth: constraints.maxWidth + horizontalOverflow * 2,
+          fit: OverflowBoxFit.deferToChild,
+          child: child,
+        );
+      },
     );
   }
 }

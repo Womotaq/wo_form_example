@@ -19,7 +19,7 @@ class QuizPage extends StatelessWidget {
       child: WoForm(
         uiSettings: WoFormUiSettings(
           titleText: 'Daily quiz',
-          submitMode: const PageByPageSubmitMode(
+          submitMode: const MultiStepSubmitMode(
             submitText: 'Done',
             nextText: 'Next',
           ),
@@ -31,7 +31,7 @@ class QuizPage extends StatelessWidget {
                       SubmitButton.new;
 
               final path = data.path;
-              if (path == null) return submitButtonBuilder(data);
+              if (path.isEmpty) return submitButtonBuilder(data);
 
               final inputIsLocked = context.select(
                 (WoFormLockCubit c) => c.inputIsLocked(path: path),
