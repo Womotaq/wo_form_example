@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/utils/discard_changes_dialog.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
@@ -20,6 +21,44 @@ class ProfileCreationPage extends StatelessWidget {
         canQuit: showDiscardChangesDialogIfWoFormUnsaved,
       ),
       children: [
+        const InputsNode(
+          id: 'birthdayPage',
+          uiSettings: InputsNodeUiSettings(
+            labelText: "On te souhaite ton anniv' ?",
+          ),
+          children: [
+            // TODO : when i set two input with the same id, they point toward the same value, but they still have their own rendeing
+            DateTimeInput(
+              id: 'birthday',
+              minDate: TodayDate(addYears: -120),
+              maxDate: TodayDate(),
+              uiSettings: DateTimeInputUiSettings(
+                labelText: 'Wich date ?',
+                labelFlex: 6,
+                editMode: DateEditMode.date,
+                dateFormat: 'yMMMd',
+                prefixIcon: Icon(Icons.calendar_month),
+              ),
+            ),
+            DateTimeInput(
+              id: 'time',
+              uiSettings: DateTimeInputUiSettings(
+                labelText: 'What hour ?',
+                labelFlex: 6,
+                editMode: DateEditMode.time,
+                prefixIcon: Icon(Icons.timer_outlined),
+              ),
+            ),
+            DateTimeInput(
+              id: 'datetime',
+              // isRequired: true,
+              uiSettings: DateTimeInputUiSettings(
+                labelText: 'Les 2 !',
+                // labelFlex: 5,
+              ),
+            ),
+          ],
+        ),
         InputsNode(
           id: 'namePage',
           uiSettings: const InputsNodeUiSettings(
@@ -116,6 +155,7 @@ class ProfileCreationPage extends StatelessWidget {
               id: 'mail',
               isRequired: true,
               regexPattern: RegexPattern.email.value,
+              initialValue: 'prefilled@company.web',
               uiSettings: StringInputUiSettings.email(
                 labelText: 'Email',
                 prefixIcon: const Icon(Icons.mail),
@@ -135,7 +175,7 @@ class ProfileCreationPage extends StatelessWidget {
         ),
       ],
       onSubmitting: (form, values) async {
-        if (values['/namePage/firstName'] == 'John') {
+        if (values.getValue('#firstName') == 'John') {
           throw ArgumentError("On t'avais dit de ne pas écrire John...");
         }
       },
@@ -172,7 +212,7 @@ class StepProgressIndicator extends StatelessWidget {
 
             return i.isEven
                 ? SizedBox(
-                    width: 100,
+                    width: 70,
                     child: Column(
                       children: [
                         AnimatedContainer(
@@ -211,21 +251,20 @@ class StepProgressIndicator extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Text(
-                          switch (i2) {
-                            0 => 'Nom prénom',
-                            1 => 'Adresse',
-                            _ => 'Contact',
-                          },
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                        Builder(builder: (context) {
+                          final id = context.read<RootNode>().children[i2].id;
+                          return Text(
+                            id.substring(0, id.length - 4).capitalized(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          );
+                        }),
                       ],
                     ),
                   )
                 : Expanded(
                     child: WoOverflowBox(
-                      horizontalOverflow: 20,
+                      horizontalOverflow: 10,
                       child: AnimatedContainer(
                         duration: WoFormMultiStepPage.TRANSITION_DURATION,
                         margin: const EdgeInsets.only(top: (32 - 4) / 2),

@@ -60,7 +60,8 @@ class EditEventPage extends StatelessWidget {
           isRequired: true,
           initialValue: FixedDateTime(date: event.start),
           uiSettings: const DateTimeInputUiSettings(
-            dateFormat: 'E, MMMM d, y',
+            dateFormat: 'E, MMM d, y',
+            prefixIcon: Icon(Icons.calendar_month),
           ),
         ),
         DateTimeInput(
@@ -82,7 +83,8 @@ class EditEventPage extends StatelessWidget {
             return null;
           },
           uiSettings: const DateTimeInputUiSettings(
-            dateFormat: 'E, MMMM d, y',
+            dateFormat: 'E, MMM d, y',
+            prefixIcon: Icon(Icons.calendar_month),
           ),
         ),
       ],
