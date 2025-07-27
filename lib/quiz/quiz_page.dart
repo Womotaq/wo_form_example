@@ -19,7 +19,10 @@ class QuizPage extends StatelessWidget {
       child: WoForm(
         uiSettings: WoFormUiSettings(
           titleText: 'Daily quiz',
-          submitMode: const PageByPageSubmitMode(submitText: 'Done'),
+          submitMode: const PageByPageSubmitMode(
+            submitText: 'Done',
+            nextText: 'Next',
+          ),
           canModifySubmittedValues: false,
           submitButtonBuilder: (data) => Builder(
             builder: (context) {
@@ -34,11 +37,7 @@ class QuizPage extends StatelessWidget {
                   ? const SizedBox.shrink()
                   : (WoFormTheme.of(context)?.submitButtonBuilder ??
                           SubmitButton.new)
-                      .call(
-                      data.pageIndex == root.children.length - 1
-                          ? data
-                          : data.copyWith(text: 'Next'),
-                    );
+                      .call(data);
             },
           ),
         ),

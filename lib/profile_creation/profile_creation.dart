@@ -12,8 +12,8 @@ class ProfileCreationPage extends StatelessWidget {
     return WoForm(
       uiSettings: const WoFormUiSettings(
         submitMode: PageByPageSubmitMode(
-          submitText: 'Save',
-          nextText: 'Next',
+          submitText: 'Save my profile',
+          nextText: 'Next page',
           showProgressIndicator: false,
         ),
         canQuit: showDiscardChangesDialogIfWoFormUnsaved,
