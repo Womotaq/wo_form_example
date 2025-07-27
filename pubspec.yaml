@@ -1,7 +1,7 @@
 name: wo_form_example
 description: "A showcase of the multiple possibilities the package wo_form offers."
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
-version: 1.0.2+4
+version: 1.0.3+5
 
 environment:
   sdk: ^3.5.4
@@ -24,8 +24,8 @@ dependencies:
 
 dependency_overrides:
   wo_form:
-    git: https://github.com/Womotaq/wo_form.git
-    # path: ../wo_form
+    # git: https://github.com/Womotaq/wo_form.git
+    path: ../wo_form
 
 dev_dependencies:
   build_runner: ^2.4.13

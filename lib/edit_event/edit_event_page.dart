@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/edit_event/event.dart';
 import 'package:wo_form_example/edit_event/event_page.dart';
+import 'package:wo_form_example/utils/discard_changes_dialog.dart';
 
 class EditEventPage extends StatelessWidget {
   const EditEventPage({
@@ -19,34 +19,13 @@ class EditEventPage extends StatelessWidget {
     final rootKey = RootKey();
     return WoForm(
       rootKey: rootKey,
-      uiSettings: WoFormUiSettings(
-        submitMode: const StandardSubmitMode(
+      uiSettings: const WoFormUiSettings(
+        submitMode: StandardSubmitMode(
           submitText: 'Save',
           disableSubmitMode: DisableSubmitButton.whenInitialOrSubmitSuccess,
           buttonPosition: SubmitButtonPosition.appBar,
         ),
-        canQuit: (context) async => context.read<WoFormValuesCubit>().isPure ||
-                context.read<WoFormStatusCubit>().state is SubmitSuccessStatus
-            ? true
-            : showDialog<bool>(
-                context: context,
-                builder: (BuildContext dialogContext) {
-                  return AlertDialog(
-                    title:
-                        const Text('Abandonner les modifications en cours ?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(dialogContext).pop(),
-                        child: const Text("Continuer d'éditer"),
-                      ),
-                      FilledButton.tonal(
-                        onPressed: () => Navigator.of(dialogContext).pop(true),
-                        child: const Text('Quitter'),
-                      ),
-                    ],
-                  );
-                },
-              ),
+        canQuit: showDiscardChangesDialogIfWoFormUnsaved,
       ),
       children: [
         WidgetNode(builder: (_) => const SizedBox(height: 32)),

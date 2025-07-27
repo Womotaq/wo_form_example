@@ -9,6 +9,7 @@ class MediasFormPage extends StatelessWidget {
     return WoForm(
       uiSettings: const WoFormUiSettings(
         titleText: 'Media examples',
+        theme: WoFormThemeData(verticalSpacing: 16),
       ),
       children: [
         WidgetNode(

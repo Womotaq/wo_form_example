@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
+import 'package:wo_form_example/utils/discard_changes_dialog.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 import 'package:wo_form_example/utils/regex_pattern.dart';
 
@@ -10,33 +10,13 @@ class ProfileCreationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WoForm(
-      uiSettings: WoFormUiSettings(
-        submitMode: const PageByPageSubmitMode(
+      uiSettings: const WoFormUiSettings(
+        submitMode: PageByPageSubmitMode(
           submitText: 'Save',
+          nextText: 'Next',
           showProgressIndicator: false,
         ),
-        canQuit: (context) async => context.read<WoFormValuesCubit>().isPure ||
-                context.read<WoFormStatusCubit>().state is SubmitSuccessStatus
-            ? true
-            : showDialog<bool>(
-                context: context,
-                builder: (BuildContext dialogContext) {
-                  return AlertDialog(
-                    title:
-                        const Text('Abandonner les modifications en cours ?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(dialogContext).pop(),
-                        child: const Text("Continuer d'éditer"),
-                      ),
-                      FilledButton.tonal(
-                        onPressed: () => Navigator.of(dialogContext).pop(true),
-                        child: const Text('Quitter'),
-                      ),
-                    ],
-                  );
-                },
-              ),
+        canQuit: showDiscardChangesDialogIfWoFormUnsaved,
       ),
       children: [
         InputsNode(

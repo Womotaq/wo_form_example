@@ -19,7 +19,6 @@ class QuizPage extends StatelessWidget {
       child: WoForm(
         uiSettings: WoFormUiSettings(
           titleText: 'Daily quiz',
-          showAsteriskIfRequired: false,
           submitMode: const PageByPageSubmitMode(submitText: 'Done'),
           canModifySubmittedValues: false,
           submitButtonBuilder: (data) => Builder(
