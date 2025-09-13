@@ -126,9 +126,7 @@ class HomePage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.only(top: 4),
                 width: 32,
-                child: Image.asset(
-                  'assets/${Theme.of(context).brightness.name}.png',
-                ),
+                child: Image.asset('assets/icon-alpha.png'),
               ),
               const SizedBox(width: 12),
               Text(
