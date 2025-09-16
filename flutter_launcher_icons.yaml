@@ -1,6 +1,6 @@
 # flutter pub run flutter_launcher_icons
 flutter_launcher_icons:
-  image_path: "assets/icon.png"
+  image_path: "assets/icon-alpha.png"
 
   android: "launcher_icon"
   # image_path_android: "assets/icon/icon.png"
@@ -18,6 +18,6 @@ flutter_launcher_icons:
 
   web:
     generate: true
-    image_path: "assets/icon.png"
+    image_path: "assets/icon-alpha.png"
     background_color: "#000000"
     theme_color: "#000000"

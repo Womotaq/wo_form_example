@@ -19,33 +19,36 @@ class QuizPage extends StatelessWidget {
       child: WoForm(
         uiSettings: WoFormUiSettings(
           titleText: 'Daily quiz',
-          showAsteriskIfRequired: false,
-          submitMode: const PageByPageSubmitMode(submitText: 'Done'),
+          submitMode: const MultiStepSubmitMode(
+            submitText: 'Done',
+            nextText: 'Next',
+          ),
           canModifySubmittedValues: false,
           submitButtonBuilder: (data) => Builder(
             builder: (context) {
-              final root = context.read<RootNode>();
-              final inputIsLocked = context.select(
-                (WoFormLockCubit c) => c.inputIsLocked(
-                  path: '/${root.children[data.pageIndex].id}',
-                ),
-              );
+              final submitButtonBuilder =
+                  WoFormTheme.of(context)?.submitButtonBuilder ??
+                      SubmitButton.new;
 
-              return [0, 2].contains(data.pageIndex) && !inputIsLocked
-                  ? const SizedBox.shrink()
-                  : (WoFormTheme.of(context)?.submitButtonBuilder ??
-                          SubmitButton.new)
-                      .call(
-                      data.pageIndex == root.children.length - 1
-                          ? data
-                          : data.copyWith(text: 'Next'),
-                    );
+              final path = data.path;
+              if (path.isEmpty) return submitButtonBuilder(data);
+
+              final inputIsLocked = context.select(
+                (WoFormLockCubit c) => c.inputIsLocked(path: path),
+              );
+              if (inputIsLocked) return submitButtonBuilder(data);
+
+              if (path.contains('noSubmitButton')) {
+                return const SizedBox.shrink();
+              }
+
+              return submitButtonBuilder(data);
             },
           ),
         ),
         children: [
           InputsNode(
-            id: 'q1-page',
+            id: 'q1-page-noSubmitButton',
             exportSettings:
                 const ExportSettings(type: ExportType.mergeWithParent),
             children: [
@@ -67,7 +70,7 @@ class QuizPage extends StatelessWidget {
           ),
           ValueBuilderNode(
             id: 'a1',
-            path: '../q1-page/q1',
+            path: '#q1',
             builder: (value) {
               return WidgetNode(
                 id: 'a1',
@@ -86,7 +89,7 @@ class QuizPage extends StatelessWidget {
             },
           ),
           InputsNode(
-            id: 'q2-page',
+            id: 'q2-page-noSubmitButton',
             exportSettings: const ExportSettings(
               type: ExportType.mergeWithParent,
             ),
@@ -118,7 +121,7 @@ class QuizPage extends StatelessWidget {
           ),
           ValueBuilderNode(
             id: 'a2',
-            path: '../q2-page/q2',
+            path: '#q2',
             builder: (value) {
               return WidgetNode(
                 id: 'a2',
@@ -152,7 +155,7 @@ class QuizPage extends StatelessWidget {
           ),
           ValueBuilderNode(
             id: 'a3',
-            path: '../q3-page/q3',
+            path: '#q3',
             builder: (value) {
               return WidgetNode(
                 id: 'a3',
@@ -189,7 +192,7 @@ class QuizPage extends StatelessWidget {
           ),
           ValueBuilderNode(
             id: 'r4',
-            path: '../q4-page/q4',
+            path: '#q4',
             builder: (value) {
               return WidgetNode(
                 id: 'r4',
@@ -226,7 +229,7 @@ class QuizPage extends StatelessWidget {
           ),
           ValueBuilderNode(
             id: 'r5',
-            path: '../q5-page/q5',
+            path: '#q5',
             builder: (value) {
               return WidgetNode(
                 id: 'r5',

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
+import 'package:wo_form_example/utils/discard_changes_dialog.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 import 'package:wo_form_example/utils/regex_pattern.dart';
 
@@ -10,35 +12,53 @@ class ProfileCreationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WoForm(
-      uiSettings: WoFormUiSettings(
-        submitMode: const PageByPageSubmitMode(
-          submitText: 'Save',
-          showProgressIndicator: false,
+      uiSettings: const WoFormUiSettings(
+        submitMode: MultiStepSubmitMode(
+          submitText: 'Save my profile',
+          nextText: 'Next page',
+          progressIndicatorBuilder: StepProgressIndicator.new,
         ),
-        canQuit: (context) async => context.read<WoFormValuesCubit>().isPure ||
-                context.read<WoFormStatusCubit>().state is SubmitSuccessStatus
-            ? true
-            : showDialog<bool>(
-                context: context,
-                builder: (BuildContext dialogContext) {
-                  return AlertDialog(
-                    title:
-                        const Text('Abandonner les modifications en cours ?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(dialogContext).pop(),
-                        child: const Text("Continuer d'éditer"),
-                      ),
-                      FilledButton.tonal(
-                        onPressed: () => Navigator.of(dialogContext).pop(true),
-                        child: const Text('Quitter'),
-                      ),
-                    ],
-                  );
-                },
-              ),
+        canQuit: showDiscardChangesDialogIfWoFormUnsaved,
       ),
       children: [
+        const InputsNode(
+          id: 'birthdayPage',
+          uiSettings: InputsNodeUiSettings(
+            labelText: "On te souhaite ton anniv' ?",
+          ),
+          children: [
+            // TODO : when i set two input with the same id, they point toward the same value, but they still have their own rendeing
+            DateTimeInput(
+              id: 'birthday',
+              minDate: TodayDate(addYears: -120),
+              maxDate: TodayDate(),
+              uiSettings: DateTimeInputUiSettings(
+                labelText: 'Wich date ?',
+                labelFlex: 6,
+                editMode: DateEditMode.date,
+                dateFormat: 'yMMMd',
+                prefixIcon: Icon(Icons.calendar_month),
+              ),
+            ),
+            DateTimeInput(
+              id: 'time',
+              uiSettings: DateTimeInputUiSettings(
+                labelText: 'What hour ?',
+                labelFlex: 6,
+                editMode: DateEditMode.time,
+                prefixIcon: Icon(Icons.timer_outlined),
+              ),
+            ),
+            DateTimeInput(
+              id: 'datetime',
+              // isRequired: true,
+              uiSettings: DateTimeInputUiSettings(
+                labelText: 'Les 2 !',
+                // labelFlex: 5,
+              ),
+            ),
+          ],
+        ),
         InputsNode(
           id: 'namePage',
           uiSettings: const InputsNodeUiSettings(
@@ -135,6 +155,7 @@ class ProfileCreationPage extends StatelessWidget {
               id: 'mail',
               isRequired: true,
               regexPattern: RegexPattern.email.value,
+              initialValue: 'prefilled@company.web',
               uiSettings: StringInputUiSettings.email(
                 labelText: 'Email',
                 prefixIcon: const Icon(Icons.mail),
@@ -154,11 +175,135 @@ class ProfileCreationPage extends StatelessWidget {
         ),
       ],
       onSubmitting: (form, values) async {
-        if (values['/namePage/firstName'] == 'John') {
+        if (values.getValue('#firstName') == 'John') {
           throw ArgumentError("On t'avais dit de ne pas écrire John...");
         }
       },
       onSubmitSuccess: showJsonDialog,
+    );
+  }
+}
+
+class StepProgressIndicator extends StatelessWidget {
+  const StepProgressIndicator({
+    required this.index,
+    required this.maxIndex,
+    super.key,
+  });
+
+  final int index;
+  final int maxIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // spacing: 16,
+        children: List.generate(
+          maxIndex * 2 + 1,
+          (i) {
+            final i2 = (i / 2).ceil();
+            final past = i2 < index;
+            final current = i2 == index;
+            final future = i2 > index;
+
+            return i.isEven
+                ? SizedBox(
+                    width: 70,
+                    child: Column(
+                      children: [
+                        AnimatedContainer(
+                          duration: WoFormMultiStepPage.TRANSITION_DURATION,
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: current
+                                ? colorScheme.primary
+                                : past
+                                    ? colorScheme.primaryContainer
+                                    : null,
+                            border: future
+                                ? Border.all(
+                                    color: colorScheme.onSurface.withAlpha(128),
+                                  )
+                                : null,
+                          ),
+                          child: Center(
+                            child: past
+                                ? Icon(
+                                    Icons.check,
+                                    color: colorScheme.onPrimaryContainer,
+                                    size: 16,
+                                  )
+                                : Text(
+                                    (i2 + 1).toString(),
+                                    style: TextStyle(
+                                      color: current
+                                          ? colorScheme.onPrimary
+                                          : colorScheme.onSurface
+                                              .withAlpha(128),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Builder(builder: (context) {
+                          final id = context.read<RootNode>().children[i2].id;
+                          return Text(
+                            id.substring(0, id.length - 4).capitalized(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          );
+                        }),
+                      ],
+                    ),
+                  )
+                : Expanded(
+                    child: WoOverflowBox(
+                      horizontalOverflow: 10,
+                      child: AnimatedContainer(
+                        duration: WoFormMultiStepPage.TRANSITION_DURATION,
+                        margin: const EdgeInsets.only(top: (32 - 4) / 2),
+                        height: 2,
+                        color: current
+                            ? colorScheme.primary
+                            : future
+                                ? colorScheme.onSurface.withAlpha(128)
+                                : colorScheme.primaryContainer,
+                      ),
+                    ),
+                  );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class WoOverflowBox extends StatelessWidget {
+  const WoOverflowBox({
+    required this.child,
+    required this.horizontalOverflow,
+    super.key,
+  });
+
+  final Widget child;
+  final double horizontalOverflow;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return OverflowBox(
+          maxWidth: constraints.maxWidth + horizontalOverflow * 2,
+          fit: OverflowBoxFit.deferToChild,
+          child: child,
+        );
+      },
     );
   }
 }

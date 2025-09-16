@@ -7,6 +7,7 @@ import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/form_creator/num_input_node.dart';
 import 'package:wo_form_example/form_creator/select_string_input_node.dart';
 import 'package:wo_form_example/form_creator/string_input_node.dart';
+import 'package:wo_form_example/utils/discard_changes_dialog.dart';
 import 'package:wo_form_example/utils/extensions.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 
@@ -16,7 +17,19 @@ class FormCreatorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WoForm(
-      showErrors: ShowErrors.always,
+      uiSettings: WoFormUiSettings(
+        titleText: "Création d'un formulaire",
+        submitMode: const WoFormSubmitMode.standard(
+          buttonPosition: SubmitButtonPosition.appBar,
+          disableSubmitMode: DisableSubmitButton.whenInvalid,
+        ),
+        submitButtonBuilder: (data) => TextButton(
+          onPressed: data.onPressed,
+          child: const Text('Exporter'),
+        ),
+        canQuit: showDiscardChangesDialogIfWoFormUnsaved,
+        showErrors: ShowErrors.always,
+      ),
       children: [
         const InputsNode(
           id: 'uiSettings',
@@ -70,38 +83,6 @@ class FormCreatorPage extends StatelessWidget {
           builder: (_) => const JsonClipboarder(),
         ),
       ],
-      uiSettings: WoFormUiSettings(
-        titleText: "Création d'un formulaire",
-        submitMode: const WoFormSubmitMode.standard(
-          buttonPosition: SubmitButtonPosition.appBar,
-          disableSubmitMode: DisableSubmitButton.whenInvalid,
-        ),
-        submitButtonBuilder: (data) => TextButton(
-          onPressed: data.onPressed,
-          child: const Text('Exporter'),
-        ),
-        canQuit: (context) async => context.read<WoFormValuesCubit>().isPure ||
-                context.read<WoFormStatusCubit>().state is SubmitSuccessStatus
-            ? true
-            : showDialog<bool>(
-                context: context,
-                builder: (BuildContext dialogContext) {
-                  return AlertDialog(
-                    title: const Text('Supprimer le formulaire ?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(dialogContext).pop(),
-                        child: const Text("Continuer d'éditer"),
-                      ),
-                      FilledButton.tonal(
-                        onPressed: () => Navigator.of(dialogContext).pop(true),
-                        child: const Text('Supprimer le formulaire'),
-                      ),
-                    ],
-                  );
-                },
-              ),
-      ),
       onSubmitSuccess: (context) async {
         try {
           final root = RootNode.fromJson(

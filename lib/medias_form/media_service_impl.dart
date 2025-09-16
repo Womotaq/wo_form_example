@@ -37,13 +37,8 @@ class MediaServiceImpl extends MediaService {
   }
 
   @override
-  CropLocalizations getCropLocalizations(BuildContext context) => (
-        title: 'Cropping',
-        cancel: 'Cancel',
-        save: 'Save',
-        rotateLeftTooltip: 'Rotate left',
-        rotateRightTooltip: 'Rotate right',
-      );
+  CropLocalizations getCropLocalizations(BuildContext context) =>
+      (title: 'Cropping', cancel: 'Cancel', save: 'Save');
 
   @override
   Future<MediaImportMethod?> selectImportMethod(
