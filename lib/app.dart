@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/dynamic_form/dynamic_form_page.dart';
-import 'package:wo_form_example/edit_event/event_page.dart';
+import 'package:wo_form_example/edit_event/events_page.dart';
+import 'package:wo_form_example/flex/flex_page.dart';
 import 'package:wo_form_example/form_creator/form_creator_page.dart';
 import 'package:wo_form_example/from_json/from_json_page.dart';
 import 'package:wo_form_example/medias_form/media_service_impl.dart';
@@ -242,6 +243,13 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.image),
               title: const Text('Upload images'),
               subtitle: const Text('Customizable & easy'),
+              trailing: const Icon(Icons.chevron_right),
+            ),
+            ListTile(
+              onTap: () => context.pushPage(const FlexPage()),
+              leading: const Icon(Icons.expand),
+              title: const Text('Size expansion'),
+              subtitle: const Text('Filling the screen'),
               trailing: const Icon(Icons.chevron_right),
             ),
             const SizedBox(height: 32),

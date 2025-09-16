@@ -15,7 +15,7 @@ class ShowCustomThemeCubit extends Cubit<bool> {
     inputsNodeExpanderBuilder: CustomInputsNodeExpander.new,
     stringFieldBuilder: CustomStringField.new,
     submitButtonBuilder: CustomSubmitButton.new,
-    verticalSpacing: 16,
+    spacing: 16,
     onSubmitError: (context, status) => showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
@@ -276,7 +276,7 @@ class CustomInputsNodeExpander extends StatelessWidget {
                 : null,
         children: [
           Column(
-            spacing: WoFormTheme.of(context)?.verticalSpacing ?? 0,
+            spacing: WoFormTheme.of(context)?.spacing ?? 0,
             children: data.input.children
                 .map((i) => i.toWidget(parentPath: data.path))
                 .toList(),

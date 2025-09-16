@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/edit_event/event.dart';
-import 'package:wo_form_example/edit_event/event_page.dart';
+import 'package:wo_form_example/edit_event/events_page.dart';
 import 'package:wo_form_example/utils/discard_changes_dialog.dart';
 
 class EditEventPage extends StatelessWidget {
