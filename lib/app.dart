@@ -81,7 +81,7 @@ class WoFormExamplesApp extends StatelessWidget {
               child: MaterialApp(
                 navigatorKey: App.navigatorKey,
                 debugShowCheckedModeBanner: false,
-                title: 'WoForm Examples',
+                title: 'wo_form Examples',
                 theme: ThemeData(
                   colorScheme: ColorScheme.fromSeed(
                     brightness: isDarkMode ? Brightness.dark : Brightness.light,
