@@ -24,8 +24,8 @@ dependencies:
 
 dependency_overrides:
   wo_form:
-    # git: https://github.com/Womotaq/wo_form.git
-    path: ../wo_form
+    git: https://github.com/Womotaq/wo_form.git
+    # path: ../wo_form
 
 dev_dependencies:
   build_runner: ^2.4.13
