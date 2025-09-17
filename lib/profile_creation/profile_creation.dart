@@ -185,17 +185,15 @@ class ProfileCreationPage extends StatelessWidget {
 }
 
 class StepProgressIndicator extends StatelessWidget {
-  const StepProgressIndicator({
-    required this.index,
-    required this.maxIndex,
-    super.key,
-  });
-
-  final int index;
-  final int maxIndex;
+  const StepProgressIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final multistepIndex = context.select(
+      (WoFormValuesCubit c) => c.readMultistepIndex() ?? 0,
+    );
+    final maxIndex = context.read<RootNode>().children.length - 1;
+
     final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -206,9 +204,9 @@ class StepProgressIndicator extends StatelessWidget {
           maxIndex * 2 + 1,
           (i) {
             final i2 = (i / 2).ceil();
-            final past = i2 < index;
-            final current = i2 == index;
-            final future = i2 > index;
+            final past = i2 < multistepIndex;
+            final current = i2 == multistepIndex;
+            final future = i2 > multistepIndex;
 
             return i.isEven
                 ? SizedBox(

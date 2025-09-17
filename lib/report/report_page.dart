@@ -19,9 +19,9 @@ class ReportPage extends StatelessWidget {
         titleText: 'Report a player',
         submitMode: StandardSubmitMode(
           submitText: 'Send',
-          disableSubmitMode: DisableSubmitButton.whenInvalid,
           buttonPosition: SubmitButtonPosition.floating,
         ),
+        disableSubmitMode: DisableSubmitButton.whenInvalid,
       ),
       exportSettings: const ExportSettings(
         metadata: {

@@ -21,8 +21,8 @@ class FormCreatorPage extends StatelessWidget {
         titleText: "Création d'un formulaire",
         submitMode: const WoFormSubmitMode.standard(
           buttonPosition: SubmitButtonPosition.appBar,
-          disableSubmitMode: DisableSubmitButton.whenInvalid,
         ),
+        disableSubmitMode: DisableSubmitButton.whenInvalid,
         submitButtonBuilder: (data) => TextButton(
           onPressed: data.onPressed,
           child: const Text('Exporter'),
@@ -184,9 +184,7 @@ class _JsonClipboarderState extends State<JsonClipboarder> {
                             key: UniqueKey(),
                             root: createdRoot.copyWith(
                               uiSettings: WoFormUiSettings(
-                                submitMode: StandardSubmitMode(
-                                  scaffoldBuilder: (body) => body,
-                                ),
+                                scaffoldBuilder: (body) => body,
                               ),
                             ),
                             onSubmitSuccess: showJsonDialog,

@@ -22,9 +22,9 @@ class EditEventPage extends StatelessWidget {
       uiSettings: const WoFormUiSettings(
         submitMode: StandardSubmitMode(
           submitText: 'Save',
-          disableSubmitMode: DisableSubmitButton.whenInitialOrSubmitSuccess,
           buttonPosition: SubmitButtonPosition.appBar,
         ),
+        disableSubmitMode: DisableSubmitButton.whenInitialOrSubmitSuccess,
         canQuit: showDiscardChangesDialogIfWoFormUnsaved,
       ),
       children: [

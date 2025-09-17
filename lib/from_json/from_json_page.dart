@@ -16,8 +16,8 @@ class FromJsonPage extends StatelessWidget {
         titleText: 'Import de formulaire',
         submitMode: StandardSubmitMode(
           submitText: 'Ouvrir le formulaire',
-          disableSubmitMode: DisableSubmitButton.whenInvalid,
         ),
+        disableSubmitMode: DisableSubmitButton.whenInvalid,
       ),
       children: const [
         StringInput(
