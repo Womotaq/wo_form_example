@@ -214,7 +214,7 @@ class StepProgressIndicator extends StatelessWidget {
                     child: Column(
                       children: [
                         AnimatedContainer(
-                          duration: WoFormMultiStepPage.TRANSITION_DURATION,
+                          duration: WoFormTheme.STEP_TRANSITION_DURATION,
                           width: 32,
                           height: 32,
                           decoration: BoxDecoration(
@@ -264,7 +264,7 @@ class StepProgressIndicator extends StatelessWidget {
                     child: WoOverflowBox(
                       horizontalOverflow: 10,
                       child: AnimatedContainer(
-                        duration: WoFormMultiStepPage.TRANSITION_DURATION,
+                        duration: WoFormTheme.STEP_TRANSITION_DURATION,
                         margin: const EdgeInsets.only(top: (32 - 4) / 2),
                         height: 2,
                         color: current

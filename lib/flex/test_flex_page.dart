@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wo_form/wo_form.dart';
+import 'package:wo_form_example/utils/container_node.dart';
 import 'package:wo_form_example/utils/extensions.dart';
 
-class FlexPage extends StatelessWidget {
-  const FlexPage({super.key});
+class TestFlexPage extends StatelessWidget {
+  const TestFlexPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +19,7 @@ class FlexPage extends StatelessWidget {
                   scrollable: false,
                 ),
                 children: [
-                  WidgetNode(
-                    builder: (context) => const ColoredBox(
-                      color: Colors.redAccent,
-                      child: Center(
-                        child: Text('flex : unset'),
-                      ),
-                    ),
-                  )
+                  ContainerNode(text: 'flex : unset'),
                 ],
               ),
             ),
@@ -78,29 +72,18 @@ class FlexStandardVerticalPage extends StatelessWidget {
         ),
       ),
       children: [
-        WidgetNode(
-          builder: (context) => const ColoredBox(
-            color: Colors.redAccent,
-            child: Center(
-              child: Text('flex : unset'),
-            ),
-          ),
+        ContainerNode(
+          text: 'flex : unset',
         ),
-        WidgetNode(
-          uiSettings: const InputUiSettings(flex: 1),
-          builder: (context) => const ColoredBox(
-            color: Colors.orangeAccent,
-            child: Center(
-              child: Text('flex : 1'),
-            ),
-          ),
+        ContainerNode(
+          flex: 1,
+          color: Colors.orangeAccent,
+          text: 'flex : 1',
         ),
-        WidgetNode(
-          uiSettings: const InputUiSettings(flex: 2),
-          builder: (context) => const ColoredBox(
-            color: Colors.green,
-            child: Center(child: Text('flex : 2')),
-          ),
+        ContainerNode(
+          flex: 2,
+          color: Colors.green,
+          text: 'flex : 2',
         ),
       ],
     );
@@ -115,37 +98,24 @@ class FlexMultistepVerticalPage extends StatelessWidget {
     return WoForm(
       uiSettings: const WoFormUiSettings(
         scrollable: false,
-        submitMode: WoFormSubmitMode.multiStep(
-            // buttonPosition: SubmitButtonPosition.appBar,
-            ),
+        submitMode: WoFormSubmitMode.multiStep(),
       ),
       children: [
         InputsNode(
           id: 'list',
           children: [
-            WidgetNode(
-              builder: (context) => const ColoredBox(
-                color: Colors.redAccent,
-                child: Center(
-                  child: Text('flex : unset'),
-                ),
-              ),
+            ContainerNode(
+              text: 'flex : unset',
             ),
-            WidgetNode(
-              uiSettings: const InputUiSettings(flex: 1),
-              builder: (context) => const ColoredBox(
-                color: Colors.orangeAccent,
-                child: Center(
-                  child: Text('flex : 1'),
-                ),
-              ),
+            ContainerNode(
+              flex: 1,
+              color: Colors.orangeAccent,
+              text: 'flex : 1',
             ),
-            WidgetNode(
-              uiSettings: const InputUiSettings(flex: 2),
-              builder: (context) => const ColoredBox(
-                color: Colors.green,
-                child: Center(child: Text('flex : 2')),
-              ),
+            ContainerNode(
+              flex: 2,
+              color: Colors.green,
+              text: 'flex : 2',
             ),
           ],
         ),
@@ -174,20 +144,13 @@ class FlexStandardHorizontalPage extends StatelessWidget {
             flex: 1,
           ),
           children: [
-            WidgetNode(
-              builder: (context) => const ColoredBox(
-                color: Colors.redAccent,
-                child: Center(
-                  child: Text('flex : unset'),
-                ),
-              ),
+            ContainerNode(
+              text: 'flex : unset',
             ),
-            WidgetNode(
-              uiSettings: const InputUiSettings(flex: 2),
-              builder: (context) => const ColoredBox(
-                color: Colors.green,
-                child: Center(child: Text('flex : 2')),
-              ),
+            ContainerNode(
+              flex: 2,
+              color: Colors.green,
+              text: 'flex : 2',
             ),
           ],
         ),
@@ -199,29 +162,18 @@ class FlexStandardHorizontalPage extends StatelessWidget {
             flex: 2,
           ),
           children: [
-            WidgetNode(
-              builder: (context) => const ColoredBox(
-                color: Colors.redAccent,
-                child: Center(
-                  child: Text('flex : unset'),
-                ),
-              ),
+            ContainerNode(
+              text: 'flex : unset',
             ),
-            WidgetNode(
-              uiSettings: const InputUiSettings(flex: 1),
-              builder: (context) => const ColoredBox(
-                color: Colors.orangeAccent,
-                child: Center(
-                  child: Text('flex : 1'),
-                ),
-              ),
+            ContainerNode(
+              flex: 1,
+              color: Colors.orangeAccent,
+              text: 'flex : 1',
             ),
-            WidgetNode(
-              uiSettings: const InputUiSettings(flex: 2),
-              builder: (context) => const ColoredBox(
-                color: Colors.green,
-                child: Center(child: Text('flex : 2')),
-              ),
+            ContainerNode(
+              flex: 2,
+              color: Colors.green,
+              text: 'flex : 2',
             ),
           ],
         ),
@@ -253,20 +205,13 @@ class FlexMultistepHorizontalPage extends StatelessWidget {
                 flex: 1,
               ),
               children: [
-                WidgetNode(
-                  builder: (context) => const ColoredBox(
-                    color: Colors.redAccent,
-                    child: Center(
-                      child: Text('flex : unset'),
-                    ),
-                  ),
+                ContainerNode(
+                  text: 'flex : unset',
                 ),
-                WidgetNode(
-                  uiSettings: const InputUiSettings(flex: 2),
-                  builder: (context) => const ColoredBox(
-                    color: Colors.green,
-                    child: Center(child: Text('flex : 2')),
-                  ),
+                ContainerNode(
+                  flex: 2,
+                  color: Colors.green,
+                  text: 'flex : 2',
                 ),
               ],
             ),
@@ -279,29 +224,18 @@ class FlexMultistepHorizontalPage extends StatelessWidget {
                 flex: 2,
               ),
               children: [
-                WidgetNode(
-                  builder: (context) => const ColoredBox(
-                    color: Colors.redAccent,
-                    child: Center(
-                      child: Text('flex : unset'),
-                    ),
-                  ),
+                ContainerNode(
+                  text: 'flex : unset',
                 ),
-                WidgetNode(
-                  uiSettings: const InputUiSettings(flex: 1),
-                  builder: (context) => const ColoredBox(
-                    color: Colors.orangeAccent,
-                    child: Center(
-                      child: Text('flex : 1'),
-                    ),
-                  ),
+                ContainerNode(
+                  flex: 1,
+                  color: Colors.orangeAccent,
+                  text: 'flex : 1',
                 ),
-                WidgetNode(
-                  uiSettings: const InputUiSettings(flex: 2),
-                  builder: (context) => const ColoredBox(
-                    color: Colors.green,
-                    child: Center(child: Text('flex : 2')),
-                  ),
+                ContainerNode(
+                  flex: 2,
+                  color: Colors.green,
+                  text: 'flex : 2',
                 ),
               ],
             ),

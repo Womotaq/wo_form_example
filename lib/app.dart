@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/dynamic_form/dynamic_form_page.dart';
 import 'package:wo_form_example/edit_event/events_page.dart';
-import 'package:wo_form_example/flex/flex_page.dart';
+import 'package:wo_form_example/flex/test_flex_page.dart';
 import 'package:wo_form_example/form_creator/form_creator_page.dart';
 import 'package:wo_form_example/from_json/from_json_page.dart';
 import 'package:wo_form_example/medias_form/media_service_impl.dart';
@@ -12,6 +12,7 @@ import 'package:wo_form_example/medias_form/permission_service_impl.dart';
 import 'package:wo_form_example/profile_creation/profile_creation.dart';
 import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
+import 'package:wo_form_example/scrollable/test_scrollable_page.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
 import 'package:wo_form_example/utils/app.dart';
 import 'package:wo_form_example/utils/extensions.dart';
@@ -246,10 +247,16 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
             ListTile(
-              onTap: () => context.pushPage(const FlexPage()),
+              onTap: () => context.pushPage(const TestFlexPage()),
               leading: const Icon(Icons.expand),
               title: const Text('Size expansion'),
               subtitle: const Text('Filling the screen'),
+              trailing: const Icon(Icons.chevron_right),
+            ),
+            ListTile(
+              onTap: () => context.pushPage(const TestScrollablePage()),
+              leading: const Icon(Icons.mouse),
+              title: const Text('Scrollable'),
               trailing: const Icon(Icons.chevron_right),
             ),
             const SizedBox(height: 32),

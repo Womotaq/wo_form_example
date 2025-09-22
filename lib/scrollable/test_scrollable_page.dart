@@ -1,0 +1,89 @@
+import 'package:flutter/material.dart';
+import 'package:wo_form/wo_form.dart';
+import 'package:wo_form_example/utils/container_node.dart';
+
+class TestScrollablePage extends StatelessWidget {
+  const TestScrollablePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final rootKey = RootKey();
+
+    return WoForm(
+      rootKey: rootKey,
+      uiSettings: const WoFormUiSettings(
+        scrollable: false,
+      ),
+      children: [
+        WoFormNode.valueBuilder(
+          id: 'id',
+          path: '#scroll',
+          builder: (scrollable) {
+            return InputsNode(
+              id: 'list',
+              uiSettings: InputsNodeUiSettings(
+                flex: 1,
+                scrollable: scrollable as bool? ?? false,
+              ),
+              children: [
+                const BooleanInput(
+                  id: 'scroll',
+                  initialValue: true,
+                  uiSettings: BooleanInputUiSettings(
+                    labelText: 'Scrollable',
+                  ),
+                ),
+                WidgetNode(
+                  builder: (context) => const _CreationTracker(),
+                ),
+                ContainerNode(
+                  text: 'flex : unset',
+                ),
+                ContainerNode(
+                  flex: 1,
+                  color: Colors.orangeAccent,
+                  text: 'flex : 1',
+                ),
+                ContainerNode(
+                  flex: 2,
+                  color: Colors.green,
+                  text: 'flex : 2',
+                ),
+                DynamicInputsNode(
+                  id: 'dynamic',
+                  templates: [
+                    DynamicInputTemplate(
+                      child: const StringInput(id: 'id'),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _CreationTracker extends StatefulWidget {
+  const _CreationTracker();
+
+  @override
+  State<_CreationTracker> createState() => __CreationTrackerState();
+}
+
+class __CreationTrackerState extends State<_CreationTracker> {
+  late final DateTime initializedAt;
+
+  @override
+  void initState() {
+    super.initState();
+    initializedAt = DateTime.now();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(initializedAt.toString());
+  }
+}
