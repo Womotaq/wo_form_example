@@ -175,7 +175,7 @@ class ProfileCreationPage extends StatelessWidget {
         ),
       ],
       onSubmitting: (form, values) async {
-        if (values.getValue('#firstName') == 'John') {
+        if (values['#firstName'] == 'John') {
           throw ArgumentError("On t'avais dit de ne pas écrire John...");
         }
       },
@@ -194,7 +194,7 @@ class StepProgressIndicator extends StatelessWidget {
     }
 
     final multistepIndex = context.select(
-      (WoFormValuesCubit c) => c.readMultistepIndex() ?? 0,
+      (WoFormValuesCubit c) => c.state.multistepIndex,
     );
     final maxIndex = context.read<RootNode>().children.length - 1;
 
@@ -213,55 +213,62 @@ class StepProgressIndicator extends StatelessWidget {
             final future = i2 > multistepIndex;
 
             return i.isEven
-                ? SizedBox(
-                    width: 70,
-                    child: Column(
-                      children: [
-                        AnimatedContainer(
-                          duration: WoFormTheme.STEP_TRANSITION_DURATION,
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: current
-                                ? colorScheme.primary
-                                : past
-                                    ? colorScheme.primaryContainer
-                                    : null,
-                            border: future
-                                ? Border.all(
-                                    color: colorScheme.onSurface.withAlpha(128),
-                                  )
-                                : null,
-                          ),
-                          child: Center(
-                            child: past
-                                ? Icon(
-                                    Icons.check,
-                                    color: colorScheme.onPrimaryContainer,
-                                    size: 16,
-                                  )
-                                : Text(
-                                    (i2 + 1).toString(),
-                                    style: TextStyle(
-                                      color: current
-                                          ? colorScheme.onPrimary
-                                          : colorScheme.onSurface
-                                              .withAlpha(128),
+                ? GestureDetector(
+                    onTap: past
+                        ? () => MultistepController.of(context)?.backToStep(i2)
+                        : null,
+                    child: SizedBox(
+                      width: 70,
+                      child: Column(
+                        children: [
+                          AnimatedContainer(
+                            duration: WoFormTheme.STEP_TRANSITION_DURATION,
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: current
+                                  ? colorScheme.primary
+                                  : past
+                                      ? colorScheme.primaryContainer
+                                      : null,
+                              border: future
+                                  ? Border.all(
+                                      color:
+                                          colorScheme.onSurface.withAlpha(128),
+                                    )
+                                  : null,
+                            ),
+                            child: Center(
+                              child: past
+                                  ? Icon(
+                                      Icons.check,
+                                      color: colorScheme.onPrimaryContainer,
+                                      size: 16,
+                                    )
+                                  : Text(
+                                      (i2 + 1).toString(),
+                                      style: TextStyle(
+                                        color: current
+                                            ? colorScheme.onPrimary
+                                            : colorScheme.onSurface
+                                                .withAlpha(128),
+                                      ),
                                     ),
-                                  ),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 12),
-                        Builder(builder: (context) {
-                          final id = context.read<RootNode>().children[i2].id;
-                          return Text(
-                            id.substring(0, id.length - 4).capitalized(),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          );
-                        }),
-                      ],
+                          const SizedBox(height: 12),
+                          Builder(builder: (context) {
+                            final id = context.read<RootNode>().children[i2].id;
+                            return Text(
+                              id.substring(0, id.length - 4).capitalized(),
+                              textAlign: TextAlign.center,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            );
+                          }),
+                        ],
+                      ),
                     ),
                   )
                 : Expanded(

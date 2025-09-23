@@ -156,52 +156,57 @@ class _JsonClipboarderState extends State<JsonClipboarder> {
             shrinkWrap: false,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: FutureBuilder(
-            future: root.exportToMap(
-              values: values,
-              context: context,
-            ),
-            builder: (context, snapshot) {
-              RootNode? createdRoot;
-              try {
-                createdRoot = RootNode.fromJson(snapshot.data!);
-              } catch (_) {}
-
-              return InputDecorator(
-                decoration: InputDecoration(
-                  helperText: ' ',
-                  errorText: createdRoot == null ? ' ' : null,
-                  border: const OutlineInputBorder(),
-                  contentPadding: const EdgeInsets.all(8),
+        InkWell(
+          onTap: () => context.read<WoFormValuesCubit>().submit(context),
+          child: IgnorePointer(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: FutureBuilder(
+                future: root.exportToMap(
+                  values: values,
+                  context: context,
                 ),
-                child: createdRoot != null
-                    ? Hero(
-                        tag: 'createdForm',
-                        child: Material(
-                          child: WoForm.root(
-                            key: UniqueKey(),
-                            root: createdRoot.copyWith(
-                              uiSettings: WoFormUiSettings(
-                                scaffoldBuilder: (body) => body,
+                builder: (context, snapshot) {
+                  RootNode? createdRoot;
+                  try {
+                    createdRoot = RootNode.fromJson(snapshot.data!);
+                  } catch (_) {}
+
+                  return InputDecorator(
+                    decoration: InputDecoration(
+                      helperText: ' ',
+                      errorText: createdRoot == null ? ' ' : null,
+                      border: const OutlineInputBorder(),
+                      contentPadding: const EdgeInsets.all(8),
+                    ),
+                    child: createdRoot != null
+                        ? Hero(
+                            tag: 'createdForm',
+                            child: Material(
+                              child: WoForm.root(
+                                key: UniqueKey(),
+                                root: createdRoot.copyWith(
+                                  uiSettings: WoFormUiSettings(
+                                    scaffoldBuilder: (body) => body,
+                                  ),
+                                ),
+                                onSubmitSuccess: showJsonDialog,
                               ),
                             ),
-                            onSubmitSuccess: showJsonDialog,
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              '$errorsText',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
                           ),
-                        ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          '$errorsText',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                        ),
-                      ),
-              );
-            },
+                  );
+                },
+              ),
+            ),
           ),
         ),
         ListTile(

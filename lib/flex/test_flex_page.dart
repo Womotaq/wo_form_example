@@ -103,6 +103,7 @@ class FlexMultistepVerticalPage extends StatelessWidget {
       children: [
         InputsNode(
           id: 'list',
+          uiSettings: const InputsNodeUiSettings(flex: 1),
           children: [
             ContainerNode(
               text: 'flex : unset',
@@ -190,13 +191,12 @@ class FlexMultistepHorizontalPage extends StatelessWidget {
     return WoForm(
       uiSettings: const WoFormUiSettings(
         scrollable: false,
-        submitMode: WoFormSubmitMode.multiStep(
-            // buttonPosition: SubmitButtonPosition.appBar,
-            ),
+        submitMode: WoFormSubmitMode.multiStep(),
       ),
       children: [
         InputsNode(
           id: 'list',
+          uiSettings: const InputsNodeUiSettings(flex: 1),
           children: [
             InputsNode(
               id: 'list1',
