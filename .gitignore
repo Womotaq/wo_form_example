@@ -54,3 +54,6 @@ google-services.json
 # Secrets
 .env
 dotenv
+
+# Dev
+pubspec_overrides.yaml
