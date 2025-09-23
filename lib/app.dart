@@ -6,6 +6,7 @@ import 'package:wo_form_example/edit_event/events_page.dart';
 import 'package:wo_form_example/flex/test_flex_page.dart';
 import 'package:wo_form_example/form_creator/form_creator_page.dart';
 import 'package:wo_form_example/from_json/from_json_page.dart';
+import 'package:wo_form_example/interactive_story/interactive_story_page.dart';
 import 'package:wo_form_example/medias_form/media_service_impl.dart';
 import 'package:wo_form_example/medias_form/medias_form_page.dart';
 import 'package:wo_form_example/medias_form/permission_service_impl.dart';
@@ -166,19 +167,19 @@ class HomePage extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                'Design once, render anywhere.\nJSON-based form builder.',
+                'Powerful. Serializable. Customizable.\n'
+                'The next-generation form toolkit.',
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 96),
+            const SizedBox(height: 48),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
@@ -257,6 +258,13 @@ class HomePage extends StatelessWidget {
               onTap: () => context.pushPage(const TestScrollablePage()),
               leading: const Icon(Icons.mouse),
               title: const Text('Scrollable'),
+              trailing: const Icon(Icons.chevron_right),
+            ),
+            ListTile(
+              onTap: () => context.pushPage(const InteractiveStoryPage()),
+              leading: const Icon(Icons.article),
+              title: const Text('Multistep generation'),
+              subtitle: const Text("L'histoire dont vous êtes de héros"),
               trailing: const Icon(Icons.chevron_right),
             ),
             const SizedBox(height: 32),
