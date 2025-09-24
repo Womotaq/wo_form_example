@@ -13,8 +13,8 @@ class ProfileCreationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WoForm(
       uiSettings: const WoFormUiSettings(
-        submitMode: MultiStepSubmitMode(
-          submitText: 'Save my profile',
+        submitText: 'Save my profile',
+        multistepSettings: MultistepSettings(
           nextText: 'Next page',
           progressIndicatorBuilder: StepProgressIndicator.new,
         ),
@@ -189,7 +189,12 @@ class StepProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (context.read<RootNode>().uiSettings.submitMode.generatingSteps) {
+    if (context
+            .read<RootNode>()
+            .uiSettings
+            .multistepSettings
+            ?.generatingSteps ??
+        false) {
       return const SizedBox.shrink();
     }
 

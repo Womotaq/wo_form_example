@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
-import 'package:wo_form_example/utils/extensions.dart';
+import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 
 class FromJsonPage extends StatelessWidget {
@@ -14,9 +13,7 @@ class FromJsonPage extends StatelessWidget {
     return WoForm(
       uiSettings: const WoFormUiSettings(
         titleText: 'Import de formulaire',
-        submitMode: StandardSubmitMode(
-          submitText: 'Ouvrir le formulaire',
-        ),
+        submitText: 'Ouvrir le formulaire',
         disableSubmitMode: DisableSubmitButton.whenInvalid,
       ),
       children: const [

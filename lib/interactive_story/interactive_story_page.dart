@@ -9,13 +9,14 @@ class InteractiveStoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WoForm(
       uiSettings: WoFormUiSettings(
-        submitButtonBuilder: (data) => data.path.contains('garden')
-            ? Align(
-                alignment: Alignment.centerRight,
-                child: SubmitButton(data.copyWith(path: '/')),
-              )
-            : const SizedBox.shrink(),
-        submitMode: MultiStepSubmitMode(
+        submitButtonBuilder: (data) =>
+            data.path == '' || data.path.contains('garden')
+                ? Align(
+                    alignment: Alignment.centerRight,
+                    child: SubmitButton(data.copyWith(path: '/')),
+                  )
+                : const SizedBox.shrink(),
+        multistepSettings: MultistepSettings(
           nextText: 'Quit',
           getNextStep: (stepId, values) {
             final choice = values['/$stepId/choice'] as List<StoryStep>? ?? [];

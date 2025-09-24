@@ -16,8 +16,8 @@ import 'package:wo_form_example/report/report_page.dart';
 import 'package:wo_form_example/scrollable/test_scrollable_page.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
 import 'package:wo_form_example/utils/app.dart';
-import 'package:wo_form_example/utils/extensions.dart';
 import 'package:wo_form_example/utils/place_repository_impl.dart';
+import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/wo_form_version/generated_version.dart';
 
 class DarkModeCubit extends Cubit<bool> {
@@ -70,6 +70,7 @@ class WoFormExamplesApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (context) => PresentationCubit()),
           BlocProvider(create: (context) => ShowCustomThemeCubit()),
           BlocProvider(create: (context) => DarkModeCubit()),
         ],
@@ -192,7 +193,7 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             ListTile(
-              onTap: () => context.pushPage(const ReportPage()),
+              onTap: () => context.openForm(ReportForm(context)),
               leading: const Icon(Icons.quiz),
               title: const Text('Poser des questions'),
               subtitle: const Text('Ex : Formulaire de signalement'),
@@ -206,7 +207,7 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
             ListTile(
-              onTap: () => context.pushPage(const DynamicFormPage()),
+              onTap: () => context.openForm(DynamicForm(context)),
               leading: const Icon(Icons.electric_bolt),
               title: const Text('Dynamiser un formulaire'),
               subtitle: const Text("C'est sympa ça"),
@@ -220,7 +221,7 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
             ListTile(
-              onTap: () => context.pushPage(const QuizPage()),
+              onTap: () => context.openForm(QuizForm(context)),
               leading: const Icon(Icons.check_box_outlined),
               title: const Text('Soumettre un questionnaire'),
               subtitle: const Text('Interactif et en plusieurs pages'),
@@ -255,7 +256,7 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
             ListTile(
-              onTap: () => context.pushPage(const TestScrollablePage()),
+              onTap: () => context.openForm(TestScrollableForm(context)),
               leading: const Icon(Icons.mouse),
               title: const Text('Scrollable'),
               trailing: const Icon(Icons.chevron_right),
@@ -268,6 +269,15 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
             const SizedBox(height: 32),
+            BlocBuilder<PresentationCubit, WoFormPresentation>(
+              builder: (context, presentation) {
+                return SwitchListTile(
+                  value: presentation == WoFormPresentation.bottomSheet,
+                  onChanged: (_) => context.read<PresentationCubit>().toggle(),
+                  title: const Text('Ouvrir les formulaires en modales'),
+                );
+              },
+            ),
             BlocBuilder<ShowCustomThemeCubit, bool>(
               builder: (context, showCustomTheme) {
                 return SwitchListTile(

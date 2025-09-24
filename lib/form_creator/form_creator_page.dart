@@ -8,7 +8,7 @@ import 'package:wo_form_example/form_creator/num_input_node.dart';
 import 'package:wo_form_example/form_creator/select_string_input_node.dart';
 import 'package:wo_form_example/form_creator/string_input_node.dart';
 import 'package:wo_form_example/utils/discard_changes_dialog.dart';
-import 'package:wo_form_example/utils/extensions.dart';
+import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 
 class FormCreatorPage extends StatelessWidget {
@@ -19,9 +19,7 @@ class FormCreatorPage extends StatelessWidget {
     return WoForm(
       uiSettings: WoFormUiSettings(
         titleText: "Création d'un formulaire",
-        submitMode: const WoFormSubmitMode.standard(
-          buttonPosition: SubmitButtonPosition.appBar,
-        ),
+        submitButtonPosition: SubmitButtonPosition.appBar,
         disableSubmitMode: DisableSubmitButton.whenInvalid,
         submitButtonBuilder: (data) => TextButton(
           onPressed: data.onPressed,
@@ -93,15 +91,31 @@ class FormCreatorPage extends StatelessWidget {
           );
 
           if (context.mounted) {
-            await context.pushPage(
-              Hero(
-                tag: 'createdForm',
-                child: WoForm.root(
-                  root: root,
-                  onSubmitSuccess: showJsonDialog,
-                ),
-              ),
-            );
+            final presentation = context.read<PresentationCubit>().state;
+            switch (presentation) {
+              case WoFormPresentation.page:
+                await context.pushPage(
+                  Hero(
+                    tag: 'createdForm',
+                    child: WoForm.root(
+                      root: root,
+                      onSubmitSuccess: showJsonDialog,
+                    ),
+                  ),
+                );
+              case WoFormPresentation.dialog:
+              case WoFormPresentation.bottomSheet:
+                await context.openForm(
+                  WoForm.root(
+                    root: root.copyWith(
+                      uiSettings: root.uiSettings.copyWith(
+                        presentation: presentation,
+                      ),
+                    ),
+                    onSubmitSuccess: showJsonDialog,
+                  ),
+                );
+            }
           }
         } catch (e) {
           if (context.mounted) {
@@ -186,7 +200,7 @@ class _JsonClipboarderState extends State<JsonClipboarder> {
                               child: WoForm.root(
                                 key: UniqueKey(),
                                 root: createdRoot.copyWith(
-                                  uiSettings: WoFormUiSettings(
+                                  uiSettings: createdRoot.uiSettings.copyWith(
                                     scaffoldBuilder: (body) => body,
                                   ),
                                 ),

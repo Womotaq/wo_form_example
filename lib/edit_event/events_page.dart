@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:wo_form_example/edit_event/edit_event_page.dart';
 import 'package:wo_form_example/edit_event/event.dart';
-import 'package:wo_form_example/utils/extensions.dart';
+import 'package:wo_form_example/utils/presentation_cubit.dart';
 
 class EventsCubit extends Cubit<List<EventModel>> {
   EventsCubit(super.initialState);
@@ -109,11 +109,8 @@ class EventCard extends StatelessWidget {
               ),
               const Spacer(),
               IconButton(
-                onPressed: () => context.pushPage(
-                  EditEventPage(
-                    event: event,
-                    eventsCubit: context.read(),
-                  ),
+                onPressed: () => context.openForm(
+                  EventForm(context: context, event: event),
                 ),
                 icon: const Icon(Icons.edit),
               ),

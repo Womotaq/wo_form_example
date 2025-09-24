@@ -1,259 +1,249 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
+import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 
-class QuizPage extends StatelessWidget {
-  const QuizPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Theme(
-      data: theme.copyWith(
-        progressIndicatorTheme: ProgressIndicatorThemeData(
-          linearTrackColor: Colors.transparent,
-          color: theme.colorScheme.primaryContainer,
-        ),
-      ),
-      child: WoForm(
-        uiSettings: WoFormUiSettings(
-          titleText: 'Daily quiz',
-          submitMode: const MultiStepSubmitMode(
+class QuizForm extends WoForm {
+  QuizForm(BuildContext context, {super.key})
+      : super(
+          uiSettings: WoFormUiSettings(
+            titleText: 'Daily quiz',
             submitText: 'Done',
-            nextText: 'Next',
-          ),
-          canModifySubmittedValues: false,
-          submitButtonBuilder: (data) => Builder(
-            builder: (context) {
-              final submitButtonBuilder =
-                  WoFormTheme.of(context)?.submitButtonBuilder ??
-                      SubmitButton.new;
-
-              final path = data.path;
-              if (path.isEmpty) return submitButtonBuilder(data);
-
-              final inputIsLocked = context.select(
-                (WoFormLockCubit c) => c.inputIsLocked(path: path),
-              );
-              if (inputIsLocked) return submitButtonBuilder(data);
-
-              if (path.contains('noSubmitButton')) {
-                return const SizedBox.shrink();
-              }
-
-              return submitButtonBuilder(data);
-            },
-          ),
-        ),
-        children: [
-          InputsNode(
-            id: 'q1-page-noSubmitButton',
-            exportSettings:
-                const ExportSettings(type: ExportType.mergeWithParent),
-            children: [
-              WidgetNode(
-                builder: (_) =>
-                    const QuizQuestion('De quelle couleur est le soleil ?'),
-              ),
-              const SelectStringInput(
-                id: 'q1',
-                maxCount: 1,
-                minCount: 1,
-                availibleValues: ['Bleu', 'Rouge', 'Vert', 'Jaune'],
-                submitFormOnSelect: true,
-                uiSettings: SelectInputUiSettings(
-                  hintText: 'Sélectionner une réponse',
-                ),
-              ),
-            ],
-          ),
-          ValueBuilderNode(
-            id: 'a1',
-            path: '#q1',
-            builder: (value) {
-              return WidgetNode(
-                id: 'a1',
-                builder: (context) => QuizAnswer(
-                  choice: (value as List<String>?)?.firstOrNull,
-                  answer: 'Jaune',
-                  explanation:
-                      'Le Soleil est une étoile comme celles qu’on voit'
-                      ' briller la nuit, mais c’est la plus proche de '
-                      'la Terre. Une étoile est une énorme boule de gaz'
-                      ' très chaud, qui produit énormément d’énergie. '
-                      'Et cette énergie émerge'
-                      ' de la surface sous forme de lumière.',
-                ),
-              );
-            },
-          ),
-          InputsNode(
-            id: 'q2-page-noSubmitButton',
-            exportSettings: const ExportSettings(
-              type: ExportType.mergeWithParent,
+            multistepSettings: const MultistepSettings(
+              nextText: 'Next',
             ),
-            children: [
-              WidgetNode(
-                id: 'header',
-                builder: (_) =>
-                    const QuizQuestion("Quelle est l'hypothénuse de x ?"),
-              ),
-              SelectStringInput(
-                id: 'q2',
-                maxCount: 1,
-                minCount: 1,
-                availibleValues: ['A', 'B', 'C'],
-                submitFormOnSelect: true,
-                uiSettings: SelectInputUiSettings(
-                  childrenVisibility: ChildrenVisibility.always,
-                  valueBuilder: (value) => Text(
-                    switch (value) {
-                      'A' => '√2',
-                      'B' => '0',
-                      'C' => 'Elle veut rien dire ta question',
-                      _ => 'Elle veut rien dire ta question',
-                    },
+            canModifySubmittedValues: false,
+            presentation: context.read<PresentationCubit>().state,
+            submitButtonBuilder: (data) => Builder(
+              builder: (context) {
+                final submitButtonBuilder =
+                    WoFormTheme.of(context)?.submitButtonBuilder ??
+                        SubmitButton.new;
+
+                final path = data.path;
+                if (path.isEmpty) return submitButtonBuilder(data);
+
+                final inputIsLocked = context.select(
+                  (WoFormLockCubit c) => c.inputIsLocked(path: path),
+                );
+                if (inputIsLocked) return submitButtonBuilder(data);
+
+                if (path.contains('noSubmitButton')) {
+                  return const SizedBox.shrink();
+                }
+
+                return submitButtonBuilder(data);
+              },
+            ),
+          ),
+          children: [
+            InputsNode(
+              id: 'q1-page-noSubmitButton',
+              exportSettings:
+                  const ExportSettings(type: ExportType.mergeWithParent),
+              children: [
+                WidgetNode(
+                  builder: (_) =>
+                      const QuizQuestion('De quelle couleur est le soleil ?'),
+                ),
+                const SelectStringInput(
+                  id: 'q1',
+                  maxCount: 1,
+                  minCount: 1,
+                  availibleValues: ['Bleu', 'Rouge', 'Vert', 'Jaune', 'Blanc'],
+                  submitFormOnSelect: true,
+                  uiSettings: SelectInputUiSettings(
+                    hintText: 'Sélectionner une réponse',
                   ),
                 ),
-              ),
-            ],
-          ),
-          ValueBuilderNode(
-            id: 'a2',
-            path: '#q2',
-            builder: (value) {
-              return WidgetNode(
-                id: 'a2',
-                builder: (context) => QuizAnswer(
-                  choice: (value as List<String>?)?.firstOrNull,
-                  answer: 'C',
-                  explanation: "L'hypothénuse est en réalité la face cachée de "
-                      'la Lune...',
-                ),
-              );
-            },
-          ),
-          InputsNode(
-            id: 'q3-page',
-            exportSettings: const ExportSettings(
-              type: ExportType.mergeWithParent,
+              ],
             ),
-            children: [
-              WidgetNode(
-                id: 'header',
-                builder: (context) => const QuizQuestion(
-                    'Quel est le record du monde de jonglage, '
-                    'avec un ballon de foot, sans interruption ?'),
-              ),
-              const NumInput(
-                id: 'q3',
-                initialValue: 0,
-                isRequired: true,
-              ),
-            ],
-          ),
-          ValueBuilderNode(
-            id: 'a3',
-            path: '#q3',
-            builder: (value) {
-              return WidgetNode(
-                id: 'a3',
-                builder: (context) => QuizAnswer(
-                  choice: value as num?,
-                  answer: 170515,
-                  explanation:
-                      'Le record du monde actuel de jonglage avec un ballon de '
-                      "football est détenu par l'athlète japonais Yuki Kadono. "
-                      'En 2018, il a réalisé 170 515 jongles en une seule '
-                      'session, battant ainsi le record précédent qui était de '
-                      '170 405 jongles. Ce record a été officiellement '
-                      'enregistré par Guinness World Records.',
-                ),
-              );
-            },
-          ),
-          InputsNode(
-            id: 'q4-page',
-            exportSettings: const ExportSettings(
-              type: ExportType.mergeWithParent,
+            ValueBuilderNode(
+              id: 'a1',
+              path: '#q1',
+              builder: (value) {
+                return WidgetNode(
+                  id: 'a1',
+                  builder: (context) => QuizAnswer(
+                    choice: (value as List<String>?)?.firstOrNull,
+                    answer: 'Blanc',
+                    explanation:
+                        'Le Soleil est une étoile comme celles qu’on voit'
+                        ' briller la nuit, mais c’est la plus proche de '
+                        'la Terre. Une étoile est une énorme boule de gaz'
+                        ' très chaud, qui produit énormément d’énergie. '
+                        'Et cette énergie émerge'
+                        ' de la surface sous forme de lumière.',
+                  ),
+                );
+              },
             ),
-            children: [
-              WidgetNode(
-                id: 'header',
-                builder: (_) => const QuizQuestion('Quel est votre prénom ?'),
+            InputsNode(
+              id: 'q2-page-noSubmitButton',
+              exportSettings: const ExportSettings(
+                type: ExportType.mergeWithParent,
               ),
-              const StringInput(
-                id: 'q4',
-                isRequired: true,
-                uiSettings: StringInputUiSettings(autofocus: true),
-              ),
-            ],
-          ),
-          ValueBuilderNode(
-            id: 'r4',
-            path: '#q4',
-            builder: (value) {
-              return WidgetNode(
-                id: 'r4',
-                builder: (context) => QuizAnswer(
-                  choice: value as String?,
-                  answer: value,
-                  explanation:
-                      'Un prénom est personnel, propre à chacun et sale'
-                      ' aux autres.',
+              children: [
+                WidgetNode(
+                  id: 'header',
+                  builder: (_) =>
+                      const QuizQuestion("Quelle est l'hypothénuse de x ?"),
                 ),
-              );
-            },
-          ),
-          InputsNode(
-            id: 'q5-page',
-            exportSettings: const ExportSettings(
-              type: ExportType.mergeWithParent,
+                SelectStringInput(
+                  id: 'q2',
+                  maxCount: 1,
+                  minCount: 1,
+                  availibleValues: ['A', 'B', 'C'],
+                  submitFormOnSelect: true,
+                  uiSettings: SelectInputUiSettings(
+                    childrenVisibility: ChildrenVisibility.always,
+                    valueBuilder: (value) => Text(
+                      switch (value) {
+                        'A' => '√2',
+                        'B' => '0',
+                        'C' => 'Elle veut rien dire ta question',
+                        _ => 'Elle veut rien dire ta question',
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-            children: [
-              WidgetNode(
-                id: 'header',
-                builder: (context) => const QuizQuestion(
-                  "J'ai vu et je reconnais que le package wo_form est"
-                  ' un package extraordinaire et très utile.',
-                ),
+            ValueBuilderNode(
+              id: 'a2',
+              path: '#q2',
+              builder: (value) {
+                return WidgetNode(
+                  id: 'a2',
+                  builder: (context) => QuizAnswer(
+                    choice: (value as List<String>?)?.firstOrNull,
+                    answer: 'C',
+                    explanation:
+                        "L'hypothénuse est en réalité la face cachée de "
+                        'la Lune...',
+                  ),
+                );
+              },
+            ),
+            InputsNode(
+              id: 'q3-page',
+              exportSettings: const ExportSettings(
+                type: ExportType.mergeWithParent,
               ),
-              const BooleanInput(
-                id: 'q5',
-                uiSettings: BooleanInputUiSettings(
-                  controlType: BooleanFieldControlType.checkbox,
+              children: [
+                WidgetNode(
+                  id: 'header',
+                  builder: (context) => const QuizQuestion(
+                      'Quel est le record du monde de jonglage, '
+                      'avec un ballon de foot, sans interruption ?'),
                 ),
+                const NumInput(
+                  id: 'q3',
+                  initialValue: 0,
+                  isRequired: true,
+                ),
+              ],
+            ),
+            ValueBuilderNode(
+              id: 'a3',
+              path: '#q3',
+              builder: (value) {
+                return WidgetNode(
+                  id: 'a3',
+                  builder: (context) => QuizAnswer(
+                    choice: value as num?,
+                    answer: 170515,
+                    explanation:
+                        'Le record du monde actuel de jonglage avec un ballon de '
+                        "football est détenu par l'athlète japonais Yuki Kadono. "
+                        'En 2018, il a réalisé 170 515 jongles en une seule '
+                        'session, battant ainsi le record précédent qui était de '
+                        '170 405 jongles. Ce record a été officiellement '
+                        'enregistré par Guinness World Records.',
+                  ),
+                );
+              },
+            ),
+            InputsNode(
+              id: 'q4-page',
+              exportSettings: const ExportSettings(
+                type: ExportType.mergeWithParent,
               ),
-            ],
-          ),
-          ValueBuilderNode(
-            id: 'r5',
-            path: '#q5',
-            builder: (value) {
-              return WidgetNode(
-                id: 'r5',
-                builder: (context) => QuizAnswer(
-                  choice: value as bool?,
-                  answer: true,
-                  explanation:
-                      'Le package wo_form vous permet tout ce dont vous '
-                      'avez besoin pour tout type de formulaire, de '
-                      "l'éditeur au questionnaire, en fournissant des"
-                      ' fonctionnalités avancées telles que le thème,'
-                      ' les champs dynamiques, la jsonification...',
+              children: [
+                WidgetNode(
+                  id: 'header',
+                  builder: (_) => const QuizQuestion('Quel est votre prénom ?'),
                 ),
-              );
-            },
-          ),
-        ],
-        onSubmitSuccess: (context) async {
-          await showJsonDialog(context);
-          if (context.mounted) Navigator.of(context).pop();
-        },
-      ),
-    );
-  }
+                const StringInput(
+                  id: 'q4',
+                  isRequired: true,
+                  uiSettings: StringInputUiSettings(autofocus: true),
+                ),
+              ],
+            ),
+            ValueBuilderNode(
+              id: 'r4',
+              path: '#q4',
+              builder: (value) {
+                return WidgetNode(
+                  id: 'r4',
+                  builder: (context) => QuizAnswer(
+                    choice: value as String?,
+                    answer: value,
+                    explanation:
+                        'Un prénom est personnel, propre à chacun et sale'
+                        ' aux autres.',
+                  ),
+                );
+              },
+            ),
+            InputsNode(
+              id: 'q5-page',
+              exportSettings: const ExportSettings(
+                type: ExportType.mergeWithParent,
+              ),
+              children: [
+                WidgetNode(
+                  id: 'header',
+                  builder: (context) => const QuizQuestion(
+                    "J'ai vu et je reconnais que le package wo_form est"
+                    ' un package extraordinaire et très utile.',
+                  ),
+                ),
+                const BooleanInput(
+                  id: 'q5',
+                  uiSettings: BooleanInputUiSettings(
+                    controlType: BooleanFieldControlType.checkbox,
+                  ),
+                ),
+              ],
+            ),
+            ValueBuilderNode(
+              id: 'r5',
+              path: '#q5',
+              builder: (value) {
+                return WidgetNode(
+                  id: 'r5',
+                  builder: (context) => QuizAnswer(
+                    choice: value as bool?,
+                    answer: true,
+                    explanation:
+                        'Le package wo_form vous permet tout ce dont vous '
+                        'avez besoin pour tout type de formulaire, de '
+                        "l'éditeur au questionnaire, en fournissant des"
+                        ' fonctionnalités avancées telles que le thème,'
+                        ' les champs dynamiques, la jsonification...',
+                  ),
+                );
+              },
+            ),
+          ],
+          onSubmitSuccess: (context) async {
+            await showJsonDialog(context);
+            if (context.mounted) Navigator.of(context).pop();
+          },
+        );
 }
 
 class QuizQuestion extends StatelessWidget {
