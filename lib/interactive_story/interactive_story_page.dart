@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:wo_form/wo_form.dart';
+import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 
-class InteractiveStoryPage extends StatelessWidget {
-  const InteractiveStoryPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return WoForm(
-      uiSettings: WoFormUiSettings(
-        submitButtonBuilder: (data) =>
-            data.path == '' || data.path.contains('garden')
-                ? Align(
-                    alignment: Alignment.centerRight,
-                    child: SubmitButton(data.copyWith(path: '/')),
-                  )
-                : const SizedBox.shrink(),
-        multistepSettings: MultistepSettings(
-          nextText: 'Quit',
-          getNextStep: (stepId, values) {
-            final choice = values['/$stepId/choice'] as List<StoryStep>? ?? [];
-            return choice.firstOrNull?.name;
+class InteractiveStoryForm extends WoForm {
+  InteractiveStoryForm(BuildContext context, {super.key})
+      : super(
+          uiSettings: WoFormUiSettings(
+            presentation: context.read<PresentationCubit>().state,
+            submitButtonBuilder: (data) =>
+                data.path == '' || data.path.contains('garden')
+                    ? Align(
+                        alignment: Alignment.centerRight,
+                        child: SubmitButton(data.copyWith(path: '/')),
+                      )
+                    : const SizedBox.shrink(),
+            multistepSettings: MultistepSettings(
+              nextText: 'Quit',
+              getNextStep: (stepId, values) {
+                final choice =
+                    values['/$stepId/choice'] as List<StoryStep>? ?? [];
+                return choice.firstOrNull?.name;
+              },
+            ),
+          ),
+          children: StoryStep.values.map(StoryStepNode.new).toList(),
+          onSubmitSuccess: (context) async {
+            await showJsonDialog(context);
+            if (context.mounted) Navigator.of(context).pop();
           },
-        ),
-      ),
-      children: StoryStep.values.map(StoryStepNode.new).toList(),
-      onSubmitSuccess: (context) async {
-        await showJsonDialog(context);
-        if (context.mounted) Navigator.of(context).pop();
-      },
-    );
-  }
+        );
 }
 
 enum StoryStep {

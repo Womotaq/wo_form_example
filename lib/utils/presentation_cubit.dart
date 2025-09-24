@@ -5,7 +5,7 @@ import 'package:wo_form/wo_form.dart';
 export 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 
 class PresentationCubit extends Cubit<WoFormPresentation> {
-  PresentationCubit() : super(WoFormPresentation.bottomSheet);
+  PresentationCubit() : super(WoFormPresentation.page);
 
   void toggle() => emit(
         state == WoFormPresentation.page
@@ -42,19 +42,19 @@ Future<T?> _showWoFormModal<T extends Object?>({
   required BuildContext context,
   required WoForm form,
 }) {
-  final forceHeight = form.root.uiSettings.bodyLayout.supportFlex ||
-      form.root.uiSettings.multistepSettings != null;
-  final size = forceHeight ? ModalSize.fitContent : ModalSize.flexible;
+  final acceptScrollController = form.root.uiSettings.acceptScrollController;
+  final size =
+      acceptScrollController ? ModalSize.flexible : ModalSize.fitContent;
   final isDialog =
       form.root.uiSettings.presentation == WoFormPresentation.dialog;
 
   Widget buildForm(BuildContext context) {
     final double? height;
-    if (forceHeight) {
+    if (acceptScrollController) {
+      height = null;
+    } else {
       final mediaQuery = MediaQuery.of(context);
       height = (mediaQuery.size.height - mediaQuery.viewInsets.bottom) * .7;
-    } else {
-      height = null;
     }
 
     return SizedBox(
@@ -69,24 +69,28 @@ Future<T?> _showWoFormModal<T extends Object?>({
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Stack(
-              children: [
-                buildForm(context),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
+            Expanded(
+              flex: size == ModalSize.fitContent ? 0 : 1,
+              child: Stack(
+                children: [
+                  buildForm(context),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                        ),
+                        width: 48,
+                        height: 6,
                       ),
-                      width: 48,
-                      height: 6,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         );
@@ -121,7 +125,7 @@ Future<T?> _showWoFormModal<T extends Object?>({
               expand: false,
               initialChildSize: .7,
               minChildSize: .5,
-              builder: (context, scrollController) => SingleChildScrollView(
+              builder: (context, scrollController) => ScrollControllerProvider(
                 controller: scrollController,
                 child: buildContent(context),
               ),

@@ -3,185 +3,184 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/utils/discard_changes_dialog.dart';
+import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/readable_json.dart';
 import 'package:wo_form_example/utils/regex_pattern.dart';
 
-class ProfileCreationPage extends StatelessWidget {
-  const ProfileCreationPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return WoForm(
-      uiSettings: const WoFormUiSettings(
-        submitText: 'Save my profile',
-        multistepSettings: MultistepSettings(
-          nextText: 'Next page',
-          progressIndicatorBuilder: StepProgressIndicator.new,
-        ),
-        canQuit: showDiscardChangesDialogIfWoFormUnsaved,
-      ),
-      children: [
-        const InputsNode(
-          id: 'birthdayPage',
-          uiSettings: InputsNodeUiSettings(
-            labelText: "On te souhaite ton anniv' ?",
+class ProfileCreationForm extends WoForm {
+  ProfileCreationForm(BuildContext context, {super.key})
+      : super(
+          uiSettings: WoFormUiSettings(
+            submitText: 'Save my profile',
+            multistepSettings: const MultistepSettings(
+              nextText: 'Next page',
+              progressIndicatorBuilder: StepProgressIndicator.new,
+            ),
+            canQuit: showDiscardChangesDialogIfWoFormUnsaved,
+            presentation: context.read<PresentationCubit>().state,
           ),
           children: [
-            // TODO : when i set two input with the same id, they point toward the same value, but they still have their own rendeing
-            DateTimeInput(
-              id: 'birthday',
-              minDate: TodayDate(addYears: -120),
-              maxDate: TodayDate(),
-              uiSettings: DateTimeInputUiSettings(
-                labelText: 'Wich date ?',
-                labelFlex: 6,
-                editMode: DateEditMode.date,
-                dateFormat: 'yMMMd',
-                prefixIcon: Icon(Icons.calendar_month),
+            const InputsNode(
+              id: 'birthdayPage',
+              uiSettings: InputsNodeUiSettings(
+                labelText: "On te souhaite ton anniv' ?",
               ),
-            ),
-            DateTimeInput(
-              id: 'time',
-              uiSettings: DateTimeInputUiSettings(
-                labelText: 'What hour ?',
-                labelFlex: 6,
-                editMode: DateEditMode.time,
-                prefixIcon: Icon(Icons.timer_outlined),
-              ),
-            ),
-            DateTimeInput(
-              id: 'datetime',
-              // isRequired: true,
-              uiSettings: DateTimeInputUiSettings(
-                labelText: 'Les 2 !',
-                // labelFlex: 5,
-              ),
-            ),
-          ],
-        ),
-        InputsNode(
-          id: 'namePage',
-          uiSettings: const InputsNodeUiSettings(
-            labelText: "Comment t'appelles-tu ?",
-          ),
-          children: [
-            const StringInput(
-              id: 'firstName',
-              isRequired: true,
-              uiSettings: StringInputUiSettings(
-                labelText: 'Prénom',
-                hintText: "N'écris pas John stp !!",
-                prefixIcon: Icon(Icons.person),
-                autofocus: true,
-                autofillHints: [AutofillHints.givenName],
-              ),
-            ),
-            ConditionnalNode(
-              id: 'condition',
-              condition: ConditionValue(
-                path: '/namePage/firstName',
-                isEqualTo: 'John',
-              ),
-              child: const StringInput(
-                id: 'password',
-                isRequired: true,
-                uiSettings: StringInputUiSettings(
-                  labelText: 'Bonjour agent John.',
-                  hintText: 'Mot de passe',
-                  prefixIcon: SizedBox.square(dimension: 24),
+              children: [
+                // TODO : when i set two input with the same id, they point toward the same value, but they still have their own rendeing
+                DateTimeInput(
+                  id: 'birthday',
+                  minDate: TodayDate(addYears: -120),
+                  maxDate: TodayDate(),
+                  uiSettings: DateTimeInputUiSettings(
+                    labelText: 'Wich date ?',
+                    labelFlex: 6,
+                    editMode: DateEditMode.date,
+                    dateFormat: 'yMMMd',
+                    prefixIcon: Icon(Icons.calendar_month),
+                  ),
                 ),
-              ),
+                DateTimeInput(
+                  id: 'time',
+                  uiSettings: DateTimeInputUiSettings(
+                    labelText: 'What hour ?',
+                    labelFlex: 6,
+                    editMode: DateEditMode.time,
+                    prefixIcon: Icon(Icons.timer_outlined),
+                  ),
+                ),
+                DateTimeInput(
+                  id: 'datetime',
+                  // isRequired: true,
+                  uiSettings: DateTimeInputUiSettings(
+                    labelText: 'Les 2 !',
+                    // labelFlex: 5,
+                  ),
+                ),
+              ],
             ),
-            const StringInput(
-              id: 'lastName',
-              uiSettings: StringInputUiSettings(
-                labelText: 'Nom',
-                prefixIcon: SizedBox.square(dimension: 24),
-                autofillHints: [AutofillHints.familyName],
+            InputsNode(
+              id: 'namePage',
+              uiSettings: const InputsNodeUiSettings(
+                labelText: "Comment t'appelles-tu ?",
               ),
+              children: [
+                const StringInput(
+                  id: 'firstName',
+                  isRequired: true,
+                  uiSettings: StringInputUiSettings(
+                    labelText: 'Prénom',
+                    hintText: "N'écris pas John stp !!",
+                    prefixIcon: Icon(Icons.person),
+                    autofocus: true,
+                    autofillHints: [AutofillHints.givenName],
+                  ),
+                ),
+                ConditionnalNode(
+                  id: 'condition',
+                  condition: ConditionValue(
+                    path: '/namePage/firstName',
+                    isEqualTo: 'John',
+                  ),
+                  child: const StringInput(
+                    id: 'password',
+                    isRequired: true,
+                    uiSettings: StringInputUiSettings(
+                      labelText: 'Bonjour agent John.',
+                      hintText: 'Mot de passe',
+                      prefixIcon: SizedBox.square(dimension: 24),
+                    ),
+                  ),
+                ),
+                const StringInput(
+                  id: 'lastName',
+                  uiSettings: StringInputUiSettings(
+                    labelText: 'Nom',
+                    prefixIcon: SizedBox.square(dimension: 24),
+                    autofillHints: [AutofillHints.familyName],
+                  ),
+                ),
+              ],
+            ),
+            const InputsNode(
+              id: 'addressPage',
+              uiSettings: InputsNodeUiSettings(
+                labelText: 'Où habites-tu ?',
+              ),
+              children: [
+                StringInput(
+                  id: 'street',
+                  uiSettings: StringInputUiSettings(
+                    labelText: 'Rue',
+                    prefixIcon: Icon(Icons.location_on),
+                    autofocus: true,
+                    autofillHints: [AutofillHints.streetAddressLevel1],
+                  ),
+                ),
+                StringInput(
+                  id: 'postalCode',
+                  uiSettings: StringInputUiSettings(
+                    labelText: 'Code postal',
+                    prefixIcon: SizedBox.square(dimension: 24),
+                    keyboardType: TextInputType.number,
+                    autofillHints: [AutofillHints.postalCode],
+                  ),
+                ),
+                StringInput(
+                  id: 'city',
+                  uiSettings: StringInputUiSettings(
+                    labelText: 'Ville',
+                    prefixIcon: SizedBox.square(dimension: 24),
+                    autofillHints: [AutofillHints.addressCity],
+                  ),
+                ),
+                StringInput(
+                  id: 'country',
+                  initialValue: 'France',
+                  uiSettings: StringInputUiSettings(
+                    labelText: 'Pays',
+                    prefixIcon: Icon(Icons.public),
+                    autofillHints: [AutofillHints.countryName],
+                  ),
+                ),
+              ],
+            ),
+            InputsNode(
+              id: 'contactPage',
+              uiSettings: const InputsNodeUiSettings(
+                labelText: 'Comment te contacter ?',
+              ),
+              children: [
+                StringInput(
+                  id: 'mail',
+                  isRequired: true,
+                  regexPattern: RegexPattern.email.value,
+                  initialValue: 'prefilled@company.web',
+                  uiSettings: StringInputUiSettings.email(
+                    labelText: 'Email',
+                    prefixIcon: const Icon(Icons.mail),
+                    autofocus: true,
+                    invalidRegexMessage:
+                        'Ne correspond pas à une adresse email',
+                  ),
+                ),
+                StringInput(
+                  id: 'phone',
+                  initialValue: 'nawak',
+                  uiSettings: StringInputUiSettings.phone(
+                    labelText: 'Numéro de téléphone',
+                    prefixIcon: const Icon(Icons.phone),
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-        const InputsNode(
-          id: 'addressPage',
-          uiSettings: InputsNodeUiSettings(
-            labelText: 'Où habites-tu ?',
-          ),
-          children: [
-            StringInput(
-              id: 'street',
-              uiSettings: StringInputUiSettings(
-                labelText: 'Rue',
-                prefixIcon: Icon(Icons.location_on),
-                autofocus: true,
-                autofillHints: [AutofillHints.streetAddressLevel1],
-              ),
-            ),
-            StringInput(
-              id: 'postalCode',
-              uiSettings: StringInputUiSettings(
-                labelText: 'Code postal',
-                prefixIcon: SizedBox.square(dimension: 24),
-                keyboardType: TextInputType.number,
-                autofillHints: [AutofillHints.postalCode],
-              ),
-            ),
-            StringInput(
-              id: 'city',
-              uiSettings: StringInputUiSettings(
-                labelText: 'Ville',
-                prefixIcon: SizedBox.square(dimension: 24),
-                autofillHints: [AutofillHints.addressCity],
-              ),
-            ),
-            StringInput(
-              id: 'country',
-              initialValue: 'France',
-              uiSettings: StringInputUiSettings(
-                labelText: 'Pays',
-                prefixIcon: Icon(Icons.public),
-                autofillHints: [AutofillHints.countryName],
-              ),
-            ),
-          ],
-        ),
-        InputsNode(
-          id: 'contactPage',
-          uiSettings: const InputsNodeUiSettings(
-            labelText: 'Comment te contacter ?',
-          ),
-          children: [
-            StringInput(
-              id: 'mail',
-              isRequired: true,
-              regexPattern: RegexPattern.email.value,
-              initialValue: 'prefilled@company.web',
-              uiSettings: StringInputUiSettings.email(
-                labelText: 'Email',
-                prefixIcon: const Icon(Icons.mail),
-                autofocus: true,
-                invalidRegexMessage: 'Ne correspond pas à une adresse email',
-              ),
-            ),
-            StringInput(
-              id: 'phone',
-              initialValue: 'nawak',
-              uiSettings: StringInputUiSettings.phone(
-                labelText: 'Numéro de téléphone',
-                prefixIcon: const Icon(Icons.phone),
-              ),
-            ),
-          ],
-        ),
-      ],
-      onSubmitting: (form, values) async {
-        if (values['#firstName'] == 'John') {
-          throw ArgumentError("On t'avais dit de ne pas écrire John...");
-        }
-      },
-      onSubmitSuccess: showJsonDialog,
-    );
-  }
+          onSubmitting: (form, values) async {
+            if (values['#firstName'] == 'John') {
+              throw ArgumentError("On t'avais dit de ne pas écrire John...");
+            }
+          },
+          onSubmitSuccess: showJsonDialog,
+        );
 }
 
 class StepProgressIndicator extends StatelessWidget {
@@ -219,6 +218,7 @@ class StepProgressIndicator extends StatelessWidget {
 
             return i.isEven
                 ? GestureDetector(
+                    behavior: HitTestBehavior.opaque,
                     onTap: past
                         ? () => MultistepController.of(context)?.backToStep(i2)
                         : null,
@@ -320,4 +320,9 @@ class WoOverflowBox extends StatelessWidget {
       },
     );
   }
+}
+
+extension StringX on String {
+  String capitalized() =>
+      '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
 }

@@ -16,7 +16,7 @@ class ReportForm extends WoForm {
           uiSettings: WoFormUiSettings(
             titleText: 'Report a player',
             submitText: 'Send',
-            submitButtonPosition: SubmitButtonPosition.floating,
+            submitButtonPosition: SubmitButtonPosition.bottomBar,
             disableSubmitMode: DisableSubmitButton.whenInvalid,
             presentation: context.read<PresentationCubit>().state,
           ),

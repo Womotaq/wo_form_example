@@ -214,7 +214,7 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
             ListTile(
-              onTap: () => context.pushPage(const ProfileCreationPage()),
+              onTap: () => context.openForm(ProfileCreationForm(context)),
               leading: const Icon(Icons.local_shipping),
               title: const Text("Fluidifier l'UX grâce à plusieurs pages"),
               subtitle: const Text('Ex : Formulaire de création de profil'),
@@ -235,14 +235,14 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
             ListTile(
-              onTap: () => context.pushPage(const FromJsonPage()),
+              onTap: () => context.openForm(FromJsonForm(context)),
               leading: const Icon(Icons.download),
               title: const Text("... et l'importer ailleurs"),
               subtitle: const Text('Via un fichier JSON'),
               trailing: const Icon(Icons.chevron_right),
             ),
             ListTile(
-              onTap: () => context.pushPage(const MediasFormPage()),
+              onTap: () => context.openForm(MediasForm(context)),
               leading: const Icon(Icons.image),
               title: const Text('Upload images'),
               subtitle: const Text('Customizable & easy'),
@@ -262,7 +262,7 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
             ListTile(
-              onTap: () => context.pushPage(const InteractiveStoryPage()),
+              onTap: () => context.openForm(InteractiveStoryForm(context)),
               leading: const Icon(Icons.article),
               title: const Text('Multistep generation'),
               subtitle: const Text("L'histoire dont vous êtes de héros"),
