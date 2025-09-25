@@ -111,7 +111,6 @@ class EventForm extends WoForm {
                 latitude: latitude,
                 longitude: longitude,
               );
-              print(address);
             }
 
             final edittedEvent = event.copyWith(
