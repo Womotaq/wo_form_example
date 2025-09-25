@@ -32,8 +32,8 @@ class ProfileCreationForm extends WoForm {
                   minDate: TodayDate(addYears: -120),
                   maxDate: TodayDate(),
                   uiSettings: DateTimeInputUiSettings(
+                    headerFlex: 6,
                     labelText: 'Wich date ?',
-                    labelFlex: 6,
                     editMode: DateEditMode.date,
                     dateFormat: 'yMMMd',
                     prefixIcon: Icon(Icons.calendar_month),
@@ -42,8 +42,8 @@ class ProfileCreationForm extends WoForm {
                 DateTimeInput(
                   id: 'time',
                   uiSettings: DateTimeInputUiSettings(
+                    headerFlex: 6,
                     labelText: 'What hour ?',
-                    labelFlex: 6,
                     editMode: DateEditMode.time,
                     prefixIcon: Icon(Icons.timer_outlined),
                   ),

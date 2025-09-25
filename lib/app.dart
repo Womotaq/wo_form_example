@@ -6,6 +6,7 @@ import 'package:wo_form_example/edit_event/events_page.dart';
 import 'package:wo_form_example/flex/test_flex_page.dart';
 import 'package:wo_form_example/form_creator/form_creator_page.dart';
 import 'package:wo_form_example/from_json/from_json_page.dart';
+import 'package:wo_form_example/inputs/inputs_form.dart';
 import 'package:wo_form_example/interactive_story/interactive_story_page.dart';
 import 'package:wo_form_example/medias_form/media_service_impl.dart';
 import 'package:wo_form_example/medias_form/medias_form_page.dart';
@@ -16,7 +17,7 @@ import 'package:wo_form_example/report/report_page.dart';
 import 'package:wo_form_example/scrollable/test_scrollable_page.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
 import 'package:wo_form_example/utils/app.dart';
-import 'package:wo_form_example/utils/place_repository_impl.dart';
+import 'package:wo_form_example/utils/place_repository.dart';
 import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/push_page.dart';
 import 'package:wo_form_example/wo_form_version/generated_version.dart';
@@ -65,8 +66,8 @@ class WoFormExamplesApp extends StatelessWidget {
             permissionService: context.read(),
           ),
         ),
-        RepositoryProvider<PlaceRepository>(
-          create: (context) => PlaceRepositoryImpl(),
+        RepositoryProvider<PlaceRepositoryMixin>(
+          create: (context) => PlaceRepository(),
         ),
       ],
       child: MultiBlocProvider(
@@ -193,6 +194,13 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
+            ListTile(
+              // onTap: () => context.openForm(InputsForm(context)),
+              onTap: () => context.pushPage(const InputsFormPage()),
+              leading: const Icon(Icons.menu),
+              title: const Text('Exemples simples'),
+              trailing: const Icon(Icons.chevron_right),
+            ),
             ListTile(
               onTap: () => context.openForm(ReportForm(context)),
               leading: const Icon(Icons.quiz),

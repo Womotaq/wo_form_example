@@ -2,8 +2,8 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:wo_form/wo_form.dart';
 
-class PlaceRepositoryImpl extends PlaceRepository {
-  PlaceRepositoryImpl() {
+class PlaceRepository with PlaceRepositoryMixin {
+  PlaceRepository() {
     if (kDebugMode) _callable.useFunctionsEmulator('localhost', 5001);
   }
   final FirebaseFunctions _callable =

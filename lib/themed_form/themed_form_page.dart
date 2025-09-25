@@ -13,8 +13,18 @@ class ShowCustomThemeCubit extends Cubit<bool> {
     defaultPhoneCoutry: IsoCode.FR,
     headerBuilder: CustomFormHeader.new,
     inputsNodeExpanderBuilder: CustomInputsNodeExpander.new,
-    stringFieldBuilder: CustomStringField.new,
-    submitButtonBuilder: CustomSubmitButton.new,
+    stringFieldLabelLocation: StringFieldLocation.outside,
+    stringFieldHelperLocation: StringFieldLocation.outside,
+    submitButtonStyle: (context) => FilledButton.styleFrom(
+      padding: context.read<RootNode?>()?.uiSettings.submitButtonPosition ==
+              SubmitButtonPosition.appBar
+          ? null
+          : const EdgeInsets.all(24),
+      textStyle: TextStyle(
+        fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
     spacing: 16,
     onSubmitError: (context, status) => showDialog<void>(
       context: context,
@@ -66,99 +76,6 @@ class CustomFormHeader extends StatelessWidget {
           const SizedBox(height: 24),
         ],
       ),
-    );
-  }
-}
-
-class CustomStringField extends StatefulWidget {
-  const CustomStringField(this.data, {super.key});
-
-  final WoFieldData<StringInput, String, StringInputUiSettings> data;
-
-  @override
-  State<CustomStringField> createState() => _CustomStringFieldState();
-}
-
-class _CustomStringFieldState extends State<CustomStringField> {
-  final textEditingController = TextEditingController();
-  bool obscureText = false;
-
-  @override
-  void initState() {
-    super.initState();
-    obscureText = widget.data.uiSettings.obscureText ?? false;
-    textEditingController.text = widget.data.value ?? '';
-  }
-
-  @override
-  void dispose() {
-    textEditingController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Builder(
-          builder: (context) {
-            final headerData = WoFormInputHeaderData(
-              path: widget.data.path,
-              labelText: widget.data.uiSettings.labelText,
-              helperText: widget.data.uiSettings.helperText,
-            );
-
-            return (WoFormTheme.of(context)?.inputHeaderBuilder ??
-                    InputHeader.new)
-                .call(headerData);
-          },
-        ),
-        ListTile(
-          title: TextFormField(
-            enabled: widget.data.onValueChanged != null,
-            controller: textEditingController,
-            onChanged: widget.data.onValueChanged,
-            onFieldSubmitted:
-                (widget.data.uiSettings.submitFormOnFieldSubmitted ?? true)
-                    ? (_) => context.read<WoFormValuesCubit>().submit(context)
-                    : null,
-            keyboardType: widget.data.uiSettings.keyboardType,
-            obscureText: obscureText,
-            autocorrect: widget.data.uiSettings.autocorrect ?? true,
-            autofillHints: widget.data.uiSettings.autofillHints,
-            autofocus: widget.data.uiSettings.autofocus ?? false,
-            textInputAction: widget.data.uiSettings.textInputAction,
-            textCapitalization: widget.data.uiSettings.textCapitalization ??
-                TextCapitalization.none,
-            maxLines: widget.data.uiSettings.maxLines == 0
-                ? null
-                : widget.data.uiSettings.maxLines ?? 1,
-            decoration: InputDecoration(
-              hintText: widget.data.uiSettings.hintText,
-              errorText: widget.data.errorText,
-              suffixIcon: switch (widget.data.uiSettings.action) {
-                null => null,
-                StringFieldAction.clear => IconButton(
-                    onPressed: widget.data.onValueChanged == null
-                        ? null
-                        : () => widget.data.onValueChanged!(null),
-                    icon: const Icon(Icons.clear),
-                  ),
-                StringFieldAction.obscure => IconButton(
-                    onPressed: () => setState(() {
-                      obscureText = !obscureText;
-                    }),
-                    icon: obscureText
-                        ? const Icon(Icons.visibility_off_outlined)
-                        : const Icon(Icons.visibility_outlined),
-                  ),
-              },
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-      ],
     );
   }
 }
