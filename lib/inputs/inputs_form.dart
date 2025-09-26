@@ -155,35 +155,6 @@ class InputsForm extends WoForm {
                 ),
               ),
             ),
-            // SelectInput(
-            //   id: 'selectTile',
-            //   maxCount: 1,
-            //   availibleValues: ThemeMode.values,
-            //   uiSettings: SelectInputUiSettings<ThemeMode>(
-            //     labelFlex: 10,
-            //     labelText: 'Theme',
-            //     valueBuilder: (value) => Text(
-            //       value?.name.capitalized() ?? 'Select a theme',
-            //     ),
-            //     tileBuilder: (value, onTap, isSelected) => ChoiceTile.padded(
-            //       icon: value == ThemeMode.light
-            //           ? const Icon(Icons.light_mode)
-            //           : null,
-            //       image: value == ThemeMode.dark
-            //           ? MediaViewer.url(
-            //               url:
-            //                   'https://play-lh.googleusercontent.com/T7iJ8gb1bHJzDsOJeRzMqg7ZKcRuVOr6XE5-Uzj0inIcKq4v6l4kKyQTArgxXyha9Ag',
-            //             )
-            //           : null,
-            //       title: value.name.capitalized(),
-            //       subtitle: value == ThemeMode.system
-            //           ? 'Utilise le thème de votre appareil'
-            //           : null,
-            //       onTap: onTap,
-            //       isSelected: isSelected,
-            //     ),
-            //   ),
-            // ),
           ],
         );
 }
