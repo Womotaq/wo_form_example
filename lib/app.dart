@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/dynamic_form/dynamic_form_page.dart';
+import 'package:wo_form_example/dynamic_inputs/dynamic_inputs_form.dart';
 import 'package:wo_form_example/edit_event/events_page.dart';
 import 'package:wo_form_example/flex/test_flex_page.dart';
 import 'package:wo_form_example/form_creator/form_creator_page.dart';
@@ -275,6 +276,12 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.article),
               title: const Text('Multistep generation'),
               subtitle: const Text("L'histoire dont vous êtes de héros"),
+              trailing: const Icon(Icons.chevron_right),
+            ),
+            ListTile(
+              onTap: () => context.openForm(DynamicInputsForm()),
+              leading: const Icon(Icons.autorenew),
+              title: const Text('Nodes generation'),
               trailing: const Icon(Icons.chevron_right),
             ),
             const SizedBox(height: 32),

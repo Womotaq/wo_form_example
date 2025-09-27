@@ -27,7 +27,7 @@ WoFormNodeMixin createStringInputNode() => ValueBuilderNode(
               isRequired: true,
               uiSettings: StringInputUiSettings(
                 labelText: 'Clef json',
-                autofocus: true,
+                autofocus: WoFormAutofocus.ifEmpty,
               ),
             ),
             const StringInput(
@@ -198,11 +198,10 @@ WoFormNodeMixin createStringInputNode() => ValueBuilderNode(
                   maxCount: null,
                   uiSettings: SelectInputUiSettings(
                     labelText: 'Saisie automatique',
-                    searcher: (query_, value_) {
-                      final query = query_.toLowerCase();
-                      final value = value_.toLowerCase();
-                      if (value.startsWith(query)) return 1;
-                      if (value.contains(query)) return .5;
+                    searchScore: (query, value) {
+                      final clean = WoFormQuery.toQuery(value);
+                      if (clean.startsWith(query.clean)) return 1;
+                      if (clean.contains(query.clean)) return .5;
                       return 0;
                     },
                   ),

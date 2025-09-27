@@ -155,10 +155,11 @@ class QuizForm extends WoForm {
                     choice: value as num?,
                     answer: 170515,
                     explanation:
-                        'Le record du monde actuel de jonglage avec un ballon de '
-                        "football est détenu par l'athlète japonais Yuki Kadono. "
-                        'En 2018, il a réalisé 170 515 jongles en une seule '
-                        'session, battant ainsi le record précédent qui était de '
+                        'Le record du monde actuel de jonglage avec un '
+                        "ballon de football est détenu par l'athlète "
+                        'japonais Yuki Kadono. En 2018, il a réalisé '
+                        '170 515 jongles en une seule session, battant'
+                        ' ainsi le record précédent qui était de '
                         '170 405 jongles. Ce record a été officiellement '
                         'enregistré par Guinness World Records.',
                   ),
@@ -178,7 +179,8 @@ class QuizForm extends WoForm {
                 const StringInput(
                   id: 'q4',
                   isRequired: true,
-                  uiSettings: StringInputUiSettings(autofocus: true),
+                  uiSettings:
+                      StringInputUiSettings(autofocus: WoFormAutofocus.ifEmpty),
                 ),
               ],
             ),

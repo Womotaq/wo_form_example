@@ -24,7 +24,7 @@ WoFormNodeMixin createSelectStringInputNode() => ValueBuilderNode(
               isRequired: true,
               uiSettings: StringInputUiSettings(
                 labelText: 'Clef json',
-                autofocus: true,
+                autofocus: WoFormAutofocus.ifEmpty,
               ),
             ),
             const NumInput(
@@ -111,7 +111,7 @@ WoFormNodeMixin createSelectStringInputNode() => ValueBuilderNode(
                     isRequired: true,
                     uiSettings: StringInputUiSettings(
                       labelText: 'Valeur',
-                      autofocus: true,
+                      autofocus: WoFormAutofocus.ifEmpty,
                     ),
                   ),
                 ),

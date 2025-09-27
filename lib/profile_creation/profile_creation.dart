@@ -71,7 +71,7 @@ class ProfileCreationForm extends WoForm {
                     labelText: 'Prénom',
                     hintText: "N'écris pas John stp !!",
                     prefixIcon: Icon(Icons.person),
-                    autofocus: true,
+                    autofocus: WoFormAutofocus.ifEmpty,
                     autofillHints: [AutofillHints.givenName],
                   ),
                 ),
@@ -112,7 +112,7 @@ class ProfileCreationForm extends WoForm {
                   uiSettings: StringInputUiSettings(
                     labelText: 'Rue',
                     prefixIcon: Icon(Icons.location_on),
-                    autofocus: true,
+                    autofocus: WoFormAutofocus.ifEmpty,
                     autofillHints: [AutofillHints.streetAddressLevel1],
                   ),
                 ),
@@ -158,7 +158,7 @@ class ProfileCreationForm extends WoForm {
                   uiSettings: StringInputUiSettings.email(
                     labelText: 'Email',
                     prefixIcon: const Icon(Icons.mail),
-                    autofocus: true,
+                    autofocus: WoFormAutofocus.ifEmpty,
                     invalidRegexMessage:
                         'Ne correspond pas à une adresse email',
                   ),
