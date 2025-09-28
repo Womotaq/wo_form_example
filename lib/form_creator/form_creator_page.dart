@@ -201,8 +201,7 @@ class _JsonClipboarderState extends State<JsonClipboarder> {
                                       root: createdRoot.copyWith(
                                         uiSettings:
                                             createdRoot.uiSettings.copyWith(
-                                          bodyLayout:
-                                              WoFormBodyLayout.shrinkWrap,
+                                          layout: LayoutMethod.shrinkWrap,
                                           quitButtonBuilder: () => null,
                                         ),
                                       ),

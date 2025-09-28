@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wo_form/wo_form.dart';
-import 'package:wo_form_example/profile_creation/profile_creation.dart';
+import 'package:wo_form_example/app.dart';
+import 'package:wo_form_example/utils/capitalized.dart';
 import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/regex_pattern.dart';
 
@@ -143,16 +144,41 @@ class InputsForm extends WoForm {
               ),
             ),
             SelectInput(
-              id: 'select',
+              id: 'selectDefault',
+              minCount: 1,
               maxCount: 1,
+              initialValues: [context.read<DarkModeCubit>().state],
+              availibleValues: ThemeMode.values,
+              onValueChanged: (values) => values?.firstOrNull == null
+                  ? null
+                  : context.read<DarkModeCubit>().set(values!.first),
+              uiSettings: SelectInputUiSettings<ThemeMode>(
+                childrenVisibility: ChildrenVisibility.whenAsked,
+                headerFlex: 10,
+                labelText: 'Theme',
+                helperText: 'Default',
+                flex: 0,
+                valueBuilder: (value) => Text(
+                  value?.name.capitalized() ?? 'Select a theme',
+                ),
+              ),
+            ),
+            SelectInput(
+              id: 'selectModal',
+              minCount: 1,
+              maxCount: 1,
+              initialValues: [context.read<DarkModeCubit>().state],
               availibleValues: ThemeMode.values,
               uiSettings: SelectInputUiSettings<ThemeMode>(
                 childrenVisibility: ChildrenVisibility.whenAsked,
                 headerFlex: 10,
                 labelText: 'Theme',
+                helperText: 'Modal',
+                flex: 0,
                 valueBuilder: (value) => Text(
                   value?.name.capitalized() ?? 'Select a theme',
                 ),
+                openChildren: Push.modalBottomSheet,
               ),
             ),
           ],

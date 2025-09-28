@@ -1,8 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:wo_form/wo_form.dart';
+import 'package:wo_form_example/utils/presentation_cubit.dart';
 
-class DynamicInputsForm extends WoForm {
-  DynamicInputsForm({super.key})
+class TestDynamicInputsNodeForm extends WoForm {
+  TestDynamicInputsNodeForm(BuildContext context, {super.key})
       : super(
+          uiSettings: WoFormUiSettings(
+            presentation: context.read<PresentationCubit>().state,
+          ),
           children: [
             DynamicInputsNode(
               id: 'default',

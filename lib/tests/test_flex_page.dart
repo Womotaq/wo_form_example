@@ -92,7 +92,7 @@ class FlexStandardVerticalForm extends WoForm {
   FlexStandardVerticalForm(BuildContext context, {super.key})
       : super(
           uiSettings: WoFormUiSettings(
-            bodyLayout: WoFormBodyLayout.flexible,
+            layout: LayoutMethod.flexible,
             presentation: context.read<PresentationCubit>().state,
           ),
           children: [
@@ -117,7 +117,7 @@ class FlexMultistepVerticalForm extends WoForm {
   FlexMultistepVerticalForm(BuildContext context, {super.key})
       : super(
           uiSettings: WoFormUiSettings(
-            bodyLayout: WoFormBodyLayout.flexible,
+            layout: LayoutMethod.flexible,
             multistepSettings: const MultistepSettings(),
             presentation: context.read<PresentationCubit>().state,
           ),
@@ -149,7 +149,7 @@ class FlexStandardHorizontalForm extends WoForm {
   FlexStandardHorizontalForm(BuildContext context, {super.key})
       : super(
           uiSettings: WoFormUiSettings(
-            bodyLayout: WoFormBodyLayout.flexible,
+            layout: LayoutMethod.flexible,
             presentation: context.read<PresentationCubit>().state,
           ),
           children: [
@@ -202,7 +202,7 @@ class FlexMultistepHorizontalForm extends WoForm {
   FlexMultistepHorizontalForm(BuildContext context, {super.key})
       : super(
           uiSettings: WoFormUiSettings(
-            bodyLayout: WoFormBodyLayout.flexible,
+            layout: LayoutMethod.flexible,
             multistepSettings: const MultistepSettings(),
             presentation: context.read<PresentationCubit>().state,
           ),

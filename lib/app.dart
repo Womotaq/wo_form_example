@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/dynamic_form/dynamic_form_page.dart';
-import 'package:wo_form_example/dynamic_inputs/dynamic_inputs_form.dart';
+import 'package:wo_form_example/tests/test_dynamic_inputs_node_form.dart';
 import 'package:wo_form_example/edit_event/events_page.dart';
-import 'package:wo_form_example/flex/test_flex_page.dart';
+import 'package:wo_form_example/tests/test_flex_page.dart';
 import 'package:wo_form_example/form_creator/form_creator_page.dart';
 import 'package:wo_form_example/from_json/from_json_page.dart';
 import 'package:wo_form_example/inputs/inputs_form.dart';
@@ -15,7 +15,8 @@ import 'package:wo_form_example/medias_form/permission_service_impl.dart';
 import 'package:wo_form_example/profile_creation/profile_creation.dart';
 import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
-import 'package:wo_form_example/scrollable/test_scrollable_page.dart';
+import 'package:wo_form_example/tests/test_scrollable_page.dart';
+import 'package:wo_form_example/tests/test_select_input_form.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
 import 'package:wo_form_example/utils/app.dart';
 import 'package:wo_form_example/utils/place_repository.dart';
@@ -23,10 +24,12 @@ import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/push_page.dart';
 import 'package:wo_form_example/wo_form_version/generated_version.dart';
 
-class DarkModeCubit extends Cubit<bool> {
-  DarkModeCubit() : super(true);
+class DarkModeCubit extends Cubit<ThemeMode> {
+  DarkModeCubit() : super(ThemeMode.dark);
 
-  void toggle() => emit(!state);
+  void set(ThemeMode mode) => emit(mode);
+  void toggle() =>
+      emit(state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark);
 }
 
 class WoFormExamplesApp extends StatelessWidget {
@@ -79,7 +82,7 @@ class WoFormExamplesApp extends StatelessWidget {
         ],
         child: Builder(
           builder: (context) {
-            final isDarkMode = context.watch<DarkModeCubit>().state;
+            final themeMode = context.watch<DarkModeCubit>().state;
             final useCustomTheme = context.watch<ShowCustomThemeCubit>().state;
             return WoFormTheme(
               data: context.watch<ShowCustomThemeCubit>().state
@@ -89,21 +92,19 @@ class WoFormExamplesApp extends StatelessWidget {
                 navigatorKey: App.navigatorKey,
                 debugShowCheckedModeBanner: false,
                 title: 'wo_form Examples',
-                theme: ThemeData(
-                  colorScheme: ColorScheme.fromSeed(
-                    brightness: isDarkMode ? Brightness.dark : Brightness.light,
-                    seedColor: useCustomTheme
-                        ? const Color.fromARGB(255, 0, 41, 5)
-                        : Colors.lightBlue,
-                  ),
-                  inputDecorationTheme:
-                      const InputDecorationTheme(border: OutlineInputBorder()),
-                  scaffoldBackgroundColor: useCustomTheme
-                      ? isDarkMode
-                          ? Colors.black
-                          : Colors.white
-                      : null,
+                theme: getTheme(
+                  Brightness.light,
+                  useCustomTheme
+                      ? const Color.fromARGB(255, 0, 41, 5)
+                      : Colors.lightBlue,
                 ),
+                darkTheme: getTheme(
+                  Brightness.dark,
+                  useCustomTheme
+                      ? const Color.fromARGB(255, 0, 41, 5)
+                      : Colors.lightBlue,
+                ),
+                themeMode: themeMode,
                 home: const HomePage(),
               ),
             );
@@ -112,6 +113,24 @@ class WoFormExamplesApp extends StatelessWidget {
       ),
     );
   }
+
+  ThemeData getTheme(
+    Brightness brightness,
+    Color seedColor,
+  ) =>
+      ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          brightness: brightness,
+          seedColor: seedColor,
+        ),
+        inputDecorationTheme:
+            const InputDecorationTheme(border: OutlineInputBorder()),
+        // scaffoldBackgroundColor: useCustomTheme
+        //     ? isDarkMode
+        //         ? Colors.black
+        //         : Colors.white
+        //     : null,
+      );
 }
 
 class HomePage extends StatelessWidget {
@@ -159,12 +178,11 @@ class HomePage extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: context.read<DarkModeCubit>().toggle,
-              icon: BlocBuilder<DarkModeCubit, bool>(
-                builder: (context, isDarkMode) {
-                  return Icon(
-                    isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                  );
-                },
+              icon: BlocSelector<DarkModeCubit, ThemeMode, bool>(
+                selector: (mode) => mode == ThemeMode.dark,
+                builder: (context, isDarkMode) => Icon(
+                  isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                ),
               ),
             ),
           ],
@@ -279,9 +297,15 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
             ListTile(
-              onTap: () => context.openForm(DynamicInputsForm()),
+              onTap: () => context.openForm(TestDynamicInputsNodeForm(context)),
               leading: const Icon(Icons.autorenew),
-              title: const Text('Nodes generation'),
+              title: const Text('DynamicInputsNode'),
+              trailing: const Icon(Icons.chevron_right),
+            ),
+            ListTile(
+              onTap: () => context.openForm(TestSelectInputForm(context)),
+              leading: const Icon(Icons.check_box),
+              title: const Text('SelectInput'),
               trailing: const Icon(Icons.chevron_right),
             ),
             const SizedBox(height: 32),
