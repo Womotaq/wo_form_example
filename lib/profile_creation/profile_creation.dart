@@ -221,7 +221,8 @@ class StepProgressIndicator extends StatelessWidget {
                 ? GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: past
-                        ? () => MultistepController.of(context)?.backToStep(i2)
+                        ? () =>
+                            MultistepController.of(context)?.animateToStep(i2)
                         : null,
                     child: SizedBox(
                       width: 70,

@@ -17,10 +17,21 @@ class InteractiveStoryForm extends WoForm {
                     : const SizedBox.shrink(),
             multistepSettings: MultistepSettings(
               nextText: 'Quit',
-              getNextStep: (stepId, values) {
-                final choice =
-                    values['/$stepId/choice'] as List<StoryStep>? ?? [];
-                return choice.firstOrNull?.name;
+              onStepSubmitting: (context) async {
+                final values = context.read<WoFormValuesCubit>().state;
+                final stepId = values.currentStepId ?? '';
+                final choice = values.get<List<StoryStep>>('/$stepId/choice');
+                final nextStep = choice?.firstOrNull;
+                if (nextStep == null) {
+                  return const MultistepActionSubmitForm();
+                } else if (nextStep == StoryStep.garden) {
+                  return MultistepAction.popUntil(
+                    (stepId) => stepId == StoryStep.street.name,
+                    replacementStepId: nextStep.name,
+                  );
+                } else {
+                  return MultistepAction.push(stepId: nextStep.name);
+                }
               },
             ),
           ),
@@ -33,6 +44,7 @@ class InteractiveStoryForm extends WoForm {
 }
 
 enum StoryStep {
+  street,
   entry,
   kitchen,
   bedroom,
@@ -44,6 +56,7 @@ enum StoryStep {
       values.firstWhere((value) => value.name == name);
 
   List<StoryStep> get nextSteps => switch (this) {
+        street => [entry, garden],
         entry => [kitchen, bedroom],
         kitchen => [],
         bedroom => [bathroom, toilets],
@@ -53,6 +66,7 @@ enum StoryStep {
       };
 
   String get endText => switch (this) {
+        street => '',
         entry => '',
         kitchen => 'You found a spoon and a yogurt. Bon appétit !',
         bedroom => '',
