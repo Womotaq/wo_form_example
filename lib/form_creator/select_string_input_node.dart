@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wo_form/wo_form.dart';
 
-WoFormNodeMixin createSelectStringInputNode() => ValueBuilderNode(
+WoFormNode createSelectStringInputNode() => ValueBuilderNode(
       id: 'labelText-builder',
       path: './selectStringInput/uiSettings/labelText',
       builder: (value) {

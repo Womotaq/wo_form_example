@@ -16,7 +16,7 @@ class ShowCustomThemeCubit extends Cubit<bool> {
     stringFieldLabelLocation: StringFieldLocation.outside,
     stringFieldHelperLocation: StringFieldLocation.outside,
     submitButtonStyle: (context) => FilledButton.styleFrom(
-      padding: context.read<RootNode?>()?.uiSettings.submitButtonPosition ==
+      padding: context.read<RootNode?>()?.uiSettings?.submitButtonPosition ==
               SubmitButtonPosition.appBar
           ? null
           : const EdgeInsets.all(24),
@@ -161,21 +161,21 @@ class CustomSubmitButton extends StatelessWidget {
 class CustomInputsNodeExpander extends StatelessWidget {
   const CustomInputsNodeExpander(this.data, {super.key});
 
-  final WoFieldData<InputsNode, void, InputsNodeUiSettings> data;
+  final WoFieldData<InputsNode, void> data;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     final errorText = data.errorText ?? '';
-    final helperText = data.uiSettings.helperText ?? '';
+    final helperText = data.input.uiSettings?.helperText ?? '';
 
     return Theme(
       // just to remove borders of ExpansionTile
       data: theme.copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
         title: Text(
-          data.uiSettings.labelText ?? '',
+          data.input.uiSettings?.labelText ?? '',
           style:
               theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
         ),

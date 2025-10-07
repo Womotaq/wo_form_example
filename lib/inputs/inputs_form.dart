@@ -143,7 +143,7 @@ class InputsForm extends WoForm {
                 style: NumInputStyle.slider,
               ),
             ),
-            SelectInput(
+            SelectInput<ThemeMode>(
               id: 'selectDefault',
               minCount: 1,
               maxCount: 1,
@@ -152,29 +152,51 @@ class InputsForm extends WoForm {
               onValueChanged: (values) => values?.firstOrNull == null
                   ? null
                   : context.read<DarkModeCubit>().set(values!.first),
-              uiSettings: SelectInputUiSettings<ThemeMode>(
+              uiSettings: SelectInputUiSettings(
                 childrenVisibility: ChildrenVisibility.whenAsked,
                 headerFlex: 10,
                 labelText: 'Theme',
                 helperText: 'Default',
-                flex: 0,
                 valueBuilder: (value) => Text(
                   value?.name.capitalized() ?? 'Select a theme',
                 ),
               ),
             ),
-            SelectInput(
+            SelectInput<ThemeMode>(
               id: 'selectModal',
               minCount: 1,
               maxCount: 1,
               initialValues: [context.read<DarkModeCubit>().state],
               availibleValues: ThemeMode.values,
-              uiSettings: SelectInputUiSettings<ThemeMode>(
+              onValueChanged: (values) => values?.firstOrNull == null
+                  ? null
+                  : context.read<DarkModeCubit>().set(values!.first),
+              uiSettings: SelectInputUiSettings(
                 childrenVisibility: ChildrenVisibility.whenAsked,
                 headerFlex: 10,
                 labelText: 'Theme',
                 helperText: 'Modal',
-                flex: 0,
+                valueBuilder: (value) => Text(
+                  value?.name.capitalized() ?? 'Select a theme',
+                ),
+                openChildren: Push.modalBottomSheet,
+              ),
+            ),
+            SelectInput<ThemeMode>(
+              id: 'selectModalScrollable',
+              minCount: 1,
+              maxCount: 1,
+              initialValues: [context.read<DarkModeCubit>().state],
+              availibleValues: ThemeMode.values,
+              onValueChanged: (values) => values?.firstOrNull == null
+                  ? null
+                  : context.read<DarkModeCubit>().set(values!.first),
+              uiSettings: SelectInputUiSettings(
+                childrenVisibility: ChildrenVisibility.whenAsked,
+                flex: 1,
+                headerFlex: 10,
+                labelText: 'Theme',
+                helperText: 'Modal scrollable',
                 valueBuilder: (value) => Text(
                   value?.name.capitalized() ?? 'Select a theme',
                 ),

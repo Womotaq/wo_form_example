@@ -192,15 +192,14 @@ class StepProgressIndicator extends StatelessWidget {
     if (context
             .read<RootNode>()
             .uiSettings
-            .multistepSettings
+            ?.multistepSettings
             ?.generatingSteps ??
         false) {
       return const SizedBox.shrink();
     }
 
-    final multistepIndex = context.select(
-      (WoFormValuesCubit c) => c.state.multistepIndex,
-    );
+    final currentStepIndex =
+        context.select((WoFormValuesCubit c) => c.state.currentStepIndex ?? 0);
     final maxIndex = context.read<RootNode>().children.length - 1;
 
     final colorScheme = Theme.of(context).colorScheme;
@@ -213,9 +212,9 @@ class StepProgressIndicator extends StatelessWidget {
           maxIndex * 2 + 1,
           (i) {
             final i2 = (i / 2).ceil();
-            final past = i2 < multistepIndex;
-            final current = i2 == multistepIndex;
-            final future = i2 > multistepIndex;
+            final past = i2 < currentStepIndex;
+            final current = i2 == currentStepIndex;
+            final future = i2 > currentStepIndex;
 
             return i.isEven
                 ? GestureDetector(

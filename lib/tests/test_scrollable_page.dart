@@ -14,19 +14,19 @@ class TestScrollableForm extends WoForm {
             WoFormNode.valueBuilder(
               id: 'id',
               path: '#scroll',
-              builder: (scrollable) {
+              builder: (value) {
+                final scrollable = value as bool? ?? true;
                 return InputsNode(
                   id: 'list',
                   uiSettings: InputsNodeUiSettings(
-                    flex: 1,
-                    scrollable: scrollable as bool? ?? false,
+                    flex: scrollable ? -1 : 1,
                   ),
                   children: [
                     const BooleanInput(
                       id: 'scroll',
                       initialValue: true,
                       uiSettings: BooleanInputUiSettings(
-                        labelText: 'InputsNodeUiSettings.scrollable',
+                        labelText: 'Enable scroll',
                       ),
                     ),
                     WidgetNode(
@@ -36,12 +36,12 @@ class TestScrollableForm extends WoForm {
                       text: 'flex : unset',
                     ),
                     ContainerNode(
-                      flex: 1,
+                      flex: scrollable ? 0 : 1,
                       color: Colors.orangeAccent,
                       text: 'flex : 1',
                     ),
                     ContainerNode(
-                      flex: 2,
+                      flex: scrollable ? 0 : 2,
                       color: Colors.green,
                       text: 'flex : 2',
                     ),

@@ -66,6 +66,7 @@ class TestSelectInputForm extends WoForm {
                       maxCount: 1,
                       availibleValues: City.values,
                       uiSettings: SelectInputUiSettings(
+                        flex: 1,
                         headerFlex: 11,
                         labelText: 'Ville',
                         helperText: 'default search',
@@ -82,6 +83,7 @@ class TestSelectInputForm extends WoForm {
                       maxCount: 1,
                       availibleValues: City.values,
                       uiSettings: SelectInputUiSettings(
+                        flex: 1,
                         headerFlex: 11,
                         labelText: 'Ville',
                         helperText: 'page search',
@@ -99,9 +101,10 @@ class TestSelectInputForm extends WoForm {
                       maxCount: 1,
                       availibleValues: City.values,
                       uiSettings: SelectInputUiSettings(
+                        flex: 1,
                         headerFlex: 11,
                         labelText: 'Ville',
-                        helperText: 'page search',
+                        helperText: 'menu search',
                         childrenVisibility: childrenVisibility,
                         searchScore: (query, value) =>
                             query.searchScore(value.name),

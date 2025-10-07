@@ -4,7 +4,7 @@ import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/utils/auto_fill_hints.dart';
 import 'package:wo_form_example/utils/regex_pattern.dart';
 
-WoFormNodeMixin createStringInputNode() => ValueBuilderNode(
+WoFormNode createStringInputNode() => ValueBuilderNode(
       id: 'labelText-builder',
       path: './stringInput/uiSettings/labelText',
       builder: (value) {
@@ -59,7 +59,7 @@ WoFormNodeMixin createStringInputNode() => ValueBuilderNode(
                   },
                 ),
               ),
-              toJsonT: (regex) => (regex as RegexPattern?)?.value,
+              toJsonT: (regex) => regex?.value,
             ),
             ValueListenerNode(
               id: 'regexPatternListener',
@@ -192,7 +192,7 @@ WoFormNodeMixin createStringInputNode() => ValueBuilderNode(
                     labelText: 'Correction automatique',
                   ),
                 ),
-                SelectStringInput(
+                SelectInput<String>(
                   id: 'autofillHints',
                   availibleValues: AutofillHintsX.all,
                   maxCount: null,

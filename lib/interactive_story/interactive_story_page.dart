@@ -85,13 +85,13 @@ class StoryStepNode extends InputsNode {
           ),
           children: [
             if (step.nextSteps.isNotEmpty)
-              SelectInput(
+              SelectInput<StoryStep>(
                 id: 'choice',
                 maxCount: 1,
                 minCount: 1,
                 submitFormOnSelect: true,
                 availibleValues: step.nextSteps,
-                uiSettings: SelectInputUiSettings<StoryStep>(
+                uiSettings: SelectInputUiSettings(
                   valueBuilder: (step) => Text(
                     step == null ? 'Select a step' : 'Go to the ${step.name}',
                   ),

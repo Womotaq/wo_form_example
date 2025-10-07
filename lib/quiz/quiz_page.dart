@@ -47,7 +47,7 @@ class QuizForm extends WoForm {
                   builder: (_) =>
                       const QuizQuestion('De quelle couleur est le soleil ?'),
                 ),
-                const SelectStringInput(
+                const SelectInput(
                   id: 'q1',
                   maxCount: 1,
                   minCount: 1,
@@ -90,7 +90,7 @@ class QuizForm extends WoForm {
                   builder: (_) =>
                       const QuizQuestion("Quelle est l'hypothénuse de x ?"),
                 ),
-                SelectStringInput(
+                SelectInput(
                   id: 'q2',
                   maxCount: 1,
                   minCount: 1,

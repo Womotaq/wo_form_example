@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/dynamic_form/dynamic_form_page.dart';
-import 'package:wo_form_example/tests/test_dynamic_inputs_node_form.dart';
 import 'package:wo_form_example/edit_event/events_page.dart';
-import 'package:wo_form_example/tests/test_flex_page.dart';
 import 'package:wo_form_example/form_creator/form_creator_page.dart';
 import 'package:wo_form_example/from_json/from_json_page.dart';
 import 'package:wo_form_example/inputs/inputs_form.dart';
@@ -15,6 +13,8 @@ import 'package:wo_form_example/medias_form/permission_service_impl.dart';
 import 'package:wo_form_example/profile_creation/profile_creation.dart';
 import 'package:wo_form_example/quiz/quiz_page.dart';
 import 'package:wo_form_example/report/report_page.dart';
+import 'package:wo_form_example/tests/test_dynamic_inputs_node_form.dart';
+import 'package:wo_form_example/tests/test_flex_page.dart';
 import 'package:wo_form_example/tests/test_scrollable_page.dart';
 import 'package:wo_form_example/tests/test_select_input_form.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
@@ -25,7 +25,7 @@ import 'package:wo_form_example/utils/push_page.dart';
 import 'package:wo_form_example/wo_form_version/generated_version.dart';
 
 class DarkModeCubit extends Cubit<ThemeMode> {
-  DarkModeCubit() : super(ThemeMode.dark);
+  DarkModeCubit() : super(ThemeMode.system);
 
   void set(ThemeMode mode) => emit(mode);
   void toggle() =>
@@ -87,7 +87,15 @@ class WoFormExamplesApp extends StatelessWidget {
             return WoFormTheme(
               data: context.watch<ShowCustomThemeCubit>().state
                   ? ShowCustomThemeCubit.customTheme
-                  : const WoFormThemeData(),
+                  : WoFormThemeData(
+                      onSubmitError: (context, status) => showDialog<void>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          icon: const Icon(Icons.error),
+                          content: Text(status.error.toString()),
+                        ),
+                      ),
+                    ),
               child: MaterialApp(
                 navigatorKey: App.navigatorKey,
                 debugShowCheckedModeBanner: false,

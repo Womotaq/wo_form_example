@@ -107,9 +107,9 @@ class FormCreatorForm extends WoForm {
                     await context.openForm(
                       WoForm.root(
                         root: root.copyWith(
-                          uiSettings: root.uiSettings.copyWith(
-                            presentation: presentation,
-                          ),
+                          uiSettings:
+                              (root.uiSettings ?? const WoFormUiSettings())
+                                  .copyWith(presentation: presentation),
                         ),
                         onSubmitSuccess: showJsonDialog,
                       ),
@@ -150,8 +150,8 @@ class _JsonClipboarderState extends State<JsonClipboarder> {
 
     return BlocBuilder<WoFormValuesCubit, WoFormValues>(
       builder: (context, values) {
-        final errorsText =
-            woFormL10n.errors(root.getErrors(values: values).length);
+        final errorsText = woFormL10n
+            .errors(root.getErrors(parentPath: '', values: values).length);
 
         return Column(
           children: [
@@ -199,8 +199,9 @@ class _JsonClipboarderState extends State<JsonClipboarder> {
                                     child: WoForm.root(
                                       key: UniqueKey(),
                                       root: createdRoot.copyWith(
-                                        uiSettings:
-                                            createdRoot.uiSettings.copyWith(
+                                        uiSettings: (createdRoot.uiSettings ??
+                                                const WoFormUiSettings())
+                                            .copyWith(
                                           layout: LayoutMethod.shrinkWrap,
                                           quitButtonBuilder: () => null,
                                         ),
