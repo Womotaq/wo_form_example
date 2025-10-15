@@ -12,6 +12,7 @@ class MediaServiceImpl extends MediaService {
     BoxFit? fit,
     Alignment alignment = Alignment.center,
     String? package,
+    bool circle = false,
     Key? key,
   }) =>
       MediaViewer(
@@ -33,7 +34,7 @@ class MediaServiceImpl extends MediaService {
   /// Show a dialog asking for the image url
   @override
   Future<MediaUrl?> enterMediaUrl() async {
-    return const MediaUrl(url: 'url-typed-by-user');
+    return MediaUrl(url: 'url-typed-by-user');
   }
 
   @override
@@ -101,7 +102,7 @@ class MediaServiceImpl extends MediaService {
         // LATER : download media and upload it to firebase storage
         return media;
       case MediaFile():
-        return const MediaUrl(url: 'url-of-uploaded-file');
+        return MediaUrl(url: 'url-of-uploaded-file');
     }
   }
 }

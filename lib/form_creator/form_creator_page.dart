@@ -145,7 +145,7 @@ class _JsonClipboarderState extends State<JsonClipboarder> {
   @override
   Widget build(BuildContext context) {
     final root = context.read<RootNode>();
-    final woFormL10n = context.read<WoFormL10n>();
+    final woFormL10n = context.woFormL10n;
     final scrollController = ScrollController();
 
     return BlocBuilder<WoFormValuesCubit, WoFormValues>(

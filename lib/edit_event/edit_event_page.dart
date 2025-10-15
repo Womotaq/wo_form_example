@@ -120,6 +120,7 @@ class EventForm extends WoForm {
               finish: values['/finish'] as DateTime,
             );
             eventsCubit.update(event: edittedEvent);
+            return;
           },
           // onSubmitSuccess: showJsonDialog,
           onSubmitSuccess: (context) => Navigator.of(context).pop(),

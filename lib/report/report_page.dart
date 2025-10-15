@@ -86,6 +86,8 @@ class ReportForm extends WoForm {
                 );
               },
             );
+
+            return;
           },
         );
 }
@@ -164,6 +166,8 @@ class ReportPage extends StatelessWidget {
             );
           },
         );
+
+        return;
       },
     );
   }

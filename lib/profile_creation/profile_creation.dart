@@ -179,6 +179,7 @@ class ProfileCreationForm extends WoForm {
             if (values['#firstName'] == 'John') {
               throw ArgumentError("On t'avais dit de ne pas écrire John...");
             }
+            return;
           },
           onSubmitSuccess: showJsonDialog,
         );

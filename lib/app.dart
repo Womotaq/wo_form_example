@@ -39,28 +39,6 @@ class WoFormExamplesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(
-          create: (context) => WoFormL10n(
-            submit: () => 'Save',
-            next: () => 'Next',
-            translateError: (WoFormInputError? error) => switch (error) {
-              EmptyInputError() => 'This field is required.',
-              InvalidInputError() => 'This field is invalid.',
-              MaxBoundInputError() => 'Above the maximum allowed.',
-              MinBoundInputError() => 'Below the minimum allowed.',
-              CustomInputError(message: final message) => message,
-              null => null,
-            },
-            errors: (count) {
-              if (count == 0) return null;
-              if (count == 1) return '1 error';
-              return '$count errors';
-            },
-            days: (count) => count > 1 ? 'Days' : 'Day',
-            hours: (count) => count > 1 ? 'Hours' : 'Hour',
-            minutes: (count) => count > 1 ? 'Minutes' : 'Minute',
-          ),
-        ),
         RepositoryProvider(create: (context) => const DateTimeService()),
         RepositoryProvider<PermissionServiceMixin>(
           create: (context) => const PermissionService(),
