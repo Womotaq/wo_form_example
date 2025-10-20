@@ -196,14 +196,16 @@ WoFormNode createStringInputNode() => ValueBuilderNode(
                   id: 'autofillHints',
                   availibleValues: AutofillHintsX.all,
                   maxCount: null,
-                  uiSettings: SelectInputUiSettings(
-                    labelText: 'Saisie automatique',
+                  searchSettings: SearchSettings(
                     searchScore: (query, value) {
                       final clean = WoFormQuery.toQuery(value);
                       if (clean.startsWith(query.clean)) return 1;
                       if (clean.contains(query.clean)) return .5;
                       return 0;
                     },
+                  ),
+                  uiSettings: const SelectInputUiSettings(
+                    labelText: 'Saisie automatique',
                   ),
                 ),
                 const BooleanInput(

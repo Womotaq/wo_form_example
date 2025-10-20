@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/utils/capitalized.dart';
@@ -38,7 +39,7 @@ class TestSelectInputForm extends WoForm {
                 return SelectInput<City>(
                   id: 'select',
                   maxCount: 1,
-                  availibleValues: City.values,
+                  availibleValues: City.sortedValues,
                   uiSettings: SelectInputUiSettings(
                     headerFlex: 11,
                     labelText: 'Ville',
@@ -64,15 +65,19 @@ class TestSelectInputForm extends WoForm {
                     SelectInput<City>(
                       id: 'searchDefault',
                       maxCount: 1,
-                      availibleValues: City.values,
+                      availibleValues: City.sortedValues,
+                      searchSettings: SearchSettings(
+                        searchScore: (query, value) =>
+                            query.searchScore(value.name),
+                      ),
                       uiSettings: SelectInputUiSettings(
-                        flex: 1,
+                        flex: childrenVisibility == ChildrenVisibility.always
+                            ? 0
+                            : 1,
                         headerFlex: 11,
                         labelText: 'Ville',
                         helperText: 'default search',
                         childrenVisibility: childrenVisibility,
-                        searchScore: (query, value) =>
-                            query.searchScore(value.name),
                         valueBuilder: (value) => value == null
                             ? const Text('Select a value')
                             : Text(value.name.capitalized()),
@@ -81,15 +86,19 @@ class TestSelectInputForm extends WoForm {
                     SelectInput<City>(
                       id: 'searchPage',
                       maxCount: 1,
-                      availibleValues: City.values,
+                      availibleValues: City.sortedValues,
+                      searchSettings: SearchSettings(
+                        searchScore: (query, value) =>
+                            query.searchScore(value.name),
+                      ),
                       uiSettings: SelectInputUiSettings(
-                        flex: 1,
+                        flex: childrenVisibility == ChildrenVisibility.always
+                            ? 0
+                            : 1,
                         headerFlex: 11,
                         labelText: 'Ville',
                         helperText: 'page search',
                         childrenVisibility: childrenVisibility,
-                        searchScore: (query, value) =>
-                            query.searchScore(value.name),
                         valueBuilder: (value) => value == null
                             ? const Text('Select a value')
                             : Text(value.name.capitalized()),
@@ -99,19 +108,45 @@ class TestSelectInputForm extends WoForm {
                     SelectInput<City>(
                       id: 'searchMenu',
                       maxCount: 1,
-                      availibleValues: City.values,
+                      availibleValues: City.sortedValues,
+                      searchSettings: SearchSettings(
+                        searchScore: (query, value) =>
+                            query.searchScore(value.name),
+                      ),
                       uiSettings: SelectInputUiSettings(
-                        flex: 1,
+                        flex: childrenVisibility == ChildrenVisibility.always
+                            ? 0
+                            : 1,
                         headerFlex: 11,
                         labelText: 'Ville',
                         helperText: 'menu search',
                         childrenVisibility: childrenVisibility,
-                        searchScore: (query, value) =>
-                            query.searchScore(value.name),
                         valueBuilder: (value) => value == null
                             ? const Text('Select a value')
                             : Text(value.name.capitalized()),
                         openChildren: Push.menu,
+                      ),
+                    ),
+                    SelectInput<City>(
+                      id: 'searchAsync',
+                      maxCount: 1,
+                      minCount: 1,
+                      searchSettings: SearchSettings(
+                        loadAvailibleData: CityProviderExample.loadData,
+                        searchScore: (query, value) =>
+                            query.searchScore(value.name),
+                      ),
+                      uiSettings: SelectInputUiSettings(
+                        flex: childrenVisibility == ChildrenVisibility.always
+                            ? 0
+                            : 1,
+                        headerFlex: 11,
+                        labelText: 'Ville',
+                        helperText: 'default search (async)',
+                        childrenVisibility: childrenVisibility,
+                        valueBuilder: (value) => value == null
+                            ? const Text('Select a value')
+                            : Text(value.name.capitalized()),
                       ),
                     ),
                   ],
@@ -120,6 +155,21 @@ class TestSelectInputForm extends WoForm {
             ),
           ],
         );
+}
+
+class CityProviderExample {
+  static Future<List<City>> loadData(WoFormQuery query) async {
+    await Future<void>.delayed(const Duration(seconds: 1));
+
+    final scores = City.sortedValues
+        .map((city) => (query.searchScore(city.name), city))
+        .toList()
+        .sortedBy<num>((data) => -data.$1);
+
+    final results = scores.take(10).map((data) => data.$2).toList();
+
+    return results;
+  }
 }
 
 enum City {
@@ -134,4 +184,59 @@ enum City {
   pekin,
   shanghai,
   tokyo,
+  london,
+  madrid,
+  rome,
+  vienna,
+  lisbon,
+  prague,
+  budapest,
+  oslo,
+  stockholm,
+  helsinki,
+  copenhagen,
+  dublin,
+  brussels,
+  warsaw,
+  athens,
+  zurich,
+  geneva,
+  venice,
+  milan,
+  barcelona,
+  seoul,
+  taipei,
+  manila,
+  jakarta,
+  bangkok,
+  hanoi,
+  sydney,
+  melbourne,
+  auckland,
+  toronto,
+  montreal,
+  vancouver,
+  chicago,
+  boston,
+  miami,
+  houston,
+  atlanta,
+  denver,
+  seattle,
+  phoenix,
+  cairo,
+  nairobi,
+  lagos,
+  accra,
+  tunis,
+  casablanca,
+  dubai,
+  doha,
+  riyadh,
+  tehran,
+  baghdad,
+  kabul;
+
+  static List<City> get sortedValues =>
+      List.from(values)..sort((a, b) => a.name.compareTo(b.name));
 }
