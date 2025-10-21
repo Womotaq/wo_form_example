@@ -49,9 +49,6 @@ class WoFormExamplesApp extends StatelessWidget {
           ),
         ),
         RepositoryProvider(create: (context) => PlaceRepository()),
-        RepositoryProvider<PlaceRepositoryMixin>(
-          create: (context) => context.read<PlaceRepository>(),
-        ),
       ],
       child: MultiBlocProvider(
         providers: [

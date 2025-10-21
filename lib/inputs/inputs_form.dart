@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/app.dart';
 import 'package:wo_form_example/utils/capitalized.dart';
+import 'package:wo_form_example/utils/place/address_suggestion_settings.dart';
 import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/regex_pattern.dart';
 
@@ -52,12 +53,10 @@ class InputsForm extends WoForm {
                 prefixIcon: const Icon(Icons.phone),
               ),
             ),
-            const StringInput(
+            StringInput<String>(
               id: 'address',
-              placeAutocompleteSettings: PlaceAutocompleteSettings(
-                type: PlaceType.address,
-              ),
-              uiSettings: StringInputUiSettings(
+              suggestionsSettings: addressSuggestionsSettings(context),
+              uiSettings: const StringInputUiSettings(
                 labelText: 'Adresse',
                 labelLocation: StringFieldLocation.outside,
                 helperText: 'Le titre et sous le sous-titre peuvent'

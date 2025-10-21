@@ -3,6 +3,7 @@ import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/edit_event/event.dart';
 import 'package:wo_form_example/edit_event/events_page.dart';
 import 'package:wo_form_example/utils/discard_changes_dialog.dart';
+import 'package:wo_form_example/utils/place/address_suggestion_settings.dart';
 import 'package:wo_form_example/utils/place/place_repository.dart';
 import 'package:wo_form_example/utils/presentation_cubit.dart';
 
@@ -46,14 +47,10 @@ class EventForm extends WoForm {
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
-            StringInput(
+            StringInput<String>(
               id: 'address',
               initialValue: event.address?.name,
-              placeAutocompleteSettings: const PlaceAutocompleteSettings(
-                type: PlaceType.address,
-                countries: [IsoCode.FR],
-                // includeDetails: false,
-              ),
+              suggestionsSettings: addressSuggestionsSettings(context),
               uiSettings: const StringInputUiSettings(
                 labelText: 'Address',
                 action: StringFieldAction.clear,
