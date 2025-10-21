@@ -56,7 +56,6 @@ class InputsForm extends WoForm {
               id: 'address',
               placeAutocompleteSettings: PlaceAutocompleteSettings(
                 type: PlaceType.address,
-                includeDetails: false,
               ),
               uiSettings: StringInputUiSettings(
                 labelText: 'Adresse',

@@ -3,6 +3,7 @@ import 'package:wo_form/wo_form.dart';
 import 'package:wo_form_example/edit_event/event.dart';
 import 'package:wo_form_example/edit_event/events_page.dart';
 import 'package:wo_form_example/utils/discard_changes_dialog.dart';
+import 'package:wo_form_example/utils/place/place_repository.dart';
 import 'package:wo_form_example/utils/presentation_cubit.dart';
 
 class EventForm extends WoForm {
@@ -94,17 +95,28 @@ class EventForm extends WoForm {
           ],
           onSubmitting: (form, values) async {
             final addressName = values['/address'] as String?;
-            final AddressModel? address;
+            AddressModel? address;
             if (addressName == event.address?.name) {
               address = event.address;
             } else if (addressName == null) {
               address = null;
             } else {
-              final details = values['/address+details'] as PlaceDetails?;
+              final placeRepo = context.read<PlaceRepository>();
+              final details = await placeRepo
+                  .getPlacePredictions(addressName)
+                  .then((response) => response.predictions.firstOrNull?.placeId)
+                  .then((placeId) async => placeId == null
+                      ? null
+                      : await placeRepo.getPlaceDetails(placeId))
+                  .then((response) => response?.result);
+
               final latitude = details?.latitude;
               final longitude = details?.longitude;
               if (latitude == null || longitude == null) {
-                throw Exception('The coordinates of the address are unknown');
+                throw const CustomInputError(
+                  path: '/address',
+                  message: "Couldn't find coordinates for this address.",
+                );
               }
               address = AddressModel(
                 name: addressName,

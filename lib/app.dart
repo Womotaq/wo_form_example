@@ -19,7 +19,7 @@ import 'package:wo_form_example/tests/test_scrollable_page.dart';
 import 'package:wo_form_example/tests/test_select_input_form.dart';
 import 'package:wo_form_example/themed_form/themed_form_page.dart';
 import 'package:wo_form_example/utils/app.dart';
-import 'package:wo_form_example/utils/place_repository.dart';
+import 'package:wo_form_example/utils/place/place_repository.dart';
 import 'package:wo_form_example/utils/presentation_cubit.dart';
 import 'package:wo_form_example/utils/push_page.dart';
 import 'package:wo_form_example/wo_form_version/generated_version.dart';
@@ -48,8 +48,9 @@ class WoFormExamplesApp extends StatelessWidget {
             permissionService: context.read(),
           ),
         ),
+        RepositoryProvider(create: (context) => PlaceRepository()),
         RepositoryProvider<PlaceRepositoryMixin>(
-          create: (context) => PlaceRepository(),
+          create: (context) => context.read<PlaceRepository>(),
         ),
       ],
       child: MultiBlocProvider(
