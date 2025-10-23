@@ -27,7 +27,6 @@ class ProfileCreationForm extends WoForm {
                 labelText: "On te souhaite ton anniv' ?",
               ),
               children: [
-                // TODO : when i set two input with the same id, they point toward the same value, but they still have their own rendeing
                 DateTimeInput(
                   id: 'birthday',
                   minDate: TodayDate(addYears: -120),

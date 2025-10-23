@@ -85,12 +85,6 @@ class MediaServiceImpl extends MediaService {
   }
 
   @override
-  Future<MediaType> typeOfMediaUrl(MediaUrl media) async {
-    /// Find a method that suits you here
-    return MediaType.image;
-  }
-
-  @override
   Future<MediaUrl> upload({
     required Media media,
     required String path,

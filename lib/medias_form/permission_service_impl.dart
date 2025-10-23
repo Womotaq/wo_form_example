@@ -41,22 +41,6 @@ class PermissionService with PermissionServiceMixin {
 
   @override
   Future<bool> requireCamera() => _requirePermission(Permission.camera);
-
-  /// Show this dialog when a permission has to be modified
-  /// from the app settings
-  // void showInsufficientPermissionDialog(Permission permission) =>
-  //     ScaffoldMessenger.of(App.context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(
-  //           switch (permission) {
-  //             Permission.camera =>
-  //               "Veuillez acccorder l'accès à votre appareil photo.",
-  //             Permission.photos => "Veuillez acccorder l'accès à vos photos.",
-  //             _ => 'Veuillez accorder cette permission.',
-  //           },
-  //         ),
-  //       ),
-  //     );
 }
 
 void showInsufficientPermissionDialog(Permission permission) =>
