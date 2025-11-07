@@ -13,8 +13,8 @@ class ShowCustomThemeCubit extends Cubit<bool> {
     defaultPhoneCoutry: IsoCode.FR,
     headerBuilder: CustomFormHeader.new,
     inputsNodeExpanderBuilder: CustomInputsNodeExpander.new,
-    stringFieldLabelLocation: StringFieldLocation.outside,
-    stringFieldHelperLocation: StringFieldLocation.outside,
+    stringFieldLabelLocation: FieldElementLocation.outside,
+    stringFieldHelperLocation: FieldElementLocation.outside,
     submitButtonStyle: (context) => FilledButton.styleFrom(
       padding: context.read<RootNode?>()?.uiSettings?.submitButtonPosition ==
               SubmitButtonPosition.appBar

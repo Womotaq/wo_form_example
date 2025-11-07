@@ -29,7 +29,7 @@ class InputsForm extends WoForm {
                 labelText: 'Email',
                 hintText: 'Ex : johnbrezh@gmail.com',
                 prefixIcon: const Icon(Icons.email),
-                prefixIconLocation: StringFieldLocation.inside,
+                prefixIconLocation: FieldElementLocation.inside,
               ),
             ),
             StringInput(
@@ -39,7 +39,7 @@ class InputsForm extends WoForm {
                 invalidRegexMessage: 'Pas assez sécurisé.',
                 labelText: 'Mot de passe',
                 prefixIcon: const Icon(Icons.key),
-                prefixIconLocation: StringFieldLocation.inside,
+                prefixIconLocation: FieldElementLocation.inside,
               ),
             ),
             StringInput(
@@ -58,10 +58,10 @@ class InputsForm extends WoForm {
               suggestionsSettings: addressSuggestionsSettings(context),
               uiSettings: const StringInputUiSettings(
                 labelText: 'Adresse',
-                labelLocation: StringFieldLocation.outside,
+                labelLocation: FieldElementLocation.outside,
                 helperText: 'Le titre et sous le sous-titre peuvent'
                     ' aussi se placer au-dessus du champ.',
-                helperLocation: StringFieldLocation.outside,
+                helperLocation: FieldElementLocation.outside,
                 hintText: 'Paris, Lyon...',
                 prefixIcon: Icon(Icons.location_city),
               ),

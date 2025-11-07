@@ -61,28 +61,34 @@ WoFormNode createStringInputNode() => ValueBuilderNode(
               ),
               toJsonT: (regex) => regex?.value,
             ),
-            ValueListenerNode(
-              id: 'regexPatternListener',
-              path: '../regexPattern',
-              listener: (context, parentPath, value) {
-                final regex = (value as List<RegexPattern?>?)?.firstOrNull;
+            WoFormNode.pathBuilder(
+              id: 'pathPuilder',
+              builder: (path) => ValueListenerNode(
+                id: 'regexPatternListener',
+                path: WoFormValues.getAbsolutePath(
+                  parentPath: path,
+                  path: '../regexPattern',
+                ),
+                listener: (context, value) {
+                  final regex = (value as List<RegexPattern?>?)?.firstOrNull;
 
-                context.read<WoFormValuesCubit>().onValueChanged(
-                      path: WoFormValues.getAbsolutePath(
-                        parentPath: parentPath,
-                        path: '../uiSettings/invalidRegexMessage',
-                      ),
-                      value: regex == null
-                          ? null
-                          : switch (regex) {
-                              RegexPattern.email =>
-                                'Ne correspond pas à une adresse email',
-                              RegexPattern.password => 'Trop faible',
-                              RegexPattern.username =>
-                                "Ne correspond pas à un nom d'utilisateur",
-                            },
-                    );
-              },
+                  context.read<WoFormValuesCubit>().onValueChanged(
+                        path: WoFormValues.getAbsolutePath(
+                          parentPath: path,
+                          path: '../uiSettings/invalidRegexMessage',
+                        ),
+                        value: regex == null
+                            ? null
+                            : switch (regex) {
+                                RegexPattern.email =>
+                                  'Ne correspond pas à une adresse email',
+                                RegexPattern.password => 'Trop faible',
+                                RegexPattern.username =>
+                                  "Ne correspond pas à un nom d'utilisateur",
+                              },
+                      );
+                },
+              ),
             ),
             InputsNode(
               id: 'uiSettings',

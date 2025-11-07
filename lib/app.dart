@@ -39,7 +39,6 @@ class WoFormExamplesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => const DateTimeService()),
         RepositoryProvider<PermissionServiceMixin>(
           create: (context) => const PermissionService(),
         ),
