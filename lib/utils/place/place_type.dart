@@ -4,7 +4,7 @@ enum PlaceType {
   geocode('geocode'),
   address('address'),
   establishment('establishment'),
-  region('(region)'), // TODO : Broken ?
+  region('(region)'), // NOTE : This seems broken
   cities('(cities)');
 
   const PlaceType(this.apiString);
